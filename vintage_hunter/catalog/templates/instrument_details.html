@@ -1,0 +1,303 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  /* Refined Typography */
+  h1.instrument-title {
+    font-size: 1.75rem;
+    /* Smaller, more elegant header */
+    font-weight: 600;
+    color: var(--vt-dark);
+    letter-spacing: -0.5px;
+  }
+
+  .price-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--vt-dark);
+  }
+
+  .breadcrumb {
+    font-size: 0.8rem;
+  }
+
+  /* Image Scaling - Constraining the max height */
+  .img-gallery-container {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #f0f0f0;
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+  }
+
+  .gallery-stage {
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+    overflow: hidden;
+    margin-bottom: 12px;
+    position: relative;
+    height: 450px;
+    cursor: zoom-in;
+  }
+
+  #mainHeroImage {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease, transform 0.1s ease; /* Smooth fade, fast move */
+    transform-origin: center center;
+    width: 100%;
+    height: 100%;
+  }
+
+  .gallery-stage:hover #mainHeroImage {
+    transform: scale(2.5);
+    object-fit: contain;
+  }
+
+  .gallery-stage img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+  }
+
+  .main-feature-img {
+    width: 100%;
+    height: auto;
+    max-height: 500px;
+    /* Prevents the image from taking over the whole screen */
+    object-fit: contain;
+    background: #fafafa;
+  }
+
+  /* Compact Specification Grid */
+  .spec-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #f0f0f0;
+  }
+
+  .spec-item {
+    border-bottom: 1px solid #f9f9f9;
+    padding-bottom: 8px;
+  }
+
+  .spec-label {
+    font-size: 0.7rem;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+
+  .spec-value {
+    font-size: 0.9rem;
+    color: #333;
+    font-weight: 500;
+  }
+
+  .section-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: #bcbcbc;
+    margin-bottom: 1rem;
+    display: block;
+    letter-spacing: 1px;
+  }
+
+  .description-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4a4a4a;
+  }
+
+  .condition-pill {
+    font-size: 0.7rem;
+    padding: 3px 10px;
+    border: 1px solid var(--vt-gold);
+    color: var(--vt-gold);
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .thumb-scroll {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 5px 0;
+  }
+
+  .thumb-scroll::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .thumb-scroll::-webkit-scrollbar-thumb {
+    background: #ddd;
+    border-radius: 10px;
+  }
+
+.thumb-item {
+    flex: 0 0 80px;
+    height: 60px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .thumb-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.6;
+  }
+
+  .thumb-item:hover img {
+    opacity: 1;
+  }
+
+  .thumb-item.active {
+    border-color: var(--vt-gold);
+  }
+
+  .thumb-item:hover img, .thumb-item.active img { 
+    opacity: 1; 
+  }
+</style>
+
+<div class="row justify-content-center">
+  <div class="col-xl-10">
+    <nav aria-label="breadcrumb" class="mb-3">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{% url 'catalog:get_list' %}"
+            class="text-muted text-decoration-none">Catalog</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'catalog:get_list' %}?category={{ instrument.category.id }}"
+            class="text-muted text-decoration-none">{{ instrument.category.name }}</a></li>
+        <li class="breadcrumb-item active">{{ instrument.brand.name }}</li>
+      </ol>
+    </nav>
+
+    <div class="row g-5">
+      <div class="col-md-6">
+        <div class="img-gallery-container">
+          <div class="gallery-stage" id="zoomStage">
+            <img id="mainHeroImage"
+              src="{{ instrument.primary_image.image.url|default:'https://via.placeholder.com/800x600' }}"
+              alt="{{ instrument.title }}">
+          </div>
+
+          {% if instrument.images.count > 1 %}
+          <div class="thumb-scroll">
+            {% for img_obj in instrument.images.all %}
+            <div class="thumb-item {% if img_obj == instrument.primary_image %}active{% endif %}"
+              onclick="updateHero(this, '{{ img_obj.image.url }}')">
+              <img src="{{ img_obj.image.url }}" alt="Detail View {{ forloop.counter }}">
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <span class="section-label">Historical Context & Description</span>
+        <div class="description-text">
+          {{ instrument.description|linebreaks }}
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="mb-2 d-flex align-items-center gap-2">
+          <span class="condition-pill">{{ instrument.get_condition_display }}</span>
+          <span class="text-muted small">ID: #{{ instrument.id|stringformat:"05d" }}</span>
+        </div>
+
+        <h1 class="instrument-title mb-1">{{ instrument.year }} {{ instrument.title }}</h1>
+        <p class="text-muted small mb-4">Authored by Vantage Tone Curators</p>
+
+        <div class="price-text mb-4">
+          ${{ instrument.price }}
+          {% if instrument.is_auction %}
+          <span class="badge bg-dark ms-2" style="font-size: 0.6rem; vertical-align: middle;">AUCTION</span>
+          {% endif %}
+        </div>
+
+        <div class="d-grid gap-2 mb-5">
+          <button class="btn btn-dark btn-sm py-2">PURCHASE INSTRUMENT</button>
+          <button class="btn btn-outline-secondary btn-sm py-2">INQUIRE FOR DETAILS</button>
+        </div>
+
+        <span class="section-label">Technical Specifications</span>
+        <div class="spec-grid mb-5">
+          <div class="spec-item">
+            <div class="spec-label">Brand</div>
+            <div class="spec-value">{{ instrument.brand.name }}</div>
+          </div>
+          <div class="spec-item">
+            <div class="spec-label">Serial Number</div>
+            <div class="spec-value">{{ instrument.serial_number|default:"---" }}</div>
+          </div>
+          {% for key, value in instrument.specifications.items %}
+          <div class="spec-item">
+            <div class="spec-label">{{ key|title }}</div>
+            <div class="spec-value">{{ value }}</div>
+          </div>
+          {% endfor %}
+        </div>
+
+        {% if similar_items %}
+        <span class="section-label">AI Curated: Visually Similar</span>
+        <div class="row g-2">
+          {% for item in similar_items %}
+          <div class="col-3">
+            <a href="{% url 'catalog:detail' item.id %}">
+              <img src="{{ item.images.first.image.url|default:'https://via.placeholder.com/100' }}"
+                class="img-fluid rounded border" style="height: 60px; width: 100%; object-fit: cover;"
+                title="{{ item.title }}">
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const stage = document.getElementById('zoomStage');
+  const hero = document.getElementById('mainHeroImage');
+
+  function updateHero(element, newSrc) {
+    hero.style.opacity = '0';
+    setTimeout(() => {
+      hero.src = newSrc;
+      hero.style.opacity = '1';
+    }, 200);
+    document.querySelectorAll('.thumb-item').forEach(item => item.classList.remove('active'));
+    element.classList.add('active');
+  }
+
+  stage.addEventListener('mousemove', (e) => {
+    const x = e.clientX - stage.offsetLeft;
+    const y = e.clientY - stage.offsetTop;
+
+    const mX = (x / stage.offsetWidth) * 100;
+    const mY = (y / stage.offsetHeight) * 100;
+
+    hero.style.transformOrigin = `${mX}% ${mY}%`;
+  });
+
+  stage.addEventListener('mouseleave', () => {
+    hero.style.transformOrigin = 'center center';
+  });
+</script>
+{% endblock %}

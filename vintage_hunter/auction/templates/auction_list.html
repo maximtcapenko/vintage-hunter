@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .auction-card {
+    background: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 30px;
+  }
+
+  .auction-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  }
+
+  .status-indicator {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 50px;
+  }
+
+  .status-active {
+    background: #fff9e6;
+    color: #d4af37;
+    border: 1px solid #d4af37;
+  }
+
+  .status-scheduled {
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 1px solid #dee2e6;
+  }
+
+  .auction-date-box {
+    background: var(--vt-dark);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+  }
+
+  .auction-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--vt-dark);
+  }
+
+  .lot-count {
+    font-size: 0.85rem;
+    color: #888;
+  }
+</style>
+
+<div class="row mb-5">
+  <div class="col-md-8">
+    <h2 class="fw-bold">Boutique Auctions</h2>
+    <p class="text-muted">Curated events featuring the world's finest vintage instruments.</p>
+  </div>
+</div>
+
+<div class="row">
+  {% for auction in auctions %}
+  <div class="col-12">
+    <div class="auction-card d-flex flex-column flex-md-row">
+      <div class="auction-date-box">
+        <span class="small opacity-75">{{ auction.began_at|date:"M"|upper }}</span>
+        <span class="h2 mb-0 fw-bold">{{ auction.began_at|date:"d" }}</span>
+        <span class="small opacity-75">{{ auction.began_at|date:"Y" }}</span>
+      </div>
+
+      <div class="p-4 flex-grow-1">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+          <div>
+            {% if auction.status == 'active' %}
+            <span class="status-indicator status-active">Live Now</span>
+            {% else %}
+            <span class="status-indicator status-scheduled">Upcoming Event</span>
+            {% endif %}
+          </div>
+          <span class="lot-count">{{ auction.lots.count }} LOTS TOTAL</span>
+        </div>
+
+        <h3 class="auction-title mb-2">{{ auction.title }}</h3>
+        <p class="text-secondary small mb-4" style="max-width: 600px;">
+          {{ auction.description|truncatewords:30 }}
+        </p>
+
+        <div class="d-flex align-items-center justify-content-between">
+          <div class="text-muted small">
+            <i class="bi bi-clock me-1"></i>
+            {% if auction.status == 'active' %}
+            Closes in: <strong>{{ auction.ended_at|timeuntil }}</strong>
+            {% else %}
+            Starts: {{ auction.began_at|date:"g:i A" }}
+            {% endif %}
+          </div>
+
+          <a href="{% url 'auction:get_details' auction.id %}" class="btn btn-outline-dark btn-sm px-4">
+            {% if auction.status == 'active' %}ENTER AUCTION{% else %}VIEW CATALOG{% endif %}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12 text-center py-5">
+    <div class="p-5 bg-white rounded shadow-sm border">
+      <h4 class="text-muted">No auctions currently scheduled.</h4>
+      <p class="small">Check back soon for our next curated collection.</p>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

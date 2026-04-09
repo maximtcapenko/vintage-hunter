@@ -1,0 +1,261 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vantage Tone | Premium Vintage Gear</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="{% static 'assets/img/vintage_tone.png' %}">
+  <style>
+    :root {
+      --vt-dark: #121212;
+      --vt-gold: #d4af37;
+      --vt-gray: #f8f9fa;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--vt-gray);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    main {
+      flex: 1 0 auto;
+    }
+
+    .footer {
+      flex-shrink: 0;
+      background: var(--vt-dark);
+      color: rgba(255, 255, 255, 0.6);
+      padding: 40px 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-card {
+      background: white;
+      border-radius: 12px;
+      border: none;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      padding: 24px;
+    }
+
+    .btn-ai {
+      background-color: #222;
+      color: white;
+      border-radius: 8px;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+
+    .btn-ai:hover {
+      background-color: #000;
+      color: var(--vt-gold);
+    }
+
+    .search-input {
+      border-radius: 8px;
+      border: 1px solid #eee;
+      padding: 10px 15px;
+    }
+
+    .search-input:focus {
+      border-color: var(--vt-gold);
+      box-shadow: none;
+    }
+
+    .navbar {
+      height: 70px;
+      background-color: var(--vt-dark);
+      z-index: 1030;
+      overflow: visible !important;
+    }
+
+    .navbar-brand {
+      display: flex;
+      align-items: center;
+      padding: 0;
+      margin: 0;
+    }
+
+    .vt-logo-img {
+      position: relative;
+      transform: none;
+
+      height: 50px !important;
+      width: auto !important;
+
+      z-index: 10;
+      filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
+      transition: transform 0.3s ease;
+    }
+
+    .brand-text {
+      margin-left: 15px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      color: var(--vt-gold);
+    }
+
+    .navbar-brand:hover .vt-logo-img {
+      transform: scale(1.1);
+    }
+
+    .navbar .container {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-avatar {
+      width: 35px;
+      height: 35px;
+      background-color: var(--vt-gold);
+      color: var(--vt-dark);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.85rem;
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .dropdown-toggle::after {
+      display: none;
+      /* Removes the default arrow for a cleaner look */
+    }
+
+    .dropdown-item {
+      font-size: 0.9rem;
+      padding: 8px 20px;
+      transition: all 0.2s;
+    }
+
+    .dropdown-item:hover {
+      background-color: var(--vt-gray);
+      color: var(--vt-dark);
+    }
+
+    .dropdown-header {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #999;
+    }
+
+    .toast-lg {
+      min-width: 350px;
+      border-radius: 12px;
+    }
+
+    .toast-lg .toast-body {
+      line-height: 1.4;
+      font-weight: 500;
+    }
+
+    .toast-lg i {
+      font-size: 1.4rem;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'catalog:get_list' %}">
+        <img src="{% static 'assets/img/vintage_tone.png' %}" alt="Vintage Tone Logo" class="vt-logo-img">
+        <span class="brand-text">VINTAGE TONE</span>
+      </a>
+
+      <div class="ms-auto d-flex align-items-center">
+        <a href="{% url 'catalog:get_list' %}" class="nav-link text-white-50 me-3 d-none d-md-block">Catalog</a>
+        {% if user.is_authenticated %}
+        <a href="{% url 'auction:get_list' %}" class="nav-link text-white-50 me-3 d-none d-md-block">Auctions</a>
+        <div class="dropdown">
+          <a class="d-flex align-items-center text-decoration-none dropdown-toggle" href="#" role="button"
+            id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="text-white me-2 d-none d-sm-inline" style="font-weight: 500; font-size: 0.9rem;">
+              {{ user.username|upper }}
+            </span>
+            <div class="user-avatar">
+              {% if user.first_name %}
+              {{ user.first_name|slice:":1" }}
+              {% else %}
+              {{ user.username|slice:":1" }}
+              {% endif %}
+            </div>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0" aria-labelledby="userDropdown"
+            style="border-radius: 12px; margin-top: 15px;">
+            <li>
+              <h6 class="dropdown-header">Member Since {{ user.date_joined|date:"Y" }}</h6>
+            </li>
+            <li><a class="dropdown-item" href="#">My Collection</a></li>
+            <li><a class="dropdown-item" href="#">Account Settings</a></li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            <li>
+              <form method="post" action="{% url 'signout' %}">
+                {% csrf_token %}
+                <button type="submit" class="dropdown-item text-danger">Sign Out</button>
+              </form>
+            </li>
+          </ul>
+        </div>
+        {% else %}
+        <a href="{% url 'signin' %}" class="btn btn-outline-warning btn-sm px-3">Sign In</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  <main class="container py-5">
+    {% block content %}{% endblock %}
+  </main>
+
+  <div class="toast-container position-fixed bottom-0 end-0 p-4" style="z-index: 1100;">
+    {% for message in messages %}
+    <div id="liveToast" 
+      class="toast toast-lg align-items-center text-white bg-{{ message.tags|default:'dark' }} border-0 shadow-lg"
+      role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex p-2">
+        <div class="toast-body fs-6 py-3 ps-3"> {% if message.tags == 'success' %}
+          <i class="bi bi-check-circle-fill me-3 text-white"></i>
+          {% elif message.tags == 'danger' or message.tags == 'error' %}
+          <i class="bi bi-exclamation-octagon-fill me-3 text-white"></i>
+          {% endif %}
+          {{ message }}
+        </div>
+        <button type="button" class="btn-close btn-close-white me-3 m-auto" data-bs-dismiss="toast"
+          aria-label="Close"></button>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <footer class="footer">
+    <div class="container text-center">
+      <p class="mb-0 small">© 2026 Vintage Tone Marketplace. Expertly Curated Vintage Gear.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+      var toastList = toastElList.map(function (toastEl) {
+        return new bootstrap.Toast(toastEl, { delay: 5000 }).show()
+      })
+    });
+  </script>
+</body>
+
+</html>

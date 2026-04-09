@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .transition {
+    transition: all 0.3s ease;
+  }
+
+  .hover-shadow:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1) !important;
+  }
+
+  .page-link:hover {
+    background-color: #eee;
+  }
+</style>
+
+<div class="row">
+  <aside class="col-lg-3 mb-4">
+    <div class="sidebar-card shadow-sm">
+      <h5 class="fw-bold mb-3">AI Search</h5>
+      <p class="text-muted small mb-3">Describe the tone, era, or feel you're looking for.</p>
+
+      <form method="GET" action="{% url 'catalog:get_list' %}">
+        <div class="mb-3">
+          <input type="text" name="q" class="form-control search-input" placeholder="e.g. 'Warm 60s blues tone'"
+            value="{{ request.GET.q }}">
+        </div>
+        <button type="submit" class="btn btn-ai w-100 py-2">Find via LLM</button>
+      </form>
+
+      <hr class="my-4 text-secondary opacity-25">
+
+      <h5 class="fw-bold mb-3">Categories</h5>
+      <div class="list-group list-group-flush">
+        <a href="{% url 'catalog:get_list' %}"
+          class="list-group-item list-group-item-action border-0 px-0 {% if not current_category %}fw-bold text-dark{% else %}text-muted{% endif %}">
+          All Instruments
+        </a>
+        {% for cat in categories %}
+        <a href="?category={{ cat.id }}"
+          class="list-group-item list-group-item-action border-0 px-0 {% if current_category.id == cat.id %}fw-bold text-dark{% else %}text-muted{% endif %}">
+          {{ cat.name }}
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+  </aside>
+
+  <section class="col-lg-9">
+    <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+      <h2 class="h4 fw-bold mb-0">Vintage Collection</h2>
+      <div class="text-muted small">
+        {% if total_count > 0 %}
+        Showing {{ page.start_index }}–{{ page.end_index }} of {{ total_count }}
+        {% else %}
+        Showing 0 items
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for instrument in page %}
+      <div class="col-md-6 col-xl-4">
+        <div class="card h-100 border-0 shadow-sm hover-shadow transition overflow-hidden">
+          <div class="position-relative bg-light" style="height: 220px;">
+            {% with img=instrument.primary_image %}
+            {% if img %}
+            <img src="{{ img.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ instrument.title }}">
+            {% else %}
+            <div class="d-flex align-items-center justify-content-center h-100 text-muted italic">No Image</div>
+            {% endif %}
+            {% endwith %}
+            <span class="position-absolute top-0 start-0 m-3 badge bg-dark px-3 py-2 rounded-pill">
+              {{ instrument.year }}
+            </span>
+          </div>
+
+          <div class="card-body p-4 d-flex flex-column">
+            <div class="mb-1 text-uppercase fw-semibold text-muted small" style="letter-spacing: 0.5px;">
+              {{ instrument.brand.name }}
+            </div>
+            <h5 class="card-title h6 fw-bold mb-3">{{ instrument.title }}</h5>
+
+            <div class="mt-auto d-flex justify-content-between align-items-end">
+              <div>
+                <span class="d-block text-muted small mb-0">Price</span>
+                <span class="h5 fw-bold text-dark mb-0">${{ instrument.price }}</span>
+              </div>
+              <a href="{% url 'catalog:get_details' instrument.id %}" class="btn btn-sm btn-outline-dark px-3">Details</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="text-center py-5 px-4 bg-white rounded-4 shadow-sm border border-light mt-2">
+          <div class="display-1 mb-4 opacity-25">🎸</div>
+          <h3 class="fw-bold">The Vault is Currently Empty</h3>
+          <p class="text-muted mx-auto mb-4" style="max-width: 450px;">
+            Our AI agents are currently scouting global markets for rare vintage finds.
+            Try adjusting your filters or place a custom request.
+          </p>
+          <div class="d-flex justify-content-center gap-2">
+            <a href="{% url 'catalog:get_list' %}" class="btn btn-dark px-4">Clear All Filters</a>
+            <button class="btn btn-outline-dark px-4" data-bs-toggle="modal" data-bs-target="#requestModal">
+              Custom Hunt Request
+            </button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    {% if page_obj.has_other_pages %}
+    <nav class="mt-5">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link border-0 text-dark"
+            href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+            &laquo;
+          </a>
+        </li>
+        {% endif %}
+
+        <li class="page-item active">
+          <span class="page-link bg-dark border-0 rounded-3 px-3 mx-1">{{ page_obj.number }}</span>
+        </li>
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link border-0 text-dark"
+            href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+            &raquo;
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+  </section>
+</div>
+{% endblock %}

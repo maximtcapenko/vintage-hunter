@@ -1,0 +1,181 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .auth-card {
+    max-width: 450px;
+    margin: 40px auto;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: 16px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+  }
+
+  .auth-header {
+    background: var(--vt-dark);
+    padding: 40px 30px;
+    text-align: center;
+    color: white;
+  }
+
+  .auth-header h2 {
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    color: var(--vt-gold);
+  }
+
+  .auth-header p {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    margin-bottom: 0;
+  }
+
+  .auth-body {
+    padding: 40px 35px;
+  }
+
+  .form-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #666;
+  }
+
+  .form-control {
+    border-radius: 8px;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e0;
+    transition: all 0.3s ease;
+  }
+
+  .form-control:focus {
+    border-color: var(--vt-gold);
+    box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+  }
+
+  .btn-signin {
+    background: var(--vt-dark);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    width: 100%;
+    margin-top: 10px;
+    transition: all 0.3s;
+  }
+
+  .btn-signin:hover {
+    background: #000;
+    color: var(--vt-gold);
+    transform: translateY(-1px);
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 25px 0;
+    color: #999;
+    font-size: 0.8rem;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #eee;
+  }
+
+  .divider:not(:empty)::before {
+    margin-right: .5em;
+  }
+
+  .divider:not(:empty)::after {
+    margin-left: .5em;
+  }
+
+  .forgot-link {
+    font-size: 0.85rem;
+    color: var(--vt-gold);
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .forgot-link:hover {
+    text-decoration: underline;
+  }
+
+  .signup-prompt {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.9rem;
+    color: #777;
+  }
+</style>
+
+<div class="row justify-content-center">
+  <div class="col-md-12">
+    <div class="auth-card">
+      <div class="auth-header">
+        <img src="{% static 'assets/img/vintage_tone.png' %}" alt="VT" style="height: 40px; margin-bottom: 15px;">
+        <h2>Welcome Back</h2>
+        <p>Access your curated gear collection</p>
+      </div>
+
+      <div class="auth-body">
+        <form method="post" action="{% url 'signin' %}" novalidate>
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+          <div class="alert alert-danger p-2 small">
+            {{ form.non_field_errors }}
+          </div>
+          {% endif %}
+
+          <div class="mb-3">
+            <label for="{{ form.username.id_for_label }}" class="form-label">Username or Email</label>
+            {{ form.username }}
+            {{ form.username.errors }}
+          </div>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center">
+              <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
+              <a href="{% url 'password_reset' %}" class="forgot-link">Forgot?</a>
+            </div>
+            {{ form.password }}
+            {{ form.password.errors }}
+          </div>
+
+          <div class="mb-4 form-check">
+            {{ form.remember }}
+            <label class="form-check-label small text-muted" for="{{ form.remember.id_for_label }}">
+              Keep me signed in
+            </label>
+          </div>
+
+          <button type="submit" class="btn-signin">SIGN IN</button>
+
+          <div class="divider">OR CONTINUE WITH</div>
+
+          <div class="d-grid gap-2">
+            <button type="button" class="btn btn-outline-dark btn-sm py-2" style="border-radius: 8px;">
+              <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" width="16" class="me-2">
+              Google
+            </button>
+          </div>
+        </form>
+
+        <p class="signup-prompt">
+          New to Vintage Tone? <a href="{% url 'signup' %}" class="forgot-link">Create Account</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

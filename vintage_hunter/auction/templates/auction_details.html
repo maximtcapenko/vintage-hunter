@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+  .auction-header-bg {
+    background-color: var(--vt-dark);
+    color: white;
+    padding: 60px 0;
+    margin-bottom: 50px;
+    border-radius: 12px;
+  }
+
+  .lot-card {
+    border: 1px solid #eee;
+    border-radius: 8px;
+    transition: transform 0.2s;
+    background: white;
+    height: 100%;
+  }
+
+  .lot-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+  }
+
+  .lot-number {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 2px 8px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    border-radius: 4px;
+    z-index: 10;
+  }
+
+  .estimate-text {
+    font-size: 0.8rem;
+    color: #888;
+    letter-spacing: 0.5px;
+  }
+
+  .current-bid-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--vt-gold);
+    text-transform: uppercase;
+  }
+
+  .input-group-sm>.form-control {
+    height: 34px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .input-group-sm>.btn {
+    height: 34px;
+    padding: 0 12px;
+  }
+
+  input::-webkit-outer-spin-button,
+  input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+</style>
+
+<div class="auction-header-bg text-center">
+  <div class="container">
+    <span class="badge border border-warning text-warning mb-3">
+      {{ auction.get_status_display|upper }}
+    </span>
+    <h1 class="display-5 fw-bold mb-3">{{ auction.title }}</h1>
+    <p class="lead opacity-75 mx-auto" style="max-width: 700px;">{{ auction.description }}</p>
+    <div class="mt-4 d-flex justify-content-center gap-4">
+      <div class="text-start">
+        <small class="d-block opacity-50 text-uppercase">Starts</small>
+        <span>{{ auction.began_at|date:"M d, Y H:i" }}</span>
+      </div>
+      <div class="text-start border-start ps-4">
+        <small class="d-block opacity-50 text-uppercase">Closes</small>
+        <span>{{ auction.ended_at|date:"M d, Y H:i" }}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="mt-4 d-flex justify-content-center gap-4 border-top border-secondary pt-4">
+    <div class="text-center">
+      <small class="d-block opacity-50 text-uppercase">Total Lots</small>
+      <span class="fw-bold">{{ lots.count }}</span>
+    </div>
+    <div class="text-center border-start border-secondary ps-4">
+      <small class="d-block opacity-50 text-uppercase">Registered Bidders</small>
+      <span class="fw-bold">{{ auction.participant_count }}</span>
+    </div>
+    <div class="text-center border-start border-secondary ps-4">
+      <small class="d-block opacity-50 text-uppercase">Status</small>
+      <span class="text-warning fw-bold">{{ auction.get_status_display }}</span>
+    </div>
+  </div>
+  <div>
+    {% if not is_user_participant %}
+    <div class="alert shadow-sm border-0 d-flex justify-content-between align-items-center p-3"
+      style="background-color: #fff9e6; color: #856404;">
+      <span><i class="bi bi-info-circle-fill me-2"></i> You must register before you can place bids.</span>
+      <form action="{% url 'auction:register_as_participant' auction.id %}" method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-sm btn-warning fw-bold">REGISTER NOW</button>
+      </form>
+      {% endif %}
+    </div>
+  </div>
+  {% for lot in lots %}
+  <div class="col-md-6 col-lg-4 col-xl-3">
+    <div class="lot-card position-relative d-flex flex-column">
+      <span class="lot-number">LOT {{ lot.lot_number }}</span>
+
+      <a href="{% url 'catalog:get_details' lot.instrument.id %}" class="text-decoration-none">
+        <div style="height: 220px; overflow: hidden; border-radius: 8px 8px 0 0;">
+          <img src="{{ lot.instrument.primary_image.image.url|default:'https://via.placeholder.com/400x300' }}"
+            class="w-100 h-100" style="object-fit: cover;">
+        </div>
+      </a>
+
+      <div class="p-3 flex-grow-1">
+        <small class="text-muted text-uppercase fw-bold" style="font-size: 0.7rem;">
+          {{ lot.instrument.brand.name }}
+        </small>
+        <h5 class="fw-bold mb-2" style="font-size: 1rem;">
+          {{ lot.instrument.year }} {{ lot.instrument.title }}
+        </h5>
+
+        <div class="estimate-text mb-3">
+          EST: ${{ lot.estimated_price_min }} – ${{ lot.estimated_price_max }}
+        </div>
+
+        <div class="mt-auto d-flex justify-content-between align-items-end">
+          <div class="lh-sm">
+            <span class="text-uppercase text-muted fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Current
+              Bid</span>
+            <div class="fw-bold h4 mb-0" style="color: #1a1a1a;">
+              ${{ lot.current_highest_bid.amount|default:lot.starting_price|floatformat:0 }}
+            </div>
+          </div>
+
+          <form action="{% url 'auction:place_bid' auction.id lot.id %}" method="post"
+            class="input-group input-group-sm" style="width: 130px;">
+            {% csrf_token %}
+            <input type="number" name="amount" class="form-control border-secondary-subtle"
+              placeholder="{{ lot.current_highest_bid.amount|default:lot.starting_price }}"
+              style="font-weight: 500; font-size: 0.85rem;" required>
+            <button class="btn btn-dark fw-bold px-2" type="submit" style="font-size: 0.75rem;" 
+            {% if not is_user_participant %} disabled {% endif %}>
+              BID
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12 text-center py-5">
+    <p class="text-muted">No lots have been added to this auction yet.</p>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}
