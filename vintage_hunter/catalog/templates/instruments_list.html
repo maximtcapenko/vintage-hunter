@@ -113,26 +113,26 @@
       {% endfor %}
     </div>
 
-    {% if page_obj.has_other_pages %}
+    {% if page.has_other_pages %}
     <nav class="mt-5">
       <ul class="pagination justify-content-center">
-        {% if page_obj.has_previous %}
+        {% if page.has_previous %}
         <li class="page-item">
           <a class="page-link border-0 text-dark"
-            href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+            href="?page={{ page.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
             &laquo;
           </a>
         </li>
         {% endif %}
 
         <li class="page-item active">
-          <span class="page-link bg-dark border-0 rounded-3 px-3 mx-1">{{ page_obj.number }}</span>
+          <span class="page-link bg-dark border-0 rounded-3 px-3 mx-1">{{ page.number }}</span>
         </li>
 
-        {% if page_obj.has_next %}
+        {% if page.has_next %}
         <li class="page-item">
           <a class="page-link border-0 text-dark"
-            href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+            href="?page={{ page.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
             &raquo;
           </a>
         </li>

@@ -1,8 +1,10 @@
 import torch
 import logging
 
-from sentence_transformers import SentenceTransformer
+from django.conf import settings
+
 from PIL import Image
+from sentence_transformers import SentenceTransformer
 from transformers import CLIPProcessor, CLIPModel
 
 lpgger = logging.getLogger(__name__) 
@@ -13,7 +15,7 @@ class EmbeddingService:
     @classmethod
     def get_model(cls):
         if cls._model is None:
-            cls._model = SentenceTransformer('./ai-models/all-mpnet-base-v2')
+            cls._model = SentenceTransformer(settings.EMBEDDING_MODEL_PATH)
         return cls._model
 
     @classmethod
@@ -29,15 +31,14 @@ class EmbeddingService:
         ).tolist()
     
 class ImageVectorService:
-    MODEL_PATH = './ai-models/clip-vit-base-patch32'
     _model = None
     _processor = None
 
     @classmethod
     def load_model(cls):
         if cls._model is None or cls._processor is None:
-            cls._model = CLIPModel.from_pretrained(cls.MODEL_PATH)
-            cls._processor = CLIPProcessor.from_pretrained(cls.MODEL_PATH)
+            cls._model = CLIPModel.from_pretrained(settings.EMBEDDING_IMAGE_MODEL_PATH)
+            cls._processor = CLIPProcessor.from_pretrained(settings.EMBEDDING_IMAGE_MODEL_PATH)
             cls._model.eval()
             
             if torch.backends.mps.is_available():

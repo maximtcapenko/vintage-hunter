@@ -1,25 +1,25 @@
+from django.core.paginator import Paginator
 from django.db.models import Prefetch
 from django.shortcuts import get_object_or_404, render
 from django.views.decorators.http import require_GET
-from django.core.paginator import Paginator
 
-from .forms import SearchForm
+from .forms import SearchCatalogForm
 from .models import Instrument, Category, InstrumentImage
 
 DEFAULT_PAGE_SIZE = 50
 
 @require_GET
 def get_list(request):
-    form = SearchForm(request.GET)
+    form = SearchCatalogForm(request.GET)
     
-    def build_query_set(requset):
+    def build_query_set():
         query = request.GET.get('q')
         if query:
             return Instrument.objects.search_by_text(query)
 
-        return Instrument.objects.filter(**form.get_filters()).all()
+        return form.get_search_queryset(Instrument.objects.all())
     
-    paginator = Paginator(build_query_set(request), DEFAULT_PAGE_SIZE)
+    paginator = Paginator(build_query_set(), DEFAULT_PAGE_SIZE)
     page = paginator.get_page(request.GET.get('page'))
     return render(request, 'instruments_list.html', {
         'page': page,
@@ -27,7 +27,6 @@ def get_list(request):
         'current_category': form.cleaned_data.get('category') if form.is_valid() else None,
         'categories': Category.objects.all()
     })
-
 
 @require_GET
 def get_details(request, id):

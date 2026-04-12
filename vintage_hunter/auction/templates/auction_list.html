@@ -69,7 +69,7 @@
 </div>
 
 <div class="row">
-  {% for auction in auctions %}
+  {% for auction in page %}
   <div class="col-12">
     <div class="auction-card d-flex flex-column flex-md-row">
       <div class="auction-date-box">
@@ -121,4 +121,32 @@
   </div>
   {% endfor %}
 </div>
+
+{% if page.has_other_pages %}
+<nav class="mt-5">
+  <ul class="pagination justify-content-center">
+    {% if page.has_previous %}
+    <li class="page-item">
+      <a class="page-link border-0 text-dark bg-transparent"
+        href="?page={{ page.previous_page_number }}">
+        <i class="bi bi-chevron-left"></i>
+      </a>
+    </li>
+    {% endif %}
+    <li class="page-item active">
+      <span class="page-link bg-dark border-0 rounded-circle px-3 mx-2 shadow-sm">
+        {{ page.number }}
+      </span>
+    </li>
+    {% if page.has_next %}
+    <li class="page-item">
+      <a class="page-link border-0 text-dark bg-transparent"
+        href="?page={{ page.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">
+        <i class="bi bi-chevron-right"></i>
+      </a>
+    </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endif %}
 {% endblock %}

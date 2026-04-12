@@ -34,12 +34,21 @@ class Auction(Base):
     def __str__(self):
         return self.title
 
+def get_user_active_auctions_count(self):
+    if not self.is_authenticated:
+        return 0
+    
+    return self.registered_auctions.filter(status='active').distinct().count()
+
+active_auctions_count_property = cached_property(get_user_active_auctions_count)
+User.add_to_class('active_auctions_count', active_auctions_count_property)
+active_auctions_count_property.__set_name__(User, 'active_auctions_count')
+
 class Lot(Base):
     LOT_STATUS = [
         ('waiting', 'Waiting'),
         ('active', 'Active'),
         ('sold', 'Sold'),
-        ('passed', 'Passed (Reserve not met)'),
         ('withdrawn', 'Withdrawn'),
     ]
 

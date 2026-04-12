@@ -1,16 +1,17 @@
 from django import forms
+from django.db import models
 
+from commons.mixins import SearchFormMixin
 from .models import Category
 
-class SearchForm(forms.Form):
+
+class SearchCatalogForm(forms.Form, SearchFormMixin):
     category = forms.ModelChoiceField(Category.objects.all())
 
-    def get_filters(self):
-        filter = {}
-        if self.is_valid():
-            for field in self.fields:
-                value = self.cleaned_data.get(field)
-                if value:
-                    filter[field] = value
-                    
-        return filter
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        SearchFormMixin.__init__(self)
+
+        self.__resolvers__ = {
+            'category': lambda field: models.Q(category=field),
+        }
