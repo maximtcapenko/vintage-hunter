@@ -14,6 +14,47 @@
   .page-link:hover {
     background-color: #eee;
   }
+
+  .btn-ai {
+    background: linear-gradient(135-deg, #1a1a1a 0%, #333 100%);
+    color: white;
+    border: none;
+    transition: all 0.3s ease;
+  }
+
+  .btn-ai:hover {
+    background: linear-gradient(135-deg, #333 0%, #444 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .category-count {
+    font-size: 0.7rem;
+    background: #f0f0f0;
+    padding: 2px 8px;
+    border-radius: 10px;
+    float: end;
+  }
+
+  .collection-toggle i.bi-heart {
+    color: #1a1a1a;
+    /* Dark charcoal instead of default grey */
+    stroke-width: 1.5px;
+    /* Slight bolding of the outline */
+  }
+
+  /* Add a subtle border to the button itself so it's not white-on-white */
+  .collection-toggle {
+    border: 1px solid rgba(0, 0, 0, 0.08) !important;
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    backdrop-filter: blur(4px);
+    /* Premium touch */
+  }
+
+  .collection-toggle:hover {
+    background-color: #ffffff !important;
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
+  }
 </style>
 
 <div class="row">
@@ -72,6 +113,17 @@
             <div class="d-flex align-items-center justify-content-center h-100 text-muted italic">No Image</div>
             {% endif %}
             {% endwith %}
+
+            {% if user.is_authenticated %}
+            <button
+              class="btn btn-light btn-sm rounded-circle shadow-sm position-absolute top-0 end-0 m-3 d-flex align-items-center justify-content-center collection-toggle"
+              style="width: 38px; height: 38px; z-index: 10; border: 1px solid #eee;"
+              data-instrument-id="{{ instrument.id }}">
+              <i
+                class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %} bi-heart text-dark{% endif %}"></i>
+            </button>
+            {% endif %}
+
             <span class="position-absolute top-0 start-0 m-3 badge bg-dark px-3 py-2 rounded-pill">
               {{ instrument.year }}
             </span>
@@ -88,7 +140,8 @@
                 <span class="d-block text-muted small mb-0">Price</span>
                 <span class="h5 fw-bold text-dark mb-0">${{ instrument.price }}</span>
               </div>
-              <a href="{% url 'catalog:get_details' instrument.id %}" class="btn btn-sm btn-outline-dark px-3">Details</a>
+              <a href="{% url 'catalog:get_details' instrument.id %}"
+                class="btn btn-sm btn-outline-dark px-3">Details</a>
             </div>
           </div>
         </div>
@@ -139,6 +192,48 @@
         {% endif %}
       </ul>
     </nav>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.collection-toggle').forEach(button => {
+          button.addEventListener('click', function (e) {
+            e.preventDefault();
+            const instrumentId = this.dataset.instrumentId;
+            const icon = this.querySelector('i');
+
+            fetch(`/users/collections/toggle/${instrumentId}/`, {
+              method: 'POST',
+              headers: {
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+              }
+            })
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  if (data.added) {
+                    icon.classList.remove('bi-heart', 'text-dark');
+                    icon.classList.add('bi-heart-fill', 'text-danger');
+                  } else {
+                    icon.classList.remove('bi-heart-fill', 'text-danger');
+                    icon.classList.add('bi-heart', 'text-dark');
+                  }
+
+                  const toastBody = document.querySelector('.toast-body');
+                  if (toastBody) {
+                    toastBody.innerText = data.message;
+                    const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                    toast.show();
+                  }
+                }
+              })
+              .catch(error => console.error('Error:', error));
+          });
+        });
+      });
+    </script>
     {% endif %}
   </section>
 </div>

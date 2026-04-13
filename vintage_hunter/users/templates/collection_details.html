@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+  .transition { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  .hover-shadow:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+  }
+  .border-dashed {
+    border: 2px dashed #dee2e6 !important;
+    background-color: #fafafa;
+  }
+  /* Subtle remove button */
+  .remove-btn {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.2s ease;
+  }
+  .card:hover .remove-btn {
+    opacity: 1;
+    transform: scale(1);
+  }
+</style>
+
+<div class="d-flex justify-content-between align-items-end mb-5">
+  <div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2" style="font-size: 0.85rem;">
+        <li class="breadcrumb-item"><a href="{% url 'users:collection_list' %}" class="text-muted text-decoration-none">Collections</a></li>
+        <li class="breadcrumb-item active fw-semibold text-dark">{{ collection.name }}</li>
+      </ol>
+    </nav>
+    <h2 class="fw-bold mb-0">{{ collection.name }}</h2>
+    <div class="d-flex align-items-center mt-2">
+        <span class="badge bg-light text-dark border me-3">{{ instruments|length }} Instruments</span>
+        {% if collection.description %}
+            <span class="text-muted small border-start ps-3">{{ collection.description }}</span>
+        {% endif %}
+    </div>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{% url 'catalog:get_list' %}" class="btn btn-dark px-4 shadow-sm">
+      <i class="bi bi-plus-lg me-2"></i>Add More
+    </a>
+  </div>
+</div>
+
+<div class="row g-4" id="instruments-grid">
+  {% for instrument in instruments %}
+  <div class="col-md-6 col-xl-4 instrument-card">
+    <div class="card h-100 border-0 shadow-sm hover-shadow transition overflow-hidden">
+      <div class="position-relative" style="height: 240px; background: #fdfdfd;">
+        {% with img=instrument.primary_image %}
+        <img src="{{ img.image.url|default:'/static/img/no-image.jpg' }}" 
+             class="w-100 h-100" 
+             style="object-fit: cover;" 
+             alt="{{ instrument.title }}">
+        {% endwith %}
+        
+        <button
+          class="btn btn-light btn-sm rounded-circle shadow-sm position-absolute top-0 end-0 m-3 d-flex align-items-center justify-content-center collection-toggle"
+          style="width: 38px; height: 38px; z-index: 10; border: 1px solid #eee;"
+          data-instrument-id="{{ instrument.id }}"
+          data-collection-id="{{ collection.id }}">
+          <i class="bi bi-heart-fill text-danger"></i>
+        </button>
+
+        <div class="position-absolute bottom-0 start-0 m-3">
+          <span class="badge bg-white text-dark shadow-sm px-3 py-2 rounded-pill fw-bold" style="font-size: 0.7rem;">
+            {{ instrument.year }}
+          </span>
+        </div>
+      </div>
+
+      <div class="card-body p-4 d-flex flex-column">
+        <div class="mb-1 text-uppercase fw-bold text-muted" style="font-size: 0.65rem; letter-spacing: 1px;">
+          {{ instrument.brand.name }}
+        </div>
+        <h5 class="h6 fw-bold mb-3 text-dark lh-base">{{ instrument.title }}</h5>
+
+        <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+          <div>
+            <span class="d-block text-muted fw-semibold" style="font-size: 0.65rem; text-transform: uppercase;">Estimated Value</span>
+            <span class="h5 fw-bold mb-0">${{ instrument.price|default:"0" }}</span>
+          </div>
+          <a href="{% url 'catalog:get_details' instrument.id %}" class="btn btn-sm btn-outline-dark px-3 fw-bold">View Details</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div id="empty-state" class="text-center py-5 {% if instruments %}d-none{% endif %}">
+  <div class="p-5 border-dashed rounded-4">
+    <div class="display-1 mb-3 opacity-25 text-muted"><i class="bi bi-folder2-open"></i></div>
+    <h4 class="fw-bold text-dark">This collection is empty</h4>
+    <p class="text-muted mx-auto mb-4" style="max-width: 400px;">Your curated collections are best when filled with legendary gear.</p>
+    <a href="{% url 'catalog:get_list' %}" class="btn btn-dark px-5 py-2">Open Catalog</a>
+  </div>
+</div>
+
+<script>
+  document.getElementById('instruments-grid').addEventListener('click', function (e) {
+    const btn = e.target.closest('.collection-toggle');
+    if (!btn) return;
+
+    const card = btn.closest('.instrument-card');
+    const formData = new FormData();
+    formData.append('collection_id', btn.dataset.collectionId);
+
+    fetch(`/users/collections/toggle/${btn.dataset.instrumentId}/`, {
+      method: 'POST',
+      headers: { 'X-CSRFToken': '{{ csrf_token }}' },
+      body: formData
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === 'success') {
+        card.remove();
+        if (!document.querySelector('.instrument-card')) {
+          document.getElementById('empty-state').classList.remove('d-none');
+        }
+        const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+        document.querySelector('.toast-body').innerText = data.message;
+        toast.show();
+      }
+    });
+  });
+</script>
+{% endblock %}

@@ -21,11 +21,20 @@ def get_list(request):
     
     paginator = Paginator(build_query_set(), DEFAULT_PAGE_SIZE)
     page = paginator.get_page(request.GET.get('page'))
+    
+    user_collection_instrument_ids = []
+    if request.user.is_authenticated:
+        from users.models import Collection
+        user_collection_instrument_ids = Instrument.objects.filter(
+            in_collections__user=request.user
+        ).values_list('id', flat=True)
+
     return render(request, 'instruments_list.html', {
         'page': page,
         'total_count': paginator.count,
         'current_category': form.cleaned_data.get('category') if form.is_valid() else None,
-        'categories': Category.objects.all()
+        'categories': Category.objects.all(),
+        'user_collection_instrument_ids': user_collection_instrument_ids
     })
 
 @require_GET

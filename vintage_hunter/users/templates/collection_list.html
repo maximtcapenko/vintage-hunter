@@ -1,0 +1,167 @@
+{% extends 'base.html' %}
+
+{% block title %}My Collections - Vintage Tone{% endblock %}
+
+{% block content %}
+<style>
+  .collection-card {
+    background: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+    min-height: 140px; /* Ensures consistent height */
+  }
+
+  .collection-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  }
+
+  .default-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+    background: #e6f3ff;
+    color: #0066cc;
+    border: 1px solid #cce5ff;
+    z-index: 2;
+  }
+
+  .collection-preview {
+    background: #f8f9fa;
+    width: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #f0f0f0;
+    flex-shrink: 0;
+  }
+
+  .collection-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .collection-preview .placeholder-icon {
+    font-size: 2rem;
+    color: #dee2e6;
+  }
+</style>
+
+<div class="d-flex justify-content-between align-items-end mb-5">
+  <div>
+    <h2 class="fw-bold mb-1">My Collections</h2>
+    <p class="text-muted mb-0">Organize your favorite vintage finds into curated sets.</p>
+  </div>
+  <button class="btn btn-dark px-4 shadow-sm" data-bs-toggle="modal" data-bs-target="#addCollectionModal">
+    <i class="bi bi-plus-lg me-2"></i>New Collection
+  </button>
+</div>
+
+<div class="row">
+  {% for collection in collections %}
+  <div class="col-12 col-lg-6">
+    <div class="collection-card d-flex">
+      
+      <div class="collection-preview d-none d-sm-flex">
+        {% with first_inst=collection.instruments.all|first %}
+          {% if first_inst and first_inst.primary_image %}
+            <img src="{{ first_inst.primary_image.image.url }}" alt="{{ collection.name }}">
+          {% else %}
+            <div class="placeholder-icon">
+                <i class="bi bi-folder2-open"></i>
+            </div>
+          {% endif %}
+        {% endwith %}
+      </div>
+
+      <div class="p-4 flex-grow-1">
+        {% if collection.is_default %}
+          <span class="default-badge">Primary</span>
+        {% endif %}
+
+        <h3 class="h5 fw-bold mb-1">{{ collection.name }}</h3>
+        
+        <p class="text-secondary small mb-3 text-truncate" style="max-width: 250px;">
+          {{ collection.description|default:"No description provided." }}
+        </p>
+
+        <div class="d-flex align-items-center justify-content-between mt-auto">
+          <div class="small text-muted">
+            <i class="bi bi-guitar me-1"></i>
+            <strong>{{ collection.instruments.count }}</strong> instruments
+          </div>
+
+          <div class="d-flex align-items-center gap-3">
+            <form action="{% url 'users:delete_collection' collection.id %}" method="POST" 
+                  onsubmit="return confirm('Are you sure? This will not delete the instruments, only the collection.');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link text-danger p-0 m-0 border-0" title="Delete Collection">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+            <a href="{% url 'users:collection_details' collection.id %}" class="btn btn-outline-dark btn-sm px-3 fw-bold">
+              View
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12 text-center py-5">
+    <div class="p-5 bg-white rounded shadow-sm border border-dashed" style="border-style: dashed !important;">
+      <div class="display-4 mb-3 opacity-25">📁</div>
+      <h4 class="text-muted fw-bold">No collections yet</h4>
+      <p class="small text-muted">Create your first collection to start organizing your gear.</p>
+      <button class="btn btn-dark mt-2" data-bs-toggle="modal" data-bs-target="#addCollectionModal">
+        Create My First Collection
+      </button>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="modal fade" id="addCollectionModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow-lg" style="border-radius: 15px;">
+      <form method="POST">
+        {% csrf_token %}
+        <div class="modal-header border-0 p-4 pb-0">
+          <h5 class="modal-title fw-bold">New Collection</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body p-4">
+          <div class="mb-3">
+            <label class="form-label small text-uppercase fw-bold text-muted">Name</label>
+            {{ form.name }}
+            {% if form.name.errors %}<div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>{% endif %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label small text-uppercase fw-bold text-muted">Description</label>
+            {{ form.description }}
+          </div>
+          <div class="form-check form-switch mt-3">
+            {{ form.is_default }}
+            <label class="form-check-label small" for="{{ form.is_default.id_for_label }}">Set as primary (default) collection</label>
+          </div>
+        </div>
+        <div class="modal-footer border-0 p-4 pt-0">
+          <button type="button" class="btn btn-link text-muted text-decoration-none px-0 me-auto" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-dark px-4">Create Collection</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

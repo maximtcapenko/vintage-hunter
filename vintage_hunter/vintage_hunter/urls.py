@@ -28,5 +28,6 @@ urlpatterns = [
     path('password_reset/', password_reset, name='password_reset'),
     path('catalog/', include('catalog.urls')),
     path('auction/', include('auction.urls')),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls', namespace='users')),
+    path('profile/', RedirectView.as_view(pattern_name='users:profile', permanent=False), name='profile')
 ]
