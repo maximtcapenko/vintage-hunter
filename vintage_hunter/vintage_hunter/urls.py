@@ -27,5 +27,6 @@ urlpatterns = [
     path('signout/', signout, name='signout'),
     path('password_reset/', password_reset, name='password_reset'),
     path('catalog/', include('catalog.urls')),
-    path('auction/', include('auction.urls'))
+    path('auction/', include('auction.urls')),
+    path('users/', include('users.urls'))
 ]

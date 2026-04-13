@@ -54,7 +54,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.postgres',
     'catalog.apps.CatalogConfig',
-    'auction.apps.AuctionConfig'
+    'auction.apps.AuctionConfig',
+    'users.apps.UsersConfig'
 ]
 
 MIDDLEWARE = [
