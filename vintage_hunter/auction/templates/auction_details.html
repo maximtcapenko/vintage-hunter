@@ -84,6 +84,13 @@
         <span>{{ auction.ended_at|date:"M d, Y H:i" }}</span>
       </div>
     </div>
+    {% if user.is_staff %}
+    <div class="mt-5 pt-3 border-top border-secondary mx-auto" style="max-width: 300px;">
+      <a href="{% url 'auction:manage_auction' auction.id %}" class="btn btn-warning fw-bold px-4 rounded-pill shadow-sm">
+        <i class="bi bi-gear-fill me-2"></i>MANAGE AUCTION
+      </a>
+    </div>
+    {% endif %}
   </div>
 </div>
 
@@ -103,7 +110,7 @@
     </div>
   </div>
   <div>
-    {% if not is_user_participant %}
+    {% if not user.is_staff and  not is_user_participant %}
     <div class="alert shadow-sm border-0 d-flex justify-content-between align-items-center p-3"
       style="background-color: #fff9e6; color: #856404;">
       <span><i class="bi bi-info-circle-fill me-2"></i> You must register before you can place bids.</span>
@@ -111,8 +118,8 @@
         {% csrf_token %}
         <button type="submit" class="btn btn-sm btn-warning fw-bold">REGISTER NOW</button>
       </form>
-      {% endif %}
     </div>
+    {% endif %}
   </div>
   {% for lot in lots %}
   <div class="col-md-6 col-lg-4 col-xl-3">

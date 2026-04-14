@@ -113,7 +113,7 @@ class Instrument(Base):
         self.text_embedding = EmbeddingService.encode(text_data)
         
         primary_img = self.images.filter(is_primary=True).first()
-        if primary_img and (not self.image_embedding or force_image):
+        if primary_img and (self.image_embedding is None or force_image):
             self.image_embedding = ImageVectorService.encode(primary_img.image)
             
         self.save(update_fields=['text_embedding', 'image_embedding'])

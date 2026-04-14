@@ -92,12 +92,19 @@
   <section class="col-lg-9">
     <div class="d-flex justify-content-between align-items-center mb-4 px-2">
       <h2 class="h4 fw-bold mb-0">Vintage Collection</h2>
-      <div class="text-muted small">
-        {% if total_count > 0 %}
-        Showing {{ page.start_index }}–{{ page.end_index }} of {{ total_count }}
-        {% else %}
-        Showing 0 items
+      <div class="d-flex align-items-center gap-3">
+        {% if user.is_staff %}
+        <a href="{% url 'catalog:create_instrument' %}" class="btn btn-warning btn-sm fw-bold px-3 rounded-pill shadow-sm">
+          <i class="bi bi-plus-lg me-1"></i> ADD INSTRUMENT
+        </a>
         {% endif %}
+        <div class="text-muted small">
+          {% if total_count > 0 %}
+          Showing {{ page.start_index }}–{{ page.end_index }} of {{ total_count }}
+          {% else %}
+          Showing 0 items
+          {% endif %}
+        </div>
       </div>
     </div>
 
@@ -114,7 +121,7 @@
             {% endif %}
             {% endwith %}
 
-            {% if user.is_authenticated %}
+            {% if user.is_authenticated and not user.is_staff %}
             <button
               class="btn btn-light btn-sm rounded-circle shadow-sm position-absolute top-0 end-0 m-3 d-flex align-items-center justify-content-center collection-toggle"
               style="width: 38px; height: 38px; z-index: 10; border: 1px solid #eee;"

@@ -1,0 +1,26 @@
+.specifications-widget .table-responsive {
+    border-radius: 8px;
+    background: #fff;
+}
+
+.specifications-widget table {
+    margin-bottom: 0;
+}
+
+.specifications-widget th {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.specifications-widget .spec-row td {
+    vertical-align: middle;
+}
+
+.specifications-widget .remove-spec-row {
+    color: #dc3545;
+}
+
+.specifications-widget .remove-spec-row:hover {
+    background-color: #dc3545;
+    color: #fff;
+}

@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-8">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-2">
+                <li class="breadcrumb-item"><a href="{% url 'auction:get_list' %}" class="text-decoration-none text-muted">Auctions</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'auction:manage_auction' auction.id %}" class="text-decoration-none text-muted">{{ auction.title }}</a></li>
+                <li class="breadcrumb-item active">Add Lot</li>
+            </ol>
+        </nav>
+        <h2 class="fw-bold">Select Instrument</h2>
+        <p class="text-muted">Choose an instrument from the catalog to add as a lot in this auction.</p>
+    </div>
+    <div class="col-md-4">
+        <form method="get" class="d-flex">
+            {{ search_form.q }}
+            <button type="submit" class="btn btn-dark ms-2">Search</button>
+        </form>
+    </div>
+</div>
+
+<div class="row g-4">
+    {% for instrument in page_obj %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden">
+            {% if instrument.primary_image %}
+            <img src="{{ instrument.primary_image.image.url }}" class="card-img-top" style="height: 200px; object-fit: cover;">
+            {% else %}
+            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                <i class="bi bi-music-note display-4 text-muted"></i>
+            </div>
+            {% endif %}
+            <div class="card-body p-4">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <span class="badge bg-light text-dark">{{ instrument.category.name }}</span>
+                    <span class="fw-bold">${{ instrument.price|floatformat:0 }}</span>
+                </div>
+                <h5 class="fw-bold mb-2">{{ instrument }}</h5>
+                <p class="small text-muted mb-4">{{ instrument.description|truncatewords:20 }}</p>
+                <a href="{% url 'auction:add_lot_configure' auction.id instrument.id %}" class="btn btn-dark w-100 rounded-pill fw-bold">Select & Configure</a>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12 py-5 text-center">
+        <div class="p-5 bg-white rounded-4 shadow-sm">
+            <h4 class="text-muted">No available instruments found.</h4>
+            <p>Ensure instruments are not already marked as 'in auction' or assigned to other lots.</p>
+            <a href="{% url 'catalog:get_list' %}" class="btn btn-outline-dark mt-3">Back to Catalog</a>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if page_obj.has_other_pages %}
+<nav class="mt-5">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a></li>
+        {% endif %}
+        <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+        {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

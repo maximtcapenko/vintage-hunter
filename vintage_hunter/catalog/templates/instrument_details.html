@@ -232,6 +232,17 @@
 
         <div class="d-grid gap-2 mb-5">
           <button class="btn btn-dark btn-sm py-2">PURCHASE INSTRUMENT</button>
+          {% if user.is_staff %}
+          <a href="{% url 'catalog:edit_instrument' instrument.id %}" class="btn btn-warning btn-sm py-2 fw-bold">EDIT CATALOG ENTRY</a>
+          {% endif %}
+          
+          {% if user.is_authenticated and not user.is_staff %}
+          <button class="btn btn-outline-dark btn-sm py-2 collection-toggle" data-instrument-id="{{ instrument.id }}">
+            <i class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %}bi-heart{% endif %} me-2"></i>
+            {% if instrument.id in user_collection_instrument_ids %}REMOVE FROM COLLECTION{% else %}ADD TO COLLECTION{% endif %}
+          </button>
+          {% endif %}
+          
           <button class="btn btn-outline-secondary btn-sm py-2">INQUIRE FOR DETAILS</button>
         </div>
 
@@ -258,7 +269,7 @@
         <div class="row g-2">
           {% for item in similar_items %}
           <div class="col-3">
-            <a href="{% url 'catalog:detail' item.id %}">
+            <a href="{% url 'catalog:get_details' item.id %}">
               <img src="{{ item.images.first.image.url|default:'https://via.placeholder.com/100' }}"
                 class="img-fluid rounded border" style="height: 60px; width: 100%; object-fit: cover;"
                 title="{{ item.title }}">
@@ -298,6 +309,52 @@
 
   stage.addEventListener('mouseleave', () => {
     hero.style.transformOrigin = 'center center';
+  });
+</script>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const toggleBtn = document.querySelector('.collection-toggle');
+    if (toggleBtn) {
+      toggleBtn.addEventListener('click', function (e) {
+        e.preventDefault();
+        const instrumentId = this.dataset.instrumentId;
+        const icon = this.querySelector('i');
+        const textSpan = this.lastChild; // The text part
+
+        fetch(`/users/collections/toggle/${instrumentId}/`, {
+          method: 'POST',
+          headers: {
+            'X-CSRFToken': '{{ csrf_token }}',
+            'X-Requested-With': 'XMLHttpRequest'
+          }
+        })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              if (data.added) {
+                icon.classList.remove('bi-heart');
+                icon.classList.add('bi-heart-fill', 'text-danger');
+                textSpan.textContent = ' REMOVE FROM COLLECTION';
+              } else {
+                icon.classList.remove('bi-heart-fill', 'text-danger');
+                icon.classList.add('bi-heart');
+                textSpan.textContent = ' ADD TO COLLECTION';
+              }
+
+              const toastBody = document.querySelector('.toast-body');
+              if (toastBody) {
+                toastBody.innerText = data.message;
+                const toast = new bootstrap.Toast(document.getElementById('liveToast'));
+                toast.show();
+              }
+            }
+          })
+          .catch(error => console.error('Error:', error));
+      });
+    }
   });
 </script>
 {% endblock %}

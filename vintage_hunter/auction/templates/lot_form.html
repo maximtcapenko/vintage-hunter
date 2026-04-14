@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+            <div class="row g-0">
+                <div class="col-lg-5 bg-light d-flex flex-column p-5">
+                    <div class="mb-4">
+                        <span class="badge bg-dark text-uppercase px-3 py-2 mb-3">Selected Instrument</span>
+                        <h2 class="fw-bold mb-1">{{ instrument }}</h2>
+                        <p class="text-muted">{{ instrument.category.name }} • {{ instrument.year }}</p>
+                    </div>
+                    
+                    {% if instrument.primary_image %}
+                    <img src="{{ instrument.primary_image.image.url }}" class="rounded-4 mb-4 shadow-sm" style="width: 100%; height: 300px; object-fit: cover;">
+                    {% else %}
+                    <div class="bg-white rounded-4 mb-4 shadow-sm d-flex align-items-center justify-content-center flex-grow-1" style="min-height: 200px;">
+                        <i class="bi bi-music-note display-1 text-muted opacity-25"></i>
+                    </div>
+                    {% endif %}
+                    
+                    <div class="bg-white p-4 rounded-4 shadow-sm">
+                        <div class="small fw-bold text-uppercase opacity-50 mb-2">Original Catalog Price</div>
+                        <h3 class="fw-bold mb-0">${{ instrument.price|floatformat:0 }}</h3>
+                    </div>
+                    
+                    <a href="{% url 'auction:add_lot_select' auction.id %}" class="btn btn-link text-muted mt-4 text-decoration-none">
+                        <i class="bi bi-arrow-left me-2"></i>Change Instrument
+                    </a>
+                </div>
+                
+                <div class="col-lg-7 p-5">
+                    <h2 class="fw-bold mb-4">{{ title }}</h2>
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="row g-4">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-uppercase opacity-75">Lot Number</label>
+                                    {{ form.lot_number }}
+                                    {% for error in form.lot_number.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-uppercase opacity-75">Starting Price ($)</label>
+                                    {{ form.starting_price }}
+                                    {% for error in form.starting_price.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-uppercase opacity-75">Reserve Price ($)</label>
+                                    {{ form.reserve_price }}
+                                    <div class="form-text small">Minimum price the item can be sold for. Leave blank for no reserve.</div>
+                                    {% for error in form.reserve_price.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-uppercase opacity-75">Low Estimate ($)</label>
+                                    {{ form.estimated_price_min }}
+                                    {% for error in form.estimated_price_min.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label small fw-bold text-uppercase opacity-75">High Estimate ($)</label>
+                                    {{ form.estimated_price_max }}
+                                    {% for error in form.estimated_price_max.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end mt-5">
+                            <a href="{% url 'auction:manage_auction' auction.id %}" class="btn btn-light px-4">Cancel</a>
+                            <button type="submit" class="btn btn-dark px-5">Confirm Lot Details</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/x-icon" href="{% static 'assets/img/vintage_tone.png' %}">
+  {% block extra_head %}{% endblock %}
   <style>
     :root {
       --vt-dark: #121212;
@@ -211,6 +212,7 @@
                 <i class="bi bi-person-badge me-2 opacity-75"></i> My Profile
               </a>
             </li>
+            {% if not user.is_staff %}
             <li>
               <a class="dropdown-item d-flex justify-content-between align-items-center py-2" href="{% url 'users:collection_list' %}">
                 <span><i class="bi bi-collection me-2 opacity-75"></i> My Collection</span>
@@ -219,6 +221,8 @@
                 {% endif %}
               </a>
             </li>
+            {% endif %}
+            {% if not user.is_staff %}
             <li>
               <a class="dropdown-item d-flex justify-content-between align-items-center py-2" 
                  href="{% url 'auction:get_list' %}?participant={{ user.id }}&status=active">
@@ -228,10 +232,35 @@
                 {% endif %}
               </a>
             </li>
+            {% endif %}
             <li>
               <hr class="dropdown-divider">
             </li>
-
+            {% if user.is_staff %}
+            <li>
+              <div class="px-3 py-1">
+                <p class="mb-1 small text-muted text-uppercase fw-bold" style="letter-spacing: 0.5px;">Staff Tools</p>
+              </div>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center py-2" href="{% url 'auction:get_list' %}">
+                <i class="bi bi-megaphone me-2 opacity-75"></i> Manage Auctions
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center py-2" href="{% url 'catalog:category_list' %}">
+                <i class="bi bi-tags me-2 opacity-75"></i> Manage Categories
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex align-items-center py-2" href="{% url 'catalog:brand_list' %}">
+                <i class="bi bi-award me-2 opacity-75"></i> Manage Brands
+              </a>
+            </li>
+            <li>
+              <hr class="dropdown-divider">
+            </li>
+            {% endif %}
             <li>
               <form method="post" action="{% url 'signout' %}">
                 {% csrf_token %}
@@ -288,6 +317,7 @@
       })
     });
   </script>
+  {% block scripts %}{% endblock %}
 </body>
 
 </html>

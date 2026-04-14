@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+      <div class="card-body p-5">
+        <h2 class="fw-bold mb-4">{{ title }}</h2>
+        
+        <form method="post" novalidate>
+          {% csrf_token %}
+          
+          <div class="mb-4">
+            <label class="form-label small fw-bold">Brand Name</label>
+            {{ form.name }}
+            {% if form.name.errors %}
+              <div class="text-danger small mt-1">{{ form.name.errors.0 }}</div>
+            {% endif %}
+          </div>
+          
+          <div class="mb-4">
+            <label class="form-label small fw-bold">Origin Country</label>
+            {{ form.origin_country }}
+            {% if form.origin_country.errors %}
+              <div class="text-danger small mt-1">{{ form.origin_country.errors.0 }}</div>
+            {% endif %}
+          </div>
+          
+          <div class="mb-4">
+            <label class="form-label small fw-bold">History</label>
+            {{ form.history }}
+            {% if form.history.errors %}
+              <div class="text-danger small mt-1">{{ form.history.errors.0 }}</div>
+            {% endif %}
+            <div class="form-text small opacity-75">Brief history for context.</div>
+          </div>
+          
+          <div class="d-flex justify-content-end gap-2 mt-5">
+            <a href="{% url 'catalog:brand_list' %}" class="btn btn-light px-4 rounded-pill fw-bold text-muted">Cancel</a>
+            <button type="submit" class="btn btn-dark px-4 rounded-pill fw-bold shadow-sm">Save Brand</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

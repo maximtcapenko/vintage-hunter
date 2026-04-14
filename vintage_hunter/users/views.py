@@ -7,6 +7,15 @@ from .forms import UserProfileForm, CollectionForm
 from .models import Collection
 from catalog.models import Instrument
 
+from django.core.exceptions import PermissionDenied
+
+def is_not_staff(view_func):
+    def _wrapped_view(request, *args, **kwargs):
+        if request.user.is_staff:
+            raise PermissionDenied
+        return view_func(request, *args, **kwargs)
+    return _wrapped_view
+
 @login_required
 def profile_details(request):
     if request.method == 'POST':
@@ -24,6 +33,7 @@ def profile_details(request):
     })
 
 @login_required
+@is_not_staff
 def get_collection_list(request):
     collections = request.user.collections.all()
     if request.method == 'POST':
@@ -43,6 +53,7 @@ def get_collection_list(request):
     })
 
 @login_required
+@is_not_staff
 def get_collection_details(request, pk):
     collection = get_object_or_404(Collection, pk=pk, user=request.user)
     instruments = collection.instruments.all()
@@ -52,6 +63,7 @@ def get_collection_details(request, pk):
     })
 
 @login_required
+@is_not_staff
 @require_POST
 def delete_collection(request, pk):
     collection = get_object_or_404(Collection, pk=pk, user=request.user)
@@ -61,6 +73,7 @@ def delete_collection(request, pk):
     return redirect('users:collection_list')
 
 @login_required
+@is_not_staff
 @require_POST
 def toggle_collection_item(request, instrument_id):
     instrument = get_object_or_404(Instrument, id=instrument_id)
