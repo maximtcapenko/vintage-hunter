@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="row mb-4">
@@ -6,19 +7,19 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item"><a href="{% url 'auction:get_list' %}"
-            class="text-decoration-none text-muted">Auctions</a></li>
+            class="text-decoration-none text-muted">{% trans "Auctions" %}</a></li>
         <li class="breadcrumb-item"><a href="{% url 'auction:manage_auction' auction.id %}"
             class="text-decoration-none text-muted">{{ auction.title }}</a></li>
-        <li class="breadcrumb-item active">Add Lot</li>
+        <li class="breadcrumb-item active">{% trans "Add Lot" %}</li>
       </ol>
     </nav>
-    <h2 class="fw-bold">Select Instrument</h2>
-    <p class="text-muted">Choose an instrument from the catalog to add as a lot in this auction.</p>
+    <h2 class="fw-bold">{% trans "Select Instrument" %}</h2>
+    <p class="text-muted">{% trans "Choose an instrument from the catalog to add as a lot in this auction." %}</p>
   </div>
   <div class="col-md-4">
     <form method="get" class="d-flex">
       {{ search_form.q }}
-      <button type="submit" class="btn btn-dark ms-2">Search</button>
+      <button type="submit" class="btn btn-dark ms-2">{% trans "Search" %}</button>
     </form>
   </div>
 </div>
@@ -43,16 +44,16 @@
         <h5 class="fw-bold mb-2">{{ instrument }}</h5>
         <p class="small text-muted mb-4">{{ instrument.description|truncatewords:20 }}</p>
         <a href="{% url 'auction:add_lot_configure' auction.id instrument.id %}"
-          class="btn btn-dark w-100 rounded-pill fw-bold">Select & Configure</a>
+          class="btn btn-dark w-100 rounded-pill fw-bold">{% trans "Select & Configure" %}</a>
       </div>
     </div>
   </div>
   {% empty %}
   <div class="col-12 py-5 text-center">
     <div class="p-5 bg-white rounded-4 shadow-sm">
-      <h4 class="text-muted">No available instruments found.</h4>
-      <p>Ensure instruments are not already marked as 'in auction' or assigned to other lots.</p>
-      <a href="{% url 'catalog:get_list' %}" class="btn btn-outline-dark mt-3">Back to Catalog</a>
+      <h4 class="text-muted">{% trans "No available instruments found." %}</h4>
+      <p>{% trans "Ensure instruments are not already marked as 'in auction' or assigned to other lots." %}</p>
+      <a href="{% url 'catalog:get_list' %}" class="btn btn-outline-dark mt-3">{% trans "Back to Catalog" %}</a>
     </div>
   </div>
   {% endfor %}
@@ -63,13 +64,13 @@
   <ul class="pagination justify-content-center">
     {% if page_obj.has_previous %}
     <li class="page-item"><a class="page-link"
-        href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+        href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans "Previous" %}</a>
     </li>
     {% endif %}
     <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
     {% if page_obj.has_next %}
     <li class="page-item"><a class="page-link"
-        href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+        href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{% trans "Next" %}</a>
     </li>
     {% endif %}
   </ul>

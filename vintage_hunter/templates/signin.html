@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <style>
@@ -123,8 +123,8 @@
     <div class="auth-card">
       <div class="auth-header">
         <img src="{% static 'assets/img/vintage_tone.png' %}" alt="VT" style="height: 40px; margin-bottom: 15px;">
-        <h2>Welcome Back</h2>
-        <p>Access your curated gear collection</p>
+        <h2>{% trans "Welcome Back" %}</h2>
+        <p>{% trans "Access your curated gear collection" %}</p>
       </div>
 
       <div class="auth-body">
@@ -138,15 +138,15 @@
           {% endif %}
 
           <div class="mb-3">
-            <label for="{{ form.username.id_for_label }}" class="form-label">Username or Email</label>
+            <label for="{{ form.username.id_for_label }}" class="form-label">{% trans "Username or Email" %}</label>
             {{ form.username }}
             {{ form.username.errors }}
           </div>
 
           <div class="mb-3">
             <div class="d-flex justify-content-between align-items-center">
-              <label for="{{ form.password.id_for_label }}" class="form-label">Password</label>
-              <a href="{% url 'password_reset' %}" class="forgot-link">Forgot?</a>
+              <label for="{{ form.password.id_for_label }}" class="form-label">{% trans "Password" %}</label>
+              <a href="{% url 'password_reset' %}" class="forgot-link">{% trans "Forgot?" %}</a>
             </div>
             {{ form.password }}
             {{ form.password.errors }}
@@ -155,13 +155,13 @@
           <div class="mb-4 form-check">
             {{ form.remember }}
             <label class="form-check-label small text-muted" for="{{ form.remember.id_for_label }}">
-              Keep me signed in
+              {% trans "Keep me signed in" %}
             </label>
           </div>
 
-          <button type="submit" class="btn-signin">SIGN IN</button>
+          <button type="submit" class="btn-signin">{% trans "SIGN IN" %}</button>
 
-          <div class="divider">OR CONTINUE WITH</div>
+          <div class="divider">{% trans "OR CONTINUE WITH" %}</div>
 
           <div class="d-grid gap-2">
             <button type="button" class="btn btn-outline-dark btn-sm py-2" style="border-radius: 8px;">
@@ -172,7 +172,7 @@
         </form>
 
         <p class="signup-prompt">
-          New to Vintage Tone? <a href="{% url 'signup' %}" class="forgot-link">Create Account</a>
+          {% trans "New to Vintage Tone?" %} <a href="{% url 'signup' %}" class="forgot-link">{% trans "Create Account" %}</a>
         </p>
       </div>
     </div>

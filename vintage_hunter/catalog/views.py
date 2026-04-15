@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
+from django.utils.translation import gettext as _
 
 from commons.functional import is_staff
 
@@ -70,14 +71,17 @@ def create_instrument(request):
         form = InstrumentForm(request.POST)
         if form.is_valid():
             instrument = form.save()
-            messages.success(request, f'Instrument "{instrument}" created. Now you can add photos.')
+            messages.success(
+                request,
+                _('Instrument "%(instrument)s" created. Now you can add photos.') % {'instrument': instrument}
+            )
             return redirect('catalog:edit_instrument', id=instrument.id)
     else:
         form = InstrumentForm()
         
     return render(request, 'instrument_form.html', {
         'form': form,
-        'title': 'Add New Instrument'
+        'title': _('Add New Instrument')
     })
 
 @user_passes_test(is_staff)
@@ -93,14 +97,17 @@ def create_category(request):
         form = CategoryForm(request.POST)
         if form.is_valid():
             category = form.save()
-            messages.success(request, f'Category "{category.name}" created.')
+            messages.success(
+                request,
+                _('Category "%(category)s" created.') % {'category': category.name}
+            )
             return redirect('catalog:category_list')
     else:
         form = CategoryForm()
     
     return render(request, 'catalog/category_form.html', {
         'form': form,
-        'title': 'Create New Category'
+        'title': _('Create New Category')
     })
 
 @user_passes_test(is_staff)
@@ -111,7 +118,10 @@ def edit_category(request, id):
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Category "{category.name}" updated.')
+            messages.success(
+                request,
+                _('Category "%(category)s" updated.') % {'category': category.name}
+            )
             return redirect('catalog:category_list')
     else:
         form = CategoryForm(instance=category)
@@ -119,7 +129,7 @@ def edit_category(request, id):
     return render(request, 'catalog/category_form.html', {
         'form': form,
         'category': category,
-        'title': f'Edit Category: {category.name}'
+        'title': _('Edit Category: %(category)s') % {'category': category.name}
     })
 
 @user_passes_test(is_staff)
@@ -135,14 +145,17 @@ def create_brand(request):
         form = BrandForm(request.POST)
         if form.is_valid():
             brand = form.save()
-            messages.success(request, f'Brand "{brand.name}" created.')
+            messages.success(
+                request,
+                _('Brand "%(brand)s" created.') % {'brand': brand.name}
+            )
             return redirect('catalog:brand_list')
     else:
         form = BrandForm()
     
     return render(request, 'catalog/brand_form.html', {
         'form': form,
-        'title': 'Create New Brand'
+        'title': _('Create New Brand')
     })
 
 @user_passes_test(is_staff)
@@ -153,7 +166,10 @@ def edit_brand(request, id):
         form = BrandForm(request.POST, instance=brand)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Brand "{brand.name}" updated.')
+            messages.success(
+                request,
+                _('Brand "%(brand)s" updated.') % {'brand': brand.name}
+            )
             return redirect('catalog:brand_list')
     else:
         form = BrandForm(instance=brand)
@@ -161,7 +177,7 @@ def edit_brand(request, id):
     return render(request, 'catalog/brand_form.html', {
         'form': form,
         'brand': brand,
-        'title': f'Edit Brand: {brand.name}'
+        'title': _('Edit Brand: %(brand)s') % {'brand': brand.name}
     })
 
 @user_passes_test(is_staff)
@@ -179,7 +195,7 @@ def upload_instrument_image(request, instrument_id):
             )
         return JsonResponse({'status': 'success'})
     
-    return JsonResponse({'status': 'error', 'message': 'No images uploaded'}, status=400)
+    return JsonResponse({'status': 'error', 'message': _('No images uploaded.')}, status=400)
 
 @user_passes_test(is_staff)
 @require_POST
@@ -193,7 +209,7 @@ def set_primary_image(request, image_id):
     
     return JsonResponse({
         'status': 'success',
-        'message': f'Image set as primary.',
+        'message': _('Image set as primary.'),
         'image_id': image.id
     })
 
@@ -206,7 +222,7 @@ def delete_instrument_image(request, image_id):
     if instrument.images.count() <= 1:
         return JsonResponse({
             'status': 'error', 
-            'message': 'Cannot delete the last image. An instrument must have at least one photo.'
+            'message': _('Cannot delete the last image. An instrument must have at least one photo.')
         }, status=400)
     
     was_primary = image.is_primary
@@ -230,7 +246,10 @@ def edit_instrument(request, id):
         form = InstrumentForm(request.POST, instance=instrument)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Instrument "{instrument}" updated.')
+            messages.success(
+                request,
+                _('Instrument "%(instrument)s" updated.') % {'instrument': instrument}
+            )
             return redirect('catalog:get_details', id=instrument.id)
     else:
         form = InstrumentForm(instance=instrument)
@@ -239,5 +258,5 @@ def edit_instrument(request, id):
         'form': form,
         'images': images,
         'instrument': instrument,
-        'title': f'Edit {instrument}'
+        'title': _('Edit %(instrument)s') % {'instrument': instrument}
     })

@@ -21,7 +21,8 @@ from .views import signin, signup, password_reset, signout
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', RedirectView.as_view(url='/catalog/', permanent=False)),
+    path('i18n/', include('django.conf.urls.i18n')),
+    path('', RedirectView.as_view(pattern_name='catalog:get_list', permanent=False)),
     path('signin/', signin, name='signin'),
     path('signup/', signup, name='signup'),
     path('signout/', signout, name='signout'),

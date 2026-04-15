@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
 {% block content %}
 <div class="row mb-4">
@@ -6,7 +7,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb mb-2">
         <li class="breadcrumb-item"><a href="{% url 'auction:get_list' %}"
-            class="text-decoration-none text-muted">Auctions</a></li>
+            class="text-decoration-none text-muted">{% trans "Auctions" %}</a></li>
         <li class="breadcrumb-item active">{{ auction.title }}</li>
       </ol>
     </nav>
@@ -14,7 +15,7 @@
     <div class="d-flex align-items-center gap-3">
       <span
         class="badge bg-{% if auction.status == 'active' %}warning text-dark{% elif auction.status == 'draft' %}secondary{% else %}dark{% endif %} text-uppercase px-3 py-2">
-        {{ auction.get_status_display }}
+        {{ auction.status_label }}
       </span>
       <span class="text-muted small">
         <i class="bi bi-calendar-event me-1"></i>
@@ -25,10 +26,10 @@
   <div class="col-md-4 text-md-end pt-3">
     <div class="btn-group shadow-sm">
       <a href="{% url 'auction:edit_auction' auction.id %}" class="btn btn-white border px-4">
-        <i class="bi bi-pencil-square me-2"></i>Edit Details
+        <i class="bi bi-pencil-square me-2"></i>{% trans "Edit Details" %}
       </a>
       <a href="{% url 'auction:get_details' auction.id %}" class="btn btn-dark px-4" target="_blank">
-        <i class="bi bi-eye me-2"></i>Public View
+        <i class="bi bi-eye me-2"></i>{% trans "Public View" %}
       </a>
     </div>
   </div>
@@ -38,20 +39,20 @@
   <div class="col-lg-8">
     <div class="card border-0 shadow-sm rounded-4 overflow-hidden">
       <div class="card-header bg-white border-0 py-4 px-4 d-flex justify-content-between align-items-center">
-        <h4 class="fw-bold mb-0">Auction Lots</h4>
+        <h4 class="fw-bold mb-0">{% trans "Auction Lots" %}</h4>
         <a href="{% url 'auction:add_lot_select' auction.id %}" class="btn btn-warning px-4 rounded-pill fw-bold">
-          <i class="bi bi-plus-lg me-2"></i>Add Lot
+          <i class="bi bi-plus-lg me-2"></i>{% trans "Add Lot" %}
         </a>
       </div>
       <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
           <thead class="bg-light">
             <tr>
-              <th class="ps-4 py-3 text-uppercase small opacity-75 fw-bold">Lot</th>
-              <th class="py-3 text-uppercase small opacity-75 fw-bold">Instrument</th>
-              <th class="py-3 text-uppercase small opacity-75 fw-bold">Starting Price</th>
-              <th class="py-3 text-uppercase small opacity-75 fw-bold">Estimates</th>
-              <th class="pe-4 py-3 text-end text-uppercase small opacity-75 fw-bold">Actions</th>
+              <th class="ps-4 py-3 text-uppercase small opacity-75 fw-bold">{% trans "Lot" %}</th>
+              <th class="py-3 text-uppercase small opacity-75 fw-bold">{% trans "Instrument" %}</th>
+              <th class="py-3 text-uppercase small opacity-75 fw-bold">{% trans "Starting Price" %}</th>
+              <th class="py-3 text-uppercase small opacity-75 fw-bold">{% trans "Estimates" %}</th>
+              <th class="pe-4 py-3 text-end text-uppercase small opacity-75 fw-bold">{% trans "Actions" %}</th>
             </tr>
           </thead>
           <tbody>
@@ -82,11 +83,11 @@
               <td class="pe-4 text-end">
                 <div class="btn-group btn-group-sm border rounded-2 shadow-sm">
                   <a href="{% url 'auction:edit_lot' auction.id lot.id %}" class="btn btn-white border-0 py-2 px-3"
-                    title="Edit Lot">
+                    title="{% trans 'Edit Lot' %}">
                     <i class="bi bi-pencil"></i>
                   </a>
                   <button type="button" class="btn btn-white border-0 border-start py-2 px-3 text-danger"
-                    data-bs-toggle="modal" data-bs-target="#deleteLotModal{{ lot.id }}" title="Remove Lot">
+                    data-bs-toggle="modal" data-bs-target="#deleteLotModal{{ lot.id }}" title="{% trans 'Remove Lot' %}">
                     <i class="bi bi-trash"></i>
                   </button>
                 </div>
@@ -99,14 +100,13 @@
                         <div class="display-6 text-danger mb-3">
                           <i class="bi bi-exclamation-triangle"></i>
                         </div>
-                        <h4 class="fw-bold mb-2">Remove Lot #{{ lot.lot_number }}?</h4>
-                        <p class="text-muted mb-4">This will remove the instrument from the auction. The instrument will
-                          become available for other auctions or direct sale.</p>
+                        <h4 class="fw-bold mb-2">{% blocktrans with lot_number=lot.lot_number %}Remove Lot #{{ lot_number }}?{% endblocktrans %}</h4>
+                        <p class="text-muted mb-4">{% trans "This will remove the instrument from the auction. The instrument will become available for other auctions or direct sale." %}</p>
                         <div class="d-flex gap-2 justify-content-center">
-                          <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Cancel</button>
+                          <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">{% trans "Cancel" %}</button>
                           <form method="post" action="{% url 'auction:delete_lot' auction.id lot.id %}">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-danger px-4">Remove Lot</button>
+                            <button type="submit" class="btn btn-danger px-4">{% trans "Remove Lot" %}</button>
                           </form>
                         </div>
                       </div>
@@ -119,9 +119,9 @@
             <tr>
               <td colspan="5" class="py-5 text-center text-muted">
                 <i class="bi bi-box-seam display-1 opacity-25 mb-3 d-block"></i>
-                <p class="mb-0">No lots have been added to this auction yet.</p>
+                <p class="mb-0">{% trans "No lots have been added to this auction yet." %}</p>
                 <a href="{% url 'auction:add_lot_select' auction.id %}"
-                  class="btn btn-outline-dark btn-sm mt-3 px-4">Add your first lot</a>
+                  class="btn btn-outline-dark btn-sm mt-3 px-4">{% trans "Add your first lot" %}</a>
               </td>
             </tr>
             {% endfor %}
@@ -134,38 +134,33 @@
   <div class="col-lg-4">
     <div class="card border-0 shadow-sm rounded-4 mb-4">
       <div class="card-body p-4">
-        <h5 class="fw-bold mb-4">Auction Summary</h5>
+        <h5 class="fw-bold mb-4">{% trans "Auction Summary" %}</h5>
         <div class="d-flex justify-content-between mb-3">
-          <span class="text-muted">Total Lots</span>
+          <span class="text-muted">{% trans "Total Lots" %}</span>
           <span class="fw-bold">{{ auction.lots.count }}</span>
         </div>
         <div class="d-flex justify-content-between mb-3">
-          <span class="text-muted">Total Value (Low Est.)</span>
+          <span class="text-muted">{% trans "Total Value (Low Est.)" %}</span>
           <span class="fw-bold">${{ total_low_estimate|default:"0" }}</span>
         </div>
         <div class="d-flex justify-content-between mb-4">
-          <span class="text-muted">Participants</span>
+          <span class="text-muted">{% trans "Participants" %}</span>
           <span class="fw-bold">{{ auction.participants.count }}</span>
         </div>
         <hr class="mb-4">
-        <div class="small mb-2 fw-bold text-uppercase opacity-50">Quick Help</div>
-        <p class="small text-muted mb-0">
-          Draft auctions are only visible to staff. Set status to <strong>Scheduled</strong> to make it visible to
-          users, or <strong>Active</strong> to begin bidding.
-        </p>
+        <div class="small mb-2 fw-bold text-uppercase opacity-50">{% trans "Quick Help" %}</div>
+        <p class="small text-muted mb-0">{% trans "Draft auctions are only visible to staff. Set status to Scheduled to make it visible to users, or Active to begin bidding." %}</p>
       </div>
     </div>
 
     <div class="card border-0 shadow-sm rounded-4 bg-dark text-white">
       <div class="card-body p-4">
-        <h5 class="fw-bold mb-3 text-warning">Quick Status Action</h5>
+        <h5 class="fw-bold mb-3 text-warning">{% trans "Quick Status Action" %}</h5>
         <form method="post" action="{% url 'auction:edit_auction' auction.id %}">
           {% csrf_token %}
           <!-- We can add quick status toggle here later if needed -->
-          <p class="small opacity-75 mb-3">Need to change status quickly? Use the edit page for full control over timing
-            and status.</p>
-          <a href="{% url 'auction:edit_auction' auction.id %}" class="btn btn-outline-warning w-100 fw-bold">Update
-            Auction Settings</a>
+          <p class="small opacity-75 mb-3">{% trans "Need to change status quickly? Use the edit page for full control over timing and status." %}</p>
+          <a href="{% url 'auction:edit_auction' auction.id %}" class="btn btn-outline-warning w-100 fw-bold">{% trans "Update Auction Settings" %}</a>
         </form>
       </div>
     </div>

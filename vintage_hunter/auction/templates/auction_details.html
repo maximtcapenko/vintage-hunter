@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <style>
@@ -70,17 +70,17 @@
 <div class="auction-header-bg text-center">
   <div class="container">
     <span class="badge border border-warning text-warning mb-3">
-      {{ auction.get_status_display|upper }}
+      {{ auction.status_label|upper }}
     </span>
     <h1 class="display-5 fw-bold mb-3">{{ auction.title }}</h1>
     <p class="lead opacity-75 mx-auto" style="max-width: 700px;">{{ auction.description }}</p>
     <div class="mt-4 d-flex justify-content-center gap-4">
       <div class="text-start">
-        <small class="d-block opacity-50 text-uppercase">Starts</small>
+        <small class="d-block opacity-50 text-uppercase">{% trans "Starts" %}</small>
         <span>{{ auction.began_at|date:"M d, Y H:i" }}</span>
       </div>
       <div class="text-start border-start ps-4">
-        <small class="d-block opacity-50 text-uppercase">Closes</small>
+        <small class="d-block opacity-50 text-uppercase">{% trans "Closes" %}</small>
         <span>{{ auction.ended_at|date:"M d, Y H:i" }}</span>
       </div>
     </div>
@@ -88,7 +88,7 @@
     <div class="mt-5 pt-3 border-top border-secondary mx-auto" style="max-width: 300px;">
       <a href="{% url 'auction:manage_auction' auction.id %}"
         class="btn btn-warning fw-bold px-4 rounded-pill shadow-sm">
-        <i class="bi bi-gear-fill me-2"></i>MANAGE AUCTION
+        <i class="bi bi-gear-fill me-2"></i>{% trans "MANAGE AUCTION" %}
       </a>
     </div>
     {% endif %}
@@ -99,26 +99,26 @@
   <div class="mt-4 d-flex justify-content-center gap-4 border-top border-secondary pt-4"
     data-auction-id="{{ auction.id }}">
     <div class="text-center">
-      <small class="d-block opacity-50 text-uppercase">Total Lots</small>
+      <small class="d-block opacity-50 text-uppercase">{% trans "Total Lots" %}</small>
       <span class="fw-bold">{{ lots.count }}</span>
     </div>
     <div class="text-center border-start border-secondary ps-4">
-      <small class="d-block opacity-50 text-uppercase">Registered Bidders</small>
+      <small class="d-block opacity-50 text-uppercase">{% trans "Registered Bidders" %}</small>
       <span class="fw-bold participant-count">{{ auction.participants_count }}</span>
     </div>
     <div class="text-center border-start border-secondary ps-4">
-      <small class="d-block opacity-50 text-uppercase">Status</small>
-      <span class="text-warning fw-bold">{{ auction.get_status_display }}</span>
+      <small class="d-block opacity-50 text-uppercase">{% trans "Status" %}</small>
+      <span class="text-warning fw-bold">{{ auction.status_label }}</span>
     </div>
   </div>
   <div>
     {% if not user.is_staff and not is_user_participant %}
     <div class="alert shadow-sm border-0 d-flex justify-content-between align-items-center p-3"
       style="background-color: #fff9e6; color: #856404;">
-      <span><i class="bi bi-info-circle-fill me-2"></i> You must register before you can place bids.</span>
+      <span><i class="bi bi-info-circle-fill me-2"></i> {% trans "You must register before you can place bids." %}</span>
       <form action="{% url 'auction:register_as_participant' auction.id %}" method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-sm btn-warning fw-bold">REGISTER NOW</button>
+        <button type="submit" class="btn btn-sm btn-warning fw-bold">{% trans "REGISTER NOW" %}</button>
       </form>
     </div>
     {% endif %}
@@ -126,7 +126,7 @@
   {% for lot in lots %}
   <div class="col-md-6 col-lg-4 col-xl-3">
     <div class="lot-card position-relative d-flex flex-column">
-      <span class="lot-number">LOT {{ lot.lot_number }}</span>
+      <span class="lot-number">{% blocktrans with lot_number=lot.lot_number %}LOT {{ lot_number }}{% endblocktrans %}</span>
 
       <a href="{% url 'catalog:get_details' lot.instrument.id %}" class="text-decoration-none">
         <div style="height: 220px; overflow: hidden; border-radius: 8px 8px 0 0;">
@@ -144,13 +144,12 @@
         </h5>
 
         <div class="estimate-text mb-3">
-          EST: ${{ lot.estimated_price_min }} – ${{ lot.estimated_price_max }}
+          {% blocktrans with min_price=lot.estimated_price_min max_price=lot.estimated_price_max %}EST: ${{ min_price }} – ${{ max_price }}{% endblocktrans %}
         </div>
 
         <div class="mt-auto d-flex justify-content-between align-items-end" data-lot-id="{{ lot.id }}">
           <div class="lh-sm">
-            <span class="text-uppercase text-muted fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">Current
-              Bid</span>
+            <span class="text-uppercase text-muted fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">{% trans "Current Bid" %}</span>
             <div class="fw-bold h4 mb-0 current-price" style="color: #1a1a1a;">
               ${{ lot.current_highest_bid.amount|default:lot.starting_price|floatformat:0 }}
             </div>
@@ -165,7 +164,7 @@
                 placeholder="{{ lot.current_highest_bid.amount|default:lot.starting_price }}"
                 style="font-weight: 500; font-size: 0.85rem;" required>
               <button class="btn btn-dark fw-bold px-2" type="submit" style="font-size: 0.75rem;" {% if not is_user_participant %} disabled {% endif %}>
-                BID
+                {% trans "BID" %}
               </button>
             </form>
           </div>
@@ -176,13 +175,15 @@
   </div>
   {% empty %}
   <div class="col-12 text-center py-5">
-    <p class="text-muted">No lots have been added to this auction yet.</p>
+    <p class="text-muted">{% trans "No lots have been added to this auction yet." %}</p>
   </div>
   {% endfor %}
 </div>
 
 {% if user.is_authenticated %}
 <script>
+  {% translate "SOLD" as sold_label %}
+  const soldLabel = "{{ sold_label|escapejs }}";
   document.addEventListener('DOMContentLoaded', () => {
 
     if (typeof (EventSource) !== "undefined") {
@@ -204,7 +205,7 @@
         if (data.status === 'sold') {
           const container = document.querySelector(`[data-lot-id="${data.lot_id}"] .bid-container`);
           if (container) {
-            container.innerHTML = '<span class="badge bg-danger">SOLD</span>';
+            container.innerHTML = `<span class="badge bg-danger">${soldLabel}</span>`;
           }
         }
       });

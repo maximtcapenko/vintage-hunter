@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+from django.utils.translation import gettext as _
 
 from commons.functional import is_not_staff
 
@@ -17,7 +18,7 @@ def profile_details(request):
         form = UserProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Your profile has been updated successfully!')
+            messages.success(request, _('Your profile has been updated successfully!'))
             return redirect('profile')
     else:
         form = UserProfileForm(instance=request.user)
@@ -37,7 +38,10 @@ def get_collection_list(request):
             collection = form.save(commit=False)
             collection.user = request.user
             collection.save()
-            messages.success(request, f'Collection "{collection.name}" created!')
+            messages.success(
+                request,
+                _('Collection "%(collection)s" created!') % {'collection': collection.name}
+            )
             return redirect('users:collection_list')
     else:
         form = CollectionForm()
@@ -62,7 +66,7 @@ def delete_collection(request, pk):
     collection = get_object_or_404(Collection, pk=pk, user=request.user)
     name = collection.name
     collection.delete()
-    messages.success(request, f'Collection "{name}" deleted.')
+    messages.success(request, _('Collection "%(collection)s" deleted.') % {'collection': name})
     return redirect('users:collection_list')
 
 @user_passes_test(is_not_staff)
@@ -73,13 +77,16 @@ def create_collection_ajax(request):
         data = json.loads(request.body)
         name = data.get('name')
     except (json.JSONDecodeError, AttributeError):
-        return JsonResponse({'status': 'error', 'message': 'Invalid data'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Invalid data.')}, status=400)
     
     if not name:
-        return JsonResponse({'status': 'error', 'message': 'Name is required'}, status=400)
+        return JsonResponse({'status': 'error', 'message': _('Name is required.')}, status=400)
     
     if request.user.collections.filter(name=name).exists():
-        return JsonResponse({'status': 'error', 'message': 'Collection with this name already exists'}, status=400)
+        return JsonResponse(
+            {'status': 'error', 'message': _('A collection with this name already exists.')},
+            status=400
+        )
     
     collection = Collection.objects.create(user=request.user, name=name)
     return JsonResponse({
@@ -98,7 +105,8 @@ def get_instrument_collections(request, instrument_id):
         data.append({
             'id': col.id,
             'name': col.name,
-            'is_checked': col.instruments.filter(id=instrument.id).exists()
+            'is_checked': col.instruments.filter(id=instrument.id).exists(),
+            'is_default': col.is_default,
         })
     
     return JsonResponse({
@@ -128,18 +136,24 @@ def toggle_collection_item(request, instrument_id):
         if not collection:
             collection = Collection.objects.create(
                 user=request.user, 
-                name="My Favorites", 
+                name=_('My Favorites'),
                 is_default=True
             )
     
     if collection.instruments.filter(id=instrument.id).exists():
         collection.instruments.remove(instrument)
         added = False
-        message = f'Removed {instrument.title} from {collection.name}'
+        message = _('Removed %(instrument)s from %(collection)s.') % {
+            'instrument': instrument.title,
+            'collection': collection.name,
+        }
     else:
         collection.instruments.add(instrument)
         added = True
-        message = f'Added {instrument.title} to {collection.name}'
+        message = _('Added %(instrument)s to %(collection)s.') % {
+            'instrument': instrument.title,
+            'collection': collection.name,
+        }
     
     return JsonResponse({
         'status': 'success',

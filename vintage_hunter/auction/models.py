@@ -3,6 +3,7 @@ from functools import cached_property
 from django.db import models, transaction
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from django.utils.translation import gettext_lazy as _
 from decimal import Decimal
 
 from catalog.models import Instrument
@@ -17,6 +18,13 @@ class Auction(Base):
         ('ended', 'Ended'),
         ('cancelled', 'Cancelled'),
     ]
+    STATUS_LABELS = {
+        'draft': _('Draft'),
+        'scheduled': _('Scheduled'),
+        'active': _('Active'),
+        'ended': _('Ended'),
+        'cancelled': _('Cancelled'),
+    }
 
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
@@ -33,6 +41,10 @@ class Auction(Base):
     
     def __str__(self):
         return self.title
+
+    @property
+    def status_label(self):
+        return self.STATUS_LABELS.get(self.status, self.status)
 
 def get_user_active_auctions_count(self):
     if not self.is_authenticated:

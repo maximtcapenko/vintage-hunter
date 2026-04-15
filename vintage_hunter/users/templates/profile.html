@@ -1,6 +1,7 @@
 {% extends "base.html" %}
+{% load i18n %}
 
-{% block title %}My Profile - Vintage Tone{% endblock %}
+{% block title %}{% trans "My Profile - Vintage Tone" %}{% endblock %}
 
 {% block content %}
 <div class="container py-5">
@@ -12,7 +13,7 @@
             <i class="bi bi-person-circle" style="font-size: 4rem; opacity: 0.9;"></i>
           </div>
           <h2 class="h4 mb-1 fw-bold">{{ user.get_full_name|default:user.username }}</h2>
-          <p class="mb-0 text-white-50 small">Member since {{ user.date_joined|date:"F Y" }}</p>
+          <p class="mb-0 text-white-50 small">{% blocktrans with joined_since=user.date_joined|date:"F Y" %}Member since {{ joined_since }}{% endblocktrans %}</p>
         </div>
 
         <div class="card-body p-4 p-md-5">
@@ -20,7 +21,7 @@
           {% for message in messages %}
           <div class="alert alert-{{ message.tags }} alert-dismissible fade show mb-4 border-0 shadow-sm" role="alert">
             {{ message }}
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{% trans 'Close' %}"></button>
           </div>
           {% endfor %}
           {% endif %}
@@ -31,7 +32,7 @@
             <div class="row mb-3">
               <div class="col-md-6 mb-3 mb-md-0">
                 <label for="{{ form.first_name.id_for_label }}"
-                  class="form-label small text-uppercase fw-bold text-muted">First Name</label>
+                  class="form-label small text-uppercase fw-bold text-muted">{% trans "First Name" %}</label>
                 {{ form.first_name }}
                 {% if form.first_name.errors %}
                 <div class="text-danger small mt-1">{{ form.first_name.errors.0 }}</div>
@@ -39,7 +40,7 @@
               </div>
               <div class="col-md-6">
                 <label for="{{ form.last_name.id_for_label }}"
-                  class="form-label small text-uppercase fw-bold text-muted">Last Name</label>
+                  class="form-label small text-uppercase fw-bold text-muted">{% trans "Last Name" %}</label>
                 {{ form.last_name }}
                 {% if form.last_name.errors %}
                 <div class="text-danger small mt-1">{{ form.last_name.errors.0 }}</div>
@@ -49,7 +50,7 @@
 
             <div class="mb-3">
               <label for="{{ form.username.id_for_label }}"
-                class="form-label small text-uppercase fw-bold text-muted">Username</label>
+                class="form-label small text-uppercase fw-bold text-muted">{% trans "Username" %}</label>
               {{ form.username }}
               {% if form.username.errors %}
               <div class="text-danger small mt-1">{{ form.username.errors.0 }}</div>
@@ -58,7 +59,7 @@
 
             <div class="mb-4">
               <label for="{{ form.email.id_for_label }}"
-                class="form-label small text-uppercase fw-bold text-muted">Email Address</label>
+                class="form-label small text-uppercase fw-bold text-muted">{% trans "Email Address" %}</label>
               {{ form.email }}
               {% if form.email.errors %}
               <div class="text-danger small mt-1">{{ form.email.errors.0 }}</div>
@@ -68,7 +69,7 @@
             <div class="d-grid mt-4">
               <button type="submit" class="btn btn-dark btn-lg py-3 fw-bold"
                 style="border-radius: 10px; letter-spacing: 0.5px;">
-                <i class="bi bi-check2-circle me-2"></i> Update Profile
+                <i class="bi bi-check2-circle me-2"></i> {% trans "Update Profile" %}
               </button>
             </div>
           </form>
@@ -78,13 +79,12 @@
           <div class="d-flex justify-content-between align-items-center">
             <div class="text-center flex-grow-1">
               <p class="mb-0 fw-bold h5 text-dark">{{ user.active_auctions_count }}</p>
-              <small class="text-muted text-uppercase" style="font-size: 10px; letter-spacing: 1px;">Active
-                Auctions</small>
+              <small class="text-muted text-uppercase" style="font-size: 10px; letter-spacing: 1px;">{% trans "Active Auctions" %}</small>
             </div>
             <div class="vr mx-3" style="height: 30px;"></div>
             <div class="text-center flex-grow-1">
               <p class="mb-0 fw-bold h5 text-dark">{{ user.won_lots.count|default:"0" }}</p>
-              <small class="text-muted text-uppercase" style="font-size: 10px; letter-spacing: 1px;">Won Lots</small>
+              <small class="text-muted text-uppercase" style="font-size: 10px; letter-spacing: 1px;">{% trans "Won Lots" %}</small>
             </div>
           </div>
         </div>
@@ -92,7 +92,7 @@
 
       <div class="text-center mt-4">
         <a href="{% url 'catalog:get_list' %}" class="btn btn-link text-muted text-decoration-none small">
-          <i class="bi bi-arrow-left me-1"></i> Back to Catalog
+          <i class="bi bi-arrow-left me-1"></i> {% trans "Back to Catalog" %}
         </a>
       </div>
     </div>

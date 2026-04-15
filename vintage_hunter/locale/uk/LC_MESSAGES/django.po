@@ -1,0 +1,1027 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: vintage_hunter\n"
+"POT-Creation-Date: 2026-04-15 19:58+0000\n"
+"PO-Revision-Date: 2026-04-15 20:30+0000\n"
+"Last-Translator: OpenAI\n"
+"Language-Team: Ukrainian\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 == 0 || (n % 10 >= 5 && n % 10 <= 9) || (n % 100 >= 11 && n % 100 <= 14)) ? 2 : 3);\n"
+
+msgid "Participant"
+msgstr "Учасник"
+
+msgid "Status"
+msgstr "Статус"
+
+msgid "Title"
+msgstr "Назва"
+
+msgid "Description"
+msgstr "Опис"
+
+msgid "Starts at"
+msgstr "Початок"
+
+msgid "Ends at"
+msgstr "Завершення"
+
+msgid "Lot number"
+msgstr "Номер лота"
+
+msgid "Starting price"
+msgstr "Стартова ціна"
+
+msgid "Reserve price"
+msgstr "Резервна ціна"
+
+msgid "Low estimate"
+msgstr "Нижня оцінка"
+
+msgid "High estimate"
+msgstr "Верхня оцінка"
+
+msgid "Search instruments"
+msgstr "Пошук інструментів"
+
+msgid "Search by title, brand, or year..."
+msgstr "Шукайте за назвою, брендом або роком..."
+
+msgid "Draft"
+msgstr "Чернетка"
+
+msgid "Scheduled"
+msgstr "Заплановано"
+
+msgid "Active"
+msgstr "Активний"
+
+msgid "Ended"
+msgstr "Завершений"
+
+msgid "Cancelled"
+msgstr "Скасований"
+
+msgid "Starts"
+msgstr "Початок"
+
+msgid "Closes"
+msgstr "Завершення"
+
+msgid "MANAGE AUCTION"
+msgstr "КЕРУВАТИ АУКЦІОНОМ"
+
+msgid "Total Lots"
+msgstr "Усього лотів"
+
+msgid "Registered Bidders"
+msgstr "Зареєстровані учасники торгів"
+
+msgid "You must register before you can place bids."
+msgstr "Ви повинні зареєструватися, перш ніж робити ставки."
+
+msgid "REGISTER NOW"
+msgstr "ЗАРЕЄСТРУВАТИСЯ"
+
+#, python-format
+msgid "LOT %(lot_number)s"
+msgstr "ЛОТ %(lot_number)s"
+
+#, python-format
+msgid "EST: $%(min_price)s – $%(max_price)s"
+msgstr "ОЦІНКА: $%(min_price)s – $%(max_price)s"
+
+msgid "Current Bid"
+msgstr "Поточна ставка"
+
+msgid "BID"
+msgstr "СТАВКА"
+
+msgid "No lots have been added to this auction yet."
+msgstr "До цього аукціону ще не додано жодного лота."
+
+msgid "SOLD"
+msgstr "ПРОДАНО"
+
+msgid "Cancel"
+msgstr "Скасувати"
+
+msgid "Save Auction"
+msgstr "Зберегти аукціон"
+
+msgid "Boutique Auctions"
+msgstr "Бутикові аукціони"
+
+msgid "Curated events featuring the world's finest vintage instruments."
+msgstr "Кураторські події з найкращими вінтажними інструментами світу."
+
+msgid "CREATE NEW AUCTION"
+msgstr "СТВОРИТИ НОВИЙ АУКЦІОН"
+
+msgid "Live Now"
+msgstr "Триває зараз"
+
+msgid "Upcoming Event"
+msgstr "Майбутня подія"
+
+#, python-format
+msgid "%(total)s LOTS TOTAL"
+msgstr "УСЬОГО ЛОТІВ: %(total)s"
+
+#, python-format
+msgid "Closes in: %(remaining)s"
+msgstr "Завершиться через: %(remaining)s"
+
+#, python-format
+msgid "Starts: %(start_time)s"
+msgstr "Початок: %(start_time)s"
+
+msgid "ENTER AUCTION"
+msgstr "ПЕРЕЙТИ ДО АУКЦІОНУ"
+
+msgid "VIEW CATALOG"
+msgstr "ПЕРЕГЛЯНУТИ КАТАЛОГ"
+
+msgid "No auctions currently scheduled."
+msgstr "Зараз немає запланованих аукціонів."
+
+msgid "Check back soon for our next curated collection."
+msgstr "Завітайте пізніше, щоб переглянути нашу наступну кураторську колекцію."
+
+msgid "Auctions"
+msgstr "Аукціони"
+
+msgid "Edit Details"
+msgstr "Редагувати деталі"
+
+msgid "Public View"
+msgstr "Публічний вигляд"
+
+msgid "Auction Lots"
+msgstr "Лоти аукціону"
+
+msgid "Add Lot"
+msgstr "Додати лот"
+
+msgid "Lot"
+msgstr "Лот"
+
+msgid "Instrument"
+msgstr "Інструмент"
+
+msgid "Starting Price"
+msgstr "Стартова ціна"
+
+msgid "Estimates"
+msgstr "Оцінки"
+
+msgid "Actions"
+msgstr "Дії"
+
+msgid "Edit Lot"
+msgstr "Редагувати лот"
+
+msgid "Remove Lot"
+msgstr "Видалити лот"
+
+#, python-format
+msgid "Remove Lot #%(lot_number)s?"
+msgstr "Видалити лот #%(lot_number)s?"
+
+msgid ""
+"This will remove the instrument from the auction. The instrument will become "
+"available for other auctions or direct sale."
+msgstr ""
+"Це видалить інструмент з аукціону. Інструмент знову стане доступним для "
+"інших аукціонів або прямого продажу."
+
+msgid "Add your first lot"
+msgstr "Додайте перший лот"
+
+msgid "Auction Summary"
+msgstr "Підсумок аукціону"
+
+msgid "Total Value (Low Est.)"
+msgstr "Загальна вартість (нижня оцінка)"
+
+msgid "Participants"
+msgstr "Учасники"
+
+msgid "Quick Help"
+msgstr "Швидка підказка"
+
+msgid ""
+"Draft auctions are only visible to staff. Set status to Scheduled to make it "
+"visible to users, or Active to begin bidding."
+msgstr ""
+"Чернетки аукціонів бачать лише співробітники. Встановіть статус "
+"«Заплановано», щоб зробити аукціон видимим для користувачів, або "
+"«Активний», щоб розпочати торги."
+
+msgid "Quick Status Action"
+msgstr "Швидка зміна статусу"
+
+msgid ""
+"Need to change status quickly? Use the edit page for full control over "
+"timing and status."
+msgstr ""
+"Потрібно швидко змінити статус? Скористайтеся сторінкою редагування для "
+"повного керування часом і статусом."
+
+msgid "Update Auction Settings"
+msgstr "Оновити налаштування аукціону"
+
+msgid "Select Instrument"
+msgstr "Виберіть інструмент"
+
+msgid "Choose an instrument from the catalog to add as a lot in this auction."
+msgstr "Оберіть інструмент із каталогу, щоб додати його як лот до цього аукціону."
+
+msgid "Search"
+msgstr "Пошук"
+
+msgid "Select & Configure"
+msgstr "Вибрати та налаштувати"
+
+msgid "No available instruments found."
+msgstr "Доступних інструментів не знайдено."
+
+msgid ""
+"Ensure instruments are not already marked as 'in auction' or assigned to "
+"other lots."
+msgstr ""
+"Переконайтеся, що інструменти ще не позначені як «на аукціоні» і не "
+"призначені до інших лотів."
+
+msgid "Back to Catalog"
+msgstr "Назад до каталогу"
+
+msgid "Previous"
+msgstr "Попередня"
+
+msgid "Next"
+msgstr "Наступна"
+
+msgid "Selected Instrument"
+msgstr "Вибраний інструмент"
+
+msgid "Original Catalog Price"
+msgstr "Початкова ціна в каталозі"
+
+msgid "Change Instrument"
+msgstr "Змінити інструмент"
+
+msgid "Lot Number"
+msgstr "Номер лота"
+
+msgid "Starting Price ($)"
+msgstr "Стартова ціна ($)"
+
+msgid "Reserve Price ($)"
+msgstr "Резервна ціна ($)"
+
+msgid "Minimum price the item can be sold for. Leave blank for no reserve."
+msgstr ""
+"Мінімальна ціна, за яку може бути продано предмет. Залиште порожнім, якщо "
+"резервної ціни немає."
+
+msgid "Low Estimate ($)"
+msgstr "Нижня оцінка ($)"
+
+msgid "High Estimate ($)"
+msgstr "Верхня оцінка ($)"
+
+msgid "Confirm Lot Details"
+msgstr "Підтвердити параметри лота"
+
+msgid "Auction not found."
+msgstr "Аукціон не знайдено."
+
+msgid "You must register for this auction to bid."
+msgstr "Ви повинні зареєструватися на цей аукціон, щоб робити ставки."
+
+msgid "Bidding is not currently open."
+msgstr "Торги зараз недоступні."
+
+#, python-format
+msgid "Bid too low. Minimum is $%(amount)s"
+msgstr "Ставка занадто низька. Мінімум: $%(amount)s"
+
+#, python-format
+msgid "Bid of $%(amount)s placed!"
+msgstr "Ставку на $%(amount)s розміщено!"
+
+msgid "Invalid bid amount."
+msgstr "Неприпустима сума ставки."
+
+msgid "Registration is only available for active auctions."
+msgstr "Реєстрація доступна лише для активних аукціонів."
+
+msgid "You are registered as a participant."
+msgstr "Вас зареєстровано як учасника."
+
+#, python-format
+msgid "Auction \"%(auction)s\" created successfully."
+msgstr "Аукціон \"%(auction)s\" успішно створено."
+
+msgid "Create New Auction"
+msgstr "Створити новий аукціон"
+
+#, python-format
+msgid "Auction \"%(auction)s\" updated."
+msgstr "Аукціон \"%(auction)s\" оновлено."
+
+#, python-format
+msgid "Edit Auction: %(auction)s"
+msgstr "Редагувати аукціон: %(auction)s"
+
+#, python-format
+msgid "Lot added: %(instrument)s"
+msgstr "Лот додано: %(instrument)s"
+
+msgid "Configure Lot Details"
+msgstr "Налаштувати параметри лота"
+
+#, python-format
+msgid "Lot %(lot_number)s updated."
+msgstr "Лот %(lot_number)s оновлено."
+
+#, python-format
+msgid "Edit Lot %(lot_number)s"
+msgstr "Редагувати лот %(lot_number)s"
+
+msgid "Lot removed from auction."
+msgstr "Лот видалено з аукціону."
+
+msgid "Category"
+msgstr "Категорія"
+
+msgid "Instrument title"
+msgstr "Назва інструмента"
+
+msgid "Brand"
+msgstr "Бренд"
+
+msgid "Year"
+msgstr "Рік"
+
+msgid "Serial number"
+msgstr "Серійний номер"
+
+msgid "Condition"
+msgstr "Стан"
+
+msgid "All original"
+msgstr "Усе оригінальне"
+
+msgid "Has repairs"
+msgstr "Має ремонти"
+
+msgid "Concert ready"
+msgstr "Готовий до виступів"
+
+msgid "Price"
+msgstr "Ціна"
+
+msgid "Technical specifications"
+msgstr "Технічні характеристики"
+
+msgid "Category name"
+msgstr "Назва категорії"
+
+msgid "Brand name"
+msgstr "Назва бренду"
+
+msgid "Origin country"
+msgstr "Країна походження"
+
+msgid "History"
+msgstr "Історія"
+
+msgid "Mint (Like New)"
+msgstr "Ідеальний (як новий)"
+
+msgid "Excellent"
+msgstr "Відмінний"
+
+msgid "Very Good"
+msgstr "Дуже добрий"
+
+msgid "Good (Player Grade)"
+msgstr "Добрий (придатний для гри)"
+
+msgid "Fair (Project)"
+msgstr "Задовільний (проєкт)"
+
+msgid "Brand Name"
+msgstr "Назва бренду"
+
+msgid "Origin Country"
+msgstr "Країна походження"
+
+msgid "Brief history for context."
+msgstr "Коротка історія для контексту."
+
+msgid "Save Brand"
+msgstr "Зберегти бренд"
+
+msgid "Manage Brands"
+msgstr "Керування брендами"
+
+msgid "Add Brand"
+msgstr "Додати бренд"
+
+msgid "Name"
+msgstr "Назва"
+
+msgid "Origin"
+msgstr "Походження"
+
+msgid "Edit"
+msgstr "Редагувати"
+
+msgid "No brands found. Create one to get started."
+msgstr "Брендів не знайдено. Створіть перший, щоб почати."
+
+msgid "Category Name"
+msgstr "Назва категорії"
+
+msgid "Save Category"
+msgstr "Зберегти категорію"
+
+msgid "Manage Categories"
+msgstr "Керування категоріями"
+
+msgid "Add Category"
+msgstr "Додати категорію"
+
+msgid "No categories found. Create one to get started."
+msgstr "Категорій не знайдено. Створіть першу, щоб почати."
+
+msgid "Key (for example, \"Weight\")"
+msgstr "Ключ (наприклад, \"Вага\")"
+
+msgid "Value (for example, \"3.5kg\")"
+msgstr "Значення (наприклад, \"3,5 кг\")"
+
+msgid "Add Specification"
+msgstr "Додати характеристику"
+
+msgid "Catalog"
+msgstr "Каталог"
+
+#, python-format
+msgid "Detail View %(counter)s"
+msgstr "Вид %(counter)s"
+
+msgid "Historical Context & Description"
+msgstr "Історичний контекст і опис"
+
+#, python-format
+msgid "ID: #%(instrument_id)s"
+msgstr "ID: #%(instrument_id)s"
+
+msgid "Authored by Vintage Tone Curators"
+msgstr "Підготовлено кураторами Vintage Tone"
+
+msgid "AUCTION"
+msgstr "АУКЦІОН"
+
+msgid "INSTRUMENT SOLD"
+msgstr "ІНСТРУМЕНТ ПРОДАНО"
+
+msgid "VIEW IN AUCTION"
+msgstr "ПЕРЕГЛЯНУТИ НА АУКЦІОНІ"
+
+msgid "PURCHASE INSTRUMENT"
+msgstr "ПРИДБАТИ ІНСТРУМЕНТ"
+
+msgid "EDIT CATALOG ENTRY"
+msgstr "РЕДАГУВАТИ ЗАПИС У КАТАЛОЗІ"
+
+msgid "CURATED FAVORITE"
+msgstr "У ДОБІРЦІ"
+
+msgid "ADD TO COLLECTION"
+msgstr "ДОДАТИ ДО КОЛЕКЦІЇ"
+
+msgid "Select Curations"
+msgstr "Виберіть добірки"
+
+msgid "Create new curation..."
+msgstr "Створити нову добірку..."
+
+msgid "INQUIRE FOR DETAILS"
+msgstr "ЗАПИТАТИ ДЕТАЛІ"
+
+msgid "Serial Number"
+msgstr "Серійний номер"
+
+msgid "AI Curated: Visually Similar"
+msgstr "Добірка AI: візуально схожі"
+
+msgid "Default"
+msgstr "За замовчуванням"
+
+msgid "Instrument Details"
+msgstr "Дані інструмента"
+
+msgid "Instrument Title"
+msgstr "Назва інструмента"
+
+msgid "Price ($)"
+msgstr "Ціна ($)"
+
+msgid "All Original"
+msgstr "Усе оригінальне"
+
+msgid "Has Repairs"
+msgstr "Має ремонти"
+
+msgid "Concert Ready"
+msgstr "Готовий до виступів"
+
+msgid "Gallery Manager"
+msgstr "Керування галереєю"
+
+msgid "Add Photo"
+msgstr "Додати фото"
+
+msgid "Uploading images..."
+msgstr "Завантаження зображень..."
+
+msgid "Primary"
+msgstr "Основне"
+
+msgid "Instrument View"
+msgstr "Зображення інструмента"
+
+msgid "ACTIVE"
+msgstr "АКТИВНЕ"
+
+msgid "SET PRIMARY"
+msgstr "ЗРОБИТИ ОСНОВНИМ"
+
+msgid "Set the Primary image to determine the main catalog thumbnail."
+msgstr "Встановіть основне зображення, щоб визначити головну мініатюру в каталозі."
+
+msgid "Image Gallery"
+msgstr "Галерея зображень"
+
+msgid ""
+"You'll be able to upload and manage the instrument's gallery after the "
+"initial details are saved."
+msgstr ""
+"Ви зможете завантажувати зображення та керувати галереєю інструмента після "
+"збереження основних даних."
+
+msgid "Discard"
+msgstr "Відкинути"
+
+msgid "Save Instrument"
+msgstr "Зберегти інструмент"
+
+msgid "Are you sure you want to delete this image?"
+msgstr "Ви впевнені, що хочете видалити це зображення?"
+
+msgid "Delete failed."
+msgstr "Не вдалося видалити."
+
+msgid "AI Search"
+msgstr "AI-пошук"
+
+msgid "Describe the tone, era, or feel you're looking for."
+msgstr "Опишіть тон, епоху або характер звучання, які ви шукаєте."
+
+msgid "e.g. 'Warm 60s blues tone'"
+msgstr "напр. «Теплий блюзовий тон 60-х»"
+
+msgid "Find via LLM"
+msgstr "Знайти через LLM"
+
+msgid "Categories"
+msgstr "Категорії"
+
+msgid "All Instruments"
+msgstr "Усі інструменти"
+
+msgid "Vintage Collection"
+msgstr "Вінтажна колекція"
+
+msgid "ADD INSTRUMENT"
+msgstr "ДОДАТИ ІНСТРУМЕНТ"
+
+#, python-format
+msgid "Showing %(start)s–%(end)s of %(total)s"
+msgstr "Показано %(start)s–%(end)s з %(total)s"
+
+msgid "Showing 0 items"
+msgstr "Показано 0 елементів"
+
+msgid "No Image"
+msgstr "Немає зображення"
+
+msgid "New curation..."
+msgstr "Нова добірка..."
+
+msgid "IN AUCTION"
+msgstr "НА АУКЦІОНІ"
+
+msgid "Details"
+msgstr "Деталі"
+
+msgid "The Vault is Currently Empty"
+msgstr "Сховище наразі порожнє"
+
+msgid ""
+"Our AI agents are currently scouting global markets for rare vintage finds. "
+"Try adjusting your filters or place a custom request."
+msgstr ""
+"Наші AI-агенти зараз відстежують світові ринки в пошуках рідкісних "
+"вінтажних знахідок. Спробуйте змінити фільтри або залишити індивідуальний "
+"запит."
+
+msgid "Clear All Filters"
+msgstr "Очистити всі фільтри"
+
+msgid "Custom Hunt Request"
+msgstr "Індивідуальний запит на пошук"
+
+#, python-format
+msgid "Instrument \"%(instrument)s\" created. Now you can add photos."
+msgstr "Інструмент \"%(instrument)s\" створено. Тепер можна додати фото."
+
+msgid "Add New Instrument"
+msgstr "Додати новий інструмент"
+
+#, python-format
+msgid "Category \"%(category)s\" created."
+msgstr "Категорію \"%(category)s\" створено."
+
+msgid "Create New Category"
+msgstr "Створити нову категорію"
+
+#, python-format
+msgid "Category \"%(category)s\" updated."
+msgstr "Категорію \"%(category)s\" оновлено."
+
+#, python-format
+msgid "Edit Category: %(category)s"
+msgstr "Редагувати категорію: %(category)s"
+
+#, python-format
+msgid "Brand \"%(brand)s\" created."
+msgstr "Бренд \"%(brand)s\" створено."
+
+msgid "Create New Brand"
+msgstr "Створити новий бренд"
+
+#, python-format
+msgid "Brand \"%(brand)s\" updated."
+msgstr "Бренд \"%(brand)s\" оновлено."
+
+#, python-format
+msgid "Edit Brand: %(brand)s"
+msgstr "Редагувати бренд: %(brand)s"
+
+msgid "No images uploaded."
+msgstr "Зображення не завантажено."
+
+msgid "Image set as primary."
+msgstr "Зображення встановлено як основне."
+
+msgid ""
+"Cannot delete the last image. An instrument must have at least one photo."
+msgstr ""
+"Не можна видалити останнє зображення. Інструмент повинен мати щонайменше "
+"одне фото."
+
+#, python-format
+msgid "Instrument \"%(instrument)s\" updated."
+msgstr "Інструмент \"%(instrument)s\" оновлено."
+
+#, python-format
+msgid "Edit %(instrument)s"
+msgstr "Редагувати %(instrument)s"
+
+msgid "Vintage Tone | Premium Vintage Gear"
+msgstr "Vintage Tone | Преміальний вінтажний інструментарій"
+
+msgid "Vintage Tone Logo"
+msgstr "Логотип Vintage Tone"
+
+msgid "Account"
+msgstr "Обліковий запис"
+
+#, python-format
+msgid "Member since %(joined_year)s"
+msgstr "З нами з %(joined_year)s року"
+
+msgid "My Profile"
+msgstr "Мій профіль"
+
+msgid "My Collection"
+msgstr "Моя колекція"
+
+msgid "My Auctions"
+msgstr "Мої аукціони"
+
+msgid "Staff Tools"
+msgstr "Інструменти співробітника"
+
+msgid "Manage Auctions"
+msgstr "Керування аукціонами"
+
+msgid "Sign Out"
+msgstr "Вийти"
+
+msgid "Sign In"
+msgstr "Увійти"
+
+msgid "Close"
+msgstr "Закрити"
+
+msgid "© 2026 Vintage Tone Marketplace. Expertly Curated Vintage Gear."
+msgstr "© 2026 Vintage Tone Marketplace. Експертно відібрані вінтажні інструменти."
+
+msgid "Reset Password"
+msgstr "Скинути пароль"
+
+msgid ""
+"Enter the email associated with your account and we'll send you instructions "
+"to reset your password."
+msgstr ""
+"Введіть адресу електронної пошти, пов’язану з вашим обліковим записом, і ми "
+"надішлемо інструкції для скидання пароля."
+
+msgid "Note:"
+msgstr "Примітка:"
+
+msgid ""
+"For security reasons, we cannot confirm if an account exists for the email "
+"entered."
+msgstr ""
+"З міркувань безпеки ми не можемо підтвердити, чи існує обліковий запис для "
+"введеної адреси електронної пошти."
+
+msgid "Email Address"
+msgstr "Адреса електронної пошти"
+
+msgid "SEND RESET LINK"
+msgstr "НАДІСЛАТИ ПОСИЛАННЯ ДЛЯ СКИДАННЯ"
+
+msgid "Back to Sign In"
+msgstr "Назад до входу"
+
+msgid "Welcome Back"
+msgstr "З поверненням"
+
+msgid "Access your curated gear collection"
+msgstr "Отримайте доступ до своєї добірки інструментів"
+
+msgid "Username or Email"
+msgstr "Ім’я користувача або email"
+
+msgid "Password"
+msgstr "Пароль"
+
+msgid "Forgot?"
+msgstr "Забули?"
+
+msgid "Keep me signed in"
+msgstr "Не виходити з акаунта"
+
+msgid "SIGN IN"
+msgstr "УВІЙТИ"
+
+msgid "OR CONTINUE WITH"
+msgstr "АБО ПРОДОВЖИТИ ЧЕРЕЗ"
+
+msgid "New to Vintage Tone?"
+msgstr "У Vintage Tone вперше?"
+
+msgid "Create Account"
+msgstr "Створити акаунт"
+
+msgid "JOIN THE COMMUNITY"
+msgstr "ПРИЄДНУЙТЕСЯ ДО СПІЛЬНОТИ"
+
+msgid "Curate, Trade, and Discover Premium Gear"
+msgstr "Добирайте, продавайте та відкривайте преміальні інструменти"
+
+msgid "First Name"
+msgstr "Ім’я"
+
+msgid "Last Name"
+msgstr "Прізвище"
+
+msgid "Username"
+msgstr "Ім’я користувача"
+
+msgid "Confirm Password"
+msgstr "Підтвердьте пароль"
+
+msgid "CREATE ACCOUNT"
+msgstr "СТВОРИТИ АКАУНТ"
+
+msgid "By creating an account, you agree to our"
+msgstr "Створюючи обліковий запис, ви погоджуєтеся з нашими"
+
+msgid "Terms of Service"
+msgstr "Умовами користування"
+
+msgid "and"
+msgstr "та"
+
+msgid "Privacy Policy"
+msgstr "Політикою конфіденційності"
+
+msgid "Already a member?"
+msgstr "Уже з нами?"
+
+msgid "First name"
+msgstr "Ім’я"
+
+msgid "Last name"
+msgstr "Прізвище"
+
+msgid "Email address"
+msgstr "Адреса електронної пошти"
+
+msgid "Email"
+msgstr "Email"
+
+msgid "This email is already in use."
+msgstr "Цю адресу електронної пошти вже використано."
+
+msgid "This username is already taken."
+msgstr "Це ім’я користувача вже зайняте."
+
+msgid "Set as primary collection"
+msgstr "Встановити як основну колекцію"
+
+msgid "Collection name (for example, My Favorites)"
+msgstr "Назва колекції (наприклад, Мої улюблені)"
+
+msgid "Optional description..."
+msgstr "Необов’язковий опис..."
+
+msgid "Collections"
+msgstr "Колекції"
+
+#, python-format
+msgid "%(instrument_count)s Instrument"
+msgid_plural "%(instrument_count)s Instruments"
+msgstr[0] "%(instrument_count)s інструмент"
+msgstr[1] "%(instrument_count)s інструменти"
+msgstr[2] "%(instrument_count)s інструментів"
+msgstr[3] "%(instrument_count)s інструмента"
+
+msgid "Add More"
+msgstr "Додати ще"
+
+msgid "Estimated Value"
+msgstr "Орієнтовна вартість"
+
+msgid "View Details"
+msgstr "Переглянути деталі"
+
+msgid "This collection is empty"
+msgstr "Ця колекція порожня"
+
+msgid "Your curated collections are best when filled with legendary gear."
+msgstr "Ваші добірки найкращі, коли в них є легендарні інструменти."
+
+msgid "Open Catalog"
+msgstr "Відкрити каталог"
+
+msgid "My Collections - Vintage Tone"
+msgstr "Мої колекції - Vintage Tone"
+
+msgid "No description provided."
+msgstr "Опис відсутній."
+
+msgid ""
+"Are you sure? This will not delete the instruments, only the collection."
+msgstr "Ви впевнені? Це не видалить інструменти, лише колекцію."
+
+msgid "My Collections"
+msgstr "Мої колекції"
+
+msgid "Organize your favorite vintage finds into curated sets."
+msgstr "Організовуйте свої улюблені вінтажні знахідки в тематичні добірки."
+
+msgid "New Collection"
+msgstr "Нова колекція"
+
+#, python-format
+msgid "<strong>%(instrument_count)s</strong> instrument"
+msgid_plural "<strong>%(instrument_count)s</strong> instruments"
+msgstr[0] "<strong>%(instrument_count)s</strong> інструмент"
+msgstr[1] "<strong>%(instrument_count)s</strong> інструменти"
+msgstr[2] "<strong>%(instrument_count)s</strong> інструментів"
+msgstr[3] "<strong>%(instrument_count)s</strong> інструмента"
+
+msgid "Delete Collection"
+msgstr "Видалити колекцію"
+
+msgid "View"
+msgstr "Переглянути"
+
+msgid "No collections yet"
+msgstr "Колекцій ще немає"
+
+msgid "Create your first collection to start organizing your gear."
+msgstr "Створіть першу колекцію, щоб почати впорядковувати інструменти."
+
+msgid "Create My First Collection"
+msgstr "Створити мою першу колекцію"
+
+msgid "Set as primary (default) collection"
+msgstr "Встановити як основну колекцію (за замовчуванням)"
+
+msgid "Create Collection"
+msgstr "Створити колекцію"
+
+msgid "My Profile - Vintage Tone"
+msgstr "Мій профіль - Vintage Tone"
+
+#, python-format
+msgid "Member since %(joined_since)s"
+msgstr "З нами з %(joined_since)s"
+
+msgid "Update Profile"
+msgstr "Оновити профіль"
+
+msgid "Active Auctions"
+msgstr "Активні аукціони"
+
+msgid "Won Lots"
+msgstr "Виграні лоти"
+
+msgid "Your profile has been updated successfully!"
+msgstr "Ваш профіль успішно оновлено!"
+
+#, python-format
+msgid "Collection \"%(collection)s\" created!"
+msgstr "Колекцію \"%(collection)s\" створено!"
+
+#, python-format
+msgid "Collection \"%(collection)s\" deleted."
+msgstr "Колекцію \"%(collection)s\" видалено."
+
+msgid "Invalid data."
+msgstr "Некоректні дані."
+
+msgid "Name is required."
+msgstr "Назва обов’язкова."
+
+msgid "A collection with this name already exists."
+msgstr "Колекція з такою назвою вже існує."
+
+msgid "My Favorites"
+msgstr "Мої улюблені"
+
+#, python-format
+msgid "Removed %(instrument)s from %(collection)s."
+msgstr "%(instrument)s видалено з колекції %(collection)s."
+
+#, python-format
+msgid "Added %(instrument)s to %(collection)s."
+msgstr "%(instrument)s додано до колекції %(collection)s."
+
+msgid "Confirm password"
+msgstr "Підтвердьте пароль"
+
+msgid "Leo"
+msgstr "Leo"
+
+msgid "Fender"
+msgstr "Fender"
+
+msgid "vintage_enthusiast"
+msgstr "vintage_enthusiast"
+
+msgid "A user with this email already exists."
+msgstr "Користувач із цією адресою електронної пошти вже існує."
+
+msgid "Passwords do not match."
+msgstr "Паролі не збігаються."
+
+msgid "Enter your credentials"
+msgstr "Введіть свої облікові дані"
+
+msgid "Username or email"
+msgstr "Ім’я користувача або email"
+
+msgid "English"
+msgstr "Англійська"
+
+msgid "Language"
+msgstr "Мова"
+
+msgid "Ukrainian"
+msgstr "Українська"

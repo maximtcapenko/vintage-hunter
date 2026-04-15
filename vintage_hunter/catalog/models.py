@@ -6,6 +6,7 @@ from io import BytesIO
 from django.db import models
 from django.core.files.base import ContentFile
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.utils.translation import gettext_lazy as _
 
 from pgvector.django import VectorField, HnswIndex
 from PIL import Image, ImageOps
@@ -40,6 +41,13 @@ class Instrument(Base):
         ('good', 'Good (Player Grade)'),
         ('fair', 'Fair (Project)'),
     ]
+    CONDITION_LABELS = {
+        'mint': _('Mint (Like New)'),
+        'excellent': _('Excellent'),
+        'very_good': _('Very Good'),
+        'good': _('Good (Player Grade)'),
+        'fair': _('Fair (Project)'),
+    }
 
     objects = InstrumentManager()
 
@@ -97,6 +105,10 @@ class Instrument(Base):
 
     def __str__(self):
         return f'{self.year} {self.brand.name} {self.title}'
+
+    @property
+    def condition_label(self):
+        return self.CONDITION_LABELS.get(self.condition, self.condition)
     
     def get_full_description_for_ai(self):        
         return (

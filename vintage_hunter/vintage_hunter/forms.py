@@ -2,31 +2,39 @@ from django import forms
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils.translation import gettext_lazy as _
 
 
 class SignUpForm(forms.ModelForm):
     password = forms.CharField(
-        widget=forms.PasswordInput(attrs={'placeholder': '••••••••', 'class': 'form-control'})
+        widget=forms.PasswordInput(attrs={'placeholder': '••••••••', 'class': 'form-control'}),
+        label=_('Password')
     )
     confirm_password = forms.CharField(
         widget=forms.PasswordInput(attrs={'placeholder': '••••••••', 'class': 'form-control'}),
-        label="Confirm Password"
+        label=_('Confirm password')
     )
 
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email', 'username', 'password']
+        labels = {
+            'first_name': _('First name'),
+            'last_name': _('Last name'),
+            'email': _('Email address'),
+            'username': _('Username'),
+        }
         widgets = {
-            'first_name': forms.TextInput(attrs={'placeholder': 'Leo', 'class': 'form-control'}),
-            'last_name': forms.TextInput(attrs={'placeholder': 'Fender', 'class': 'form-control'}),
+            'first_name': forms.TextInput(attrs={'placeholder': _('Leo'), 'class': 'form-control'}),
+            'last_name': forms.TextInput(attrs={'placeholder': _('Fender'), 'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'placeholder': 'leo@vintagetone.com', 'class': 'form-control'}),
-            'username': forms.TextInput(attrs={'placeholder': 'vantage_enthusiast', 'class': 'form-control'}),
+            'username': forms.TextInput(attrs={'placeholder': _('vintage_enthusiast'), 'class': 'form-control'}),
         }
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
-            raise ValidationError("A user with this email already exists.")
+            raise ValidationError(_('A user with this email already exists.'))
         return email
 
     def clean(self):
@@ -35,7 +43,7 @@ class SignUpForm(forms.ModelForm):
         confirm_password = cleaned_data.get("confirm_password")
 
         if password and confirm_password and password != confirm_password:
-            self.add_error('confirm_password', "Passwords do not match.")
+            self.add_error('confirm_password', _('Passwords do not match.'))
         
         return cleaned_data
 
@@ -51,10 +59,10 @@ class SignInForm(AuthenticationForm):
     username = forms.CharField(
         widget=forms.TextInput(attrs={
             'class': 'form-control',
-            'placeholder': 'Enter your credentials',
+            'placeholder': _('Enter your credentials'),
             'id': 'username'
         }),
-        label="Username or Email"
+        label=_('Username or email')
     )
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={
@@ -62,9 +70,9 @@ class SignInForm(AuthenticationForm):
             'placeholder': '••••••••',
             'id': 'password'
         }),
-        label="Password"
+        label=_('Password')
     )
     remember = forms.BooleanField(required=False, widget=forms.CheckboxInput(attrs={
         'class': 'form-check-input',
         'id': 'remember'
-    }))
+    }), label=_('Keep me signed in'))

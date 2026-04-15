@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <style>
@@ -181,7 +181,7 @@
     <nav aria-label="breadcrumb" class="mb-3">
       <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'catalog:get_list' %}"
-            class="text-muted text-decoration-none">Catalog</a></li>
+            class="text-muted text-decoration-none">{% trans "Catalog" %}</a></li>
         <li class="breadcrumb-item"><a href="{% url 'catalog:get_list' %}?category={{ instrument.category.id }}"
             class="text-muted text-decoration-none">{{ instrument.category.name }}</a></li>
         <li class="breadcrumb-item active">{{ instrument.brand.name }}</li>
@@ -202,13 +202,13 @@
             {% for img_obj in instrument.images.all %}
             <div class="thumb-item {% if img_obj == instrument.primary_image %}active{% endif %}"
               onclick="updateHero(this, '{{ img_obj.image.url }}')">
-              <img src="{{ img_obj.image.url }}" alt="Detail View {{ forloop.counter }}">
+              <img src="{{ img_obj.image.url }}" alt="{% blocktrans with counter=forloop.counter %}Detail View {{ counter }}{% endblocktrans %}">
             </div>
             {% endfor %}
           </div>
           {% endif %}
         </div>
-        <span class="section-label">Historical Context & Description</span>
+        <span class="section-label">{% trans "Historical Context & Description" %}</span>
         <div class="description-text">
           {{ instrument.description|linebreaks }}
         </div>
@@ -216,31 +216,31 @@
 
       <div class="col-md-6">
         <div class="mb-2 d-flex align-items-center gap-2">
-          <span class="condition-pill">{{ instrument.get_condition_display }}</span>
-          <span class="text-muted small">ID: #{{ instrument.id|stringformat:"05d" }}</span>
+          <span class="condition-pill">{{ instrument.condition_label }}</span>
+          <span class="text-muted small">{% blocktrans with instrument_id=instrument.id|stringformat:"05d" %}ID: #{{ instrument_id }}{% endblocktrans %}</span>
         </div>
 
         <h1 class="instrument-title mb-1">{{ instrument.year }} {{ instrument.title }}</h1>
-        <p class="text-muted small mb-4">Authored by Vantage Tone Curators</p>
+        <p class="text-muted small mb-4">{% trans "Authored by Vintage Tone Curators" %}</p>
 
         <div class="price-text mb-4">
           ${{ instrument.price }}
           {% if instrument.is_auction %}
-          <span class="badge bg-dark ms-2" style="font-size: 0.6rem; vertical-align: middle;">AUCTION</span>
+          <span class="badge bg-dark ms-2" style="font-size: 0.6rem; vertical-align: middle;">{% trans "AUCTION" %}</span>
           {% endif %}
         </div>
 
         <div class="d-grid gap-2 mb-5">
           {% if instrument.is_sold %}
-            <button class="btn btn-secondary btn-sm py-2" disabled>INSTRUMENT SOLD</button>
+            <button class="btn btn-secondary btn-sm py-2" disabled>{% trans "INSTRUMENT SOLD" %}</button>
           {% elif instrument.is_auction %}
-            <a href="{% url 'auction:get_details' instrument.auction_lot.auction.id %}" class="btn btn-dark btn-sm py-2">VIEW IN AUCTION</a>
+            <a href="{% url 'auction:get_details' instrument.auction_lot.auction.id %}" class="btn btn-dark btn-sm py-2">{% trans "VIEW IN AUCTION" %}</a>
           {% elif not user.is_staff %}
-            <button class="btn btn-dark btn-sm py-2">PURCHASE INSTRUMENT</button>
+            <button class="btn btn-dark btn-sm py-2">{% trans "PURCHASE INSTRUMENT" %}</button>
           {% endif %}
 
           {% if user.is_staff %}
-          <a href="{% url 'catalog:edit_instrument' instrument.id %}" class="btn btn-warning btn-sm py-2 fw-bold">EDIT CATALOG ENTRY</a>
+          <a href="{% url 'catalog:edit_instrument' instrument.id %}" class="btn btn-warning btn-sm py-2 fw-bold">{% trans "EDIT CATALOG ENTRY" %}</a>
           {% endif %}
           
           {% if user.is_authenticated and not user.is_staff %}
@@ -250,11 +250,11 @@
                     data-instrument-id="{{ instrument.id }}" data-bs-auto-close="outside">
               <i class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %}bi-heart{% endif %} me-2"></i>
               <span class="collection-btn-text">
-                {% if instrument.id in user_collection_instrument_ids %}CURATED FAVORITE{% else %}ADD TO COLLECTION{% endif %}
+                {% if instrument.id in user_collection_instrument_ids %}{% trans "CURATED FAVORITE" %}{% else %}{% trans "ADD TO COLLECTION" %}{% endif %}
               </span>
             </button>
             <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-3" aria-labelledby="collectionDropdown" style="min-width: 280px; border-radius: 12px;">
-              <h6 class="dropdown-header px-0 mb-2 text-dark fw-bold" style="font-size: 0.8rem;">Select Curations</h6>
+              <h6 class="dropdown-header px-0 mb-2 text-dark fw-bold" style="font-size: 0.8rem;">{% trans "Select Curations" %}</h6>
               
               <div class="collections-loading text-center py-3">
                 <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
@@ -268,7 +268,7 @@
               
               <div class="new-collection-area">
                 <div class="input-group input-group-sm">
-                  <input type="text" class="form-control border-light-subtle new-collection-name" placeholder="Create new curation..." style="font-size: 0.8rem;">
+                  <input type="text" class="form-control border-light-subtle new-collection-name" placeholder="{% trans "Create new curation..." %}" style="font-size: 0.8rem;">
                   <button class="btn btn-dark btn-sm px-3 create-collection-btn" type="button">
                     <i class="bi bi-plus-lg"></i>
                   </button>
@@ -279,17 +279,17 @@
           </div>
           {% endif %}
           
-          <button class="btn btn-outline-secondary btn-sm py-2">INQUIRE FOR DETAILS</button>
+          <button class="btn btn-outline-secondary btn-sm py-2">{% trans "INQUIRE FOR DETAILS" %}</button>
         </div>
 
-        <span class="section-label">Technical Specifications</span>
+        <span class="section-label">{% trans "Technical Specifications" %}</span>
         <div class="spec-grid mb-5">
           <div class="spec-item">
-            <div class="spec-label">Brand</div>
+            <div class="spec-label">{% trans "Brand" %}</div>
             <div class="spec-value">{{ instrument.brand.name }}</div>
           </div>
           <div class="spec-item">
-            <div class="spec-label">Serial Number</div>
+            <div class="spec-label">{% trans "Serial Number" %}</div>
             <div class="spec-value">{{ instrument.serial_number|default:"---" }}</div>
           </div>
           {% for key, value in instrument.specifications.items %}
@@ -301,7 +301,7 @@
         </div>
 
         {% if similar_items %}
-        <span class="section-label">AI Curated: Visually Similar</span>
+        <span class="section-label">{% trans "AI Curated: Visually Similar" %}</span>
         <div class="row g-2">
           {% for item in similar_items %}
           <div class="col-3">
@@ -320,6 +320,12 @@
   </div>
 </div>
 <script>
+  {% translate "Default" as default_label %}
+  {% translate "CURATED FAVORITE" as curated_favorite_label %}
+  {% translate "ADD TO COLLECTION" as add_to_collection_label %}
+  const defaultLabel = "{{ default_label|escapejs }}";
+  const curatedFavoriteLabel = "{{ curated_favorite_label|escapejs }}";
+  const addToCollectionLabel = "{{ add_to_collection_label|escapejs }}";
   const stage = document.getElementById('zoomStage');
   const hero = document.getElementById('mainHeroImage');
 
@@ -368,7 +374,7 @@
         loadingEl.classList.remove('d-none');
         listEl.innerHTML = '';
         
-        fetch(`/users/collections/status/${instrumentId}/`)
+        fetch("{% url 'users:get_instrument_collections' instrument.id %}")
           .then(response => response.json())
           .then(data => {
             loadingEl.classList.add('d-none');
@@ -386,7 +392,7 @@
                    id="col_${col.id}" ${col.is_checked ? 'checked' : ''} 
                    style="cursor: pointer; border-color: #ddd;">
             <label class="form-check-label w-100 small" for="col_${col.id}" style="cursor: pointer; color: #444;">
-              ${col.name} ${col.is_default ? '<span class="text-muted">(Default)</span>' : ''}
+              ${col.name} ${col.is_default ? `<span class="text-muted">(${defaultLabel})</span>` : ''}
             </label>
           </div>
         `).join('');
@@ -403,7 +409,7 @@
         const formData = new FormData();
         formData.append('collection_id', collectionId);
 
-        fetch(`/users/collections/toggle/${instrumentId}/`, {
+        fetch("{% url 'users:toggle_collection_item' instrument.id %}", {
           method: 'POST',
           headers: {
             'X-CSRFToken': '{{ csrf_token }}',
@@ -428,7 +434,7 @@
 
       function updateMainButtonState() {
         // Re-fetch overall status to update heart icon/text
-        fetch(`/users/collections/status/${instrumentId}/`)
+        fetch("{% url 'users:get_instrument_collections' instrument.id %}")
           .then(response => response.json())
           .then(data => {
             if (data.status === 'success') {
@@ -439,11 +445,11 @@
               if (isInAny) {
                 icon.classList.remove('bi-heart');
                 icon.classList.add('bi-heart-fill', 'text-danger');
-                textSpan.textContent = ' CURATED FAVORITE';
+                textSpan.textContent = ` ${curatedFavoriteLabel}`;
               } else {
                 icon.classList.remove('bi-heart-fill', 'text-danger');
                 icon.classList.add('bi-heart');
-                textSpan.textContent = ' ADD TO COLLECTION';
+                textSpan.textContent = ` ${addToCollectionLabel}`;
               }
             }
           });
@@ -457,7 +463,7 @@
         createCollBtn.disabled = true;
         errorEl.classList.add('d-none');
 
-        fetch('/users/collections/create-ajax/', {
+        fetch("{% url 'users:create_collection_ajax' %}", {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

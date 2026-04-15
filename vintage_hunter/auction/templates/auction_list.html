@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
 <style>
@@ -63,13 +63,13 @@
 
 <div class="row mb-5">
   <div class="col-md-8">
-    <h2 class="fw-bold">Boutique Auctions</h2>
-    <p class="text-muted">Curated events featuring the world's finest vintage instruments.</p>
+    <h2 class="fw-bold">{% trans "Boutique Auctions" %}</h2>
+    <p class="text-muted">{% trans "Curated events featuring the world's finest vintage instruments." %}</p>
   </div>
   {% if user.is_staff %}
   <div class="col-md-4 text-md-end">
     <a href="{% url 'auction:create_auction' %}" class="btn btn-warning fw-bold px-4 rounded-pill shadow-sm">
-      <i class="bi bi-plus-lg me-2"></i>CREATE NEW AUCTION
+      <i class="bi bi-plus-lg me-2"></i>{% trans "CREATE NEW AUCTION" %}
     </a>
   </div>
   {% endif %}
@@ -89,12 +89,12 @@
         <div class="d-flex justify-content-between align-items-start mb-2">
           <div>
             {% if auction.status == 'active' %}
-            <span class="status-indicator status-active">Live Now</span>
+            <span class="status-indicator status-active">{% trans "Live Now" %}</span>
             {% else %}
-            <span class="status-indicator status-scheduled">Upcoming Event</span>
+            <span class="status-indicator status-scheduled">{% trans "Upcoming Event" %}</span>
             {% endif %}
           </div>
-          <span class="lot-count">{{ auction.lots.count }} LOTS TOTAL</span>
+          <span class="lot-count">{% blocktrans with total=auction.lots.count %}{{ total }} LOTS TOTAL{% endblocktrans %}</span>
         </div>
 
         <h3 class="auction-title mb-2">{{ auction.title }}</h3>
@@ -106,14 +106,14 @@
           <div class="text-muted small">
             <i class="bi bi-clock me-1"></i>
             {% if auction.status == 'active' %}
-            Closes in: <strong>{{ auction.ended_at|timeuntil }}</strong>
+            {% blocktrans with remaining=auction.ended_at|timeuntil %}Closes in: {{ remaining }}{% endblocktrans %}
             {% else %}
-            Starts: {{ auction.began_at|date:"g:i A" }}
+            {% blocktrans with start_time=auction.began_at|date:"g:i A" %}Starts: {{ start_time }}{% endblocktrans %}
             {% endif %}
           </div>
 
           <a href="{% url 'auction:get_details' auction.id %}" class="btn btn-outline-dark btn-sm px-4">
-            {% if auction.status == 'active' %}ENTER AUCTION{% else %}VIEW CATALOG{% endif %}
+            {% if auction.status == 'active' %}{% trans "ENTER AUCTION" %}{% else %}{% trans "VIEW CATALOG" %}{% endif %}
           </a>
         </div>
       </div>
@@ -122,8 +122,8 @@
   {% empty %}
   <div class="col-12 text-center py-5">
     <div class="p-5 bg-white rounded shadow-sm border">
-      <h4 class="text-muted">No auctions currently scheduled.</h4>
-      <p class="small">Check back soon for our next curated collection.</p>
+      <h4 class="text-muted">{% trans "No auctions currently scheduled." %}</h4>
+      <p class="small">{% trans "Check back soon for our next curated collection." %}</p>
     </div>
   </div>
   {% endfor %}

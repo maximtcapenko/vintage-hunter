@@ -1,3 +1,4 @@
+{% load i18n %}
 <div class="specifications-widget" id="specifications-widget-{{ widget.name }}">
     <input type="hidden" name="{{ widget.name }}" value="{{ widget.value|default:'{}' }}" id="id_{{ widget.name }}">
     
@@ -5,8 +6,8 @@
         <table class="table table-sm table-bordered mt-2" id="spec-table-{{ widget.name }}">
             <thead class="bg-light">
                 <tr>
-                    <th class="small fw-bold opacity-75">Key (e.g. "Weight")</th>
-                    <th class="small fw-bold opacity-75">Value (e.g. "3.5kg")</th>
+                    <th class="small fw-bold opacity-75">{% trans 'Key (for example, "Weight")' %}</th>
+                    <th class="small fw-bold opacity-75">{% trans 'Value (for example, "3.5kg")' %}</th>
                     <th style="width: 50px;"></th>
                 </tr>
             </thead>
@@ -26,6 +27,6 @@
         </table>
     </div>
     <button type="button" class="btn btn-sm btn-outline-dark mt-2" id="add-spec-row-{{ widget.name }}">
-        <i class="bi bi-plus-lg me-1"></i> Add Specification
+        <i class="bi bi-plus-lg me-1"></i> {% trans "Add Specification" %}
     </button>
 </div>

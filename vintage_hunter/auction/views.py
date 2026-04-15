@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from django.db.models import Q
 
@@ -42,7 +43,7 @@ def get_list(request):
 def get_details(request, id):
     auction = get_object_or_404(Auction, pk=id)
     if not request.user.is_staff and auction.status == 'draft':
-        raise Http404("Auction not found.")
+        raise Http404(_('Auction not found.'))
     
     is_user_participant = auction.participants.filter(id=request.user.id).exists()
     return render(request, 'auction_details.html', {
@@ -58,11 +59,11 @@ def place_bid(request, id, lot_id):
     lot = get_object_or_404(Lot, pk=lot_id, auction__id=id)
 
     if not lot.auction.participants.filter(id=request.user.id).exists():
-        messages.error(request, 'You must register for this auction to bid.')
+        messages.error(request, _('You must register for this auction to bid.'))
         return redirect('auction:get_details', id=lot.auction.id)
 
     if lot.auction.status != 'active':
-        messages.error(request, "Bidding is not currently open.")
+        messages.error(request, _('Bidding is not currently open.'))
         return redirect('auction:get_details', id=lot.auction.id)
 
     amount_str = request.POST.get('amount')
@@ -73,17 +74,23 @@ def place_bid(request, id, lot_id):
         min_bid = (current_highest.amount + 50) if current_highest else lot.starting_price
         
         if amount < min_bid:
-            messages.error(request, f'Bid too low. Minimum is ${min_bid}')
+            messages.error(
+                request,
+                _('Bid too low. Minimum is $%(amount)s') % {'amount': min_bid}
+            )
         else:
             Bid.objects.create(
                 participant=request.user,
                 lot=lot,
                 amount=amount
             )
-            messages.success(request, f'Bid of ${amount} placed!')
+            messages.success(
+                request,
+                _('Bid of $%(amount)s placed!') % {'amount': amount}
+            )
 
     except (ValueError, Decimal.InvalidOperation):
-        messages.error(request, 'Invalid bid amount.')
+        messages.error(request, _('Invalid bid amount.'))
 
     return redirect('auction:get_details', id=lot.auction.id)
 
@@ -93,11 +100,11 @@ def register_as_participant(request, id):
     auction = get_object_or_404(Auction, pk=id)
 
     if auction.status != 'active':
-        messages.error(request, "Registration is only available for active auctions.")
+        messages.error(request, _('Registration is only available for active auctions.'))
         return redirect('auction:get_details', id=auction.id)
 
     auction.participants.add(request.user)
-    messages.success(request, f'You are registered as participant.')
+    messages.success(request, _('You are registered as a participant.'))
 
     return redirect('auction:get_details', id=auction.id)
 
@@ -110,12 +117,15 @@ def create_auction(request):
         form = AuctionForm(request.POST)
         if form.is_valid():
             auction = form.save()
-            messages.success(request, f'Auction "{auction.title}" created successfully.')
+            messages.success(
+                request,
+                _('Auction "%(auction)s" created successfully.') % {'auction': auction.title}
+            )
             return redirect('auction:manage_auction', id=auction.id)
     else:
         form = AuctionForm(initial={'status': 'draft'})
     
-    return render(request, 'auction_form.html', {'form': form, 'title': 'Create New Auction'})
+    return render(request, 'auction_form.html', {'form': form, 'title': _('Create New Auction')})
 
 @user_passes_test(is_staff)
 @require_http_methods(["GET", "POST"])
@@ -125,12 +135,19 @@ def edit_auction(request, id):
         form = AuctionForm(request.POST, instance=auction)
         if form.is_valid():
             auction = form.save()
-            messages.success(request, f'Auction "{auction.title}" updated.')
+            messages.success(
+                request,
+                _('Auction "%(auction)s" updated.') % {'auction': auction.title}
+            )
             return redirect('auction:manage_auction', id=auction.id)
     else:
         form = AuctionForm(instance=auction)
     
-    return render(request, 'auction_form.html', {'form': form, 'title': f'Edit Auction: {auction.title}'})
+    return render(
+        request,
+        'auction_form.html',
+        {'form': form, 'title': _('Edit Auction: %(auction)s') % {'auction': auction.title}}
+    )
 
 @user_passes_test(is_staff)
 @require_GET
@@ -187,7 +204,10 @@ def add_lot_configure(request, id, instrument_id):
             lot.instrument = instrument
             lot.save()
             
-            messages.success(request, f'Lot added: {instrument}')
+            messages.success(
+                request,
+                _('Lot added: %(instrument)s') % {'instrument': instrument}
+            )
             return redirect('auction:manage_auction', id=auction.id)
     else:
         # Default lot number: max + 1
@@ -203,7 +223,7 @@ def add_lot_configure(request, id, instrument_id):
         'form': form,
         'auction': auction,
         'instrument': instrument,
-        'title': 'Configure Lot Details'
+        'title': _('Configure Lot Details')
     })
 
 @user_passes_test(is_staff)
@@ -216,7 +236,10 @@ def edit_lot(request, id, lot_id):
         form = LotForm(request.POST, instance=lot)
         if form.is_valid():
             form.save()
-            messages.success(request, f'Lot {lot.lot_number} updated.')
+            messages.success(
+                request,
+                _('Lot %(lot_number)s updated.') % {'lot_number': lot.lot_number}
+            )
             return redirect('auction:manage_auction', id=auction.id)
     else:
         form = LotForm(instance=lot)
@@ -225,7 +248,7 @@ def edit_lot(request, id, lot_id):
         'form': form,
         'auction': auction,
         'instrument': lot.instrument,
-        'title': f'Edit Lot {lot.lot_number}'
+        'title': _('Edit Lot %(lot_number)s') % {'lot_number': lot.lot_number}
     })
 
 @user_passes_test(is_staff)
@@ -236,5 +259,5 @@ def delete_lot(request, id, lot_id):
     lot = get_object_or_404(Lot, pk=lot_id, auction=auction)
     
     lot.delete()
-    messages.success(request, 'Lot removed from auction.')
+    messages.success(request, _('Lot removed from auction.'))
     return redirect('auction:manage_auction', id=auction.id)
