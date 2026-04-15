@@ -172,5 +172,6 @@ LOGGING = {
     },
 }
 
+REDIS_URL = 'redis://localhost:6379/0'
 EMBEDDING_MODEL_PATH =  env.get_value('EMBEDDING_MODEL_PATH')
 EMBEDDING_IMAGE_MODEL_PATH =  env.get_value('EMBEDDING_IMAGE_MODEL_PATH')

@@ -1,6 +1,6 @@
 from functools import cached_property
 
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from decimal import Decimal
@@ -28,7 +28,7 @@ class Auction(Base):
     participants = models.ManyToManyField(User, related_name='registered_auctions', blank=True)
 
     @cached_property
-    def participant_count(self):
+    def participants_count(self):
         return self.participants.distinct().count()
     
     def __str__(self):
@@ -76,6 +76,32 @@ class Lot(Base):
     class Meta(Base.Meta):
         ordering = ['lot_number']
         unique_together = ('auction', 'lot_number')
+
+    @transaction.atomic
+    def save(self, *args, **kwargs):
+        is_new = self._state.adding
+        super().save(*args, **kwargs)
+        
+        if is_new:
+            self.instrument.is_auction = True
+            self.instrument.save(update_fields=['is_auction'])
+        
+        if self.status == 'sold':
+            self.instrument.is_sold = True
+            self.instrument.is_auction = False
+            self.instrument.save(update_fields=['is_sold', 'is_auction'])
+        elif self.status == 'withdrawn':
+            self.instrument.is_auction = False
+            self.instrument.save(update_fields=['is_auction'])
+        elif self.status in ['waiting', 'active'] and not self.instrument.is_auction:
+            self.instrument.is_auction = True
+            self.instrument.save(update_fields=['is_auction'])
+
+    @transaction.atomic
+    def delete(self, *args, **kwargs):
+        self.instrument.is_auction = False
+        self.instrument.save(update_fields=['is_auction'])
+        super().delete(*args, **kwargs)
 
     @property
     def current_highest_bid(self):

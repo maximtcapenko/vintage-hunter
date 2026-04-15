@@ -231,16 +231,52 @@
         </div>
 
         <div class="d-grid gap-2 mb-5">
-          <button class="btn btn-dark btn-sm py-2">PURCHASE INSTRUMENT</button>
+          {% if instrument.is_sold %}
+            <button class="btn btn-secondary btn-sm py-2" disabled>INSTRUMENT SOLD</button>
+          {% elif instrument.is_auction %}
+            <a href="{% url 'auction:get_details' instrument.auction_lot.auction.id %}" class="btn btn-dark btn-sm py-2">VIEW IN AUCTION</a>
+          {% elif not user.is_staff %}
+            <button class="btn btn-dark btn-sm py-2">PURCHASE INSTRUMENT</button>
+          {% endif %}
+
           {% if user.is_staff %}
           <a href="{% url 'catalog:edit_instrument' instrument.id %}" class="btn btn-warning btn-sm py-2 fw-bold">EDIT CATALOG ENTRY</a>
           {% endif %}
           
           {% if user.is_authenticated and not user.is_staff %}
-          <button class="btn btn-outline-dark btn-sm py-2 collection-toggle" data-instrument-id="{{ instrument.id }}">
-            <i class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %}bi-heart{% endif %} me-2"></i>
-            {% if instrument.id in user_collection_instrument_ids %}REMOVE FROM COLLECTION{% else %}ADD TO COLLECTION{% endif %}
-          </button>
+          <div class="dropdown collection-dropdown">
+            <button class="btn btn-outline-dark btn-sm py-2 w-100 dropdown-toggle d-flex align-items-center justify-content-center" 
+                    type="button" id="collectionDropdown" data-bs-toggle="dropdown" aria-expanded="false" 
+                    data-instrument-id="{{ instrument.id }}" data-bs-auto-close="outside">
+              <i class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %}bi-heart{% endif %} me-2"></i>
+              <span class="collection-btn-text">
+                {% if instrument.id in user_collection_instrument_ids %}CURATED FAVORITE{% else %}ADD TO COLLECTION{% endif %}
+              </span>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-3" aria-labelledby="collectionDropdown" style="min-width: 280px; border-radius: 12px;">
+              <h6 class="dropdown-header px-0 mb-2 text-dark fw-bold" style="font-size: 0.8rem;">Select Curations</h6>
+              
+              <div class="collections-loading text-center py-3">
+                <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
+              </div>
+              
+              <div class="collections-list" style="max-height: 200px; overflow-y: auto;">
+                <!-- Dynamically populated -->
+              </div>
+              
+              <hr class="dropdown-divider my-3">
+              
+              <div class="new-collection-area">
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control border-light-subtle new-collection-name" placeholder="Create new curation..." style="font-size: 0.8rem;">
+                  <button class="btn btn-dark btn-sm px-3 create-collection-btn" type="button">
+                    <i class="bi bi-plus-lg"></i>
+                  </button>
+                </div>
+                <div class="new-collection-error text-danger small mt-1 d-none" style="font-size: 0.7rem;"></div>
+              </div>
+            </div>
+          </div>
           {% endif %}
           
           <button class="btn btn-outline-secondary btn-sm py-2">INQUIRE FOR DETAILS</button>
@@ -310,49 +346,141 @@
   stage.addEventListener('mouseleave', () => {
     hero.style.transformOrigin = 'center center';
   });
-</script>
-{% endblock %}
-
-{% block scripts %}
-<script>
+  
   document.addEventListener('DOMContentLoaded', function () {
-    const toggleBtn = document.querySelector('.collection-toggle');
-    if (toggleBtn) {
-      toggleBtn.addEventListener('click', function (e) {
-        e.preventDefault();
-        const instrumentId = this.dataset.instrumentId;
-        const icon = this.querySelector('i');
-        const textSpan = this.lastChild; // The text part
+    const dropdownBtn = document.getElementById('collectionDropdown');
+    const dropdownMenu = document.querySelector('.dropdown-menu');
+    const loadingEl = document.querySelector('.collections-loading');
+    const listEl = document.querySelector('.collections-list');
+    const newCollInput = document.querySelector('.new-collection-name');
+    const createCollBtn = document.querySelector('.create-collection-btn');
+    const errorEl = document.querySelector('.new-collection-error');
+
+    if (dropdownBtn) {
+      const instrumentId = dropdownBtn.dataset.instrumentId;
+
+      // Handle dropdown opening
+      dropdownBtn.addEventListener('show.bs.dropdown', function () {
+        fetchCollections();
+      });
+
+      function fetchCollections() {
+        loadingEl.classList.remove('d-none');
+        listEl.innerHTML = '';
+        
+        fetch(`/users/collections/status/${instrumentId}/`)
+          .then(response => response.json())
+          .then(data => {
+            loadingEl.classList.add('d-none');
+            if (data.status === 'success') {
+              renderCollections(data.collections);
+            }
+          })
+          .catch(err => console.error('Error fetching collections:', err));
+      }
+
+      function renderCollections(collections) {
+        listEl.innerHTML = collections.map(col => `
+          <div class="form-check py-1">
+            <input class="form-check-input collection-checkbox" type="checkbox" value="${col.id}" 
+                   id="col_${col.id}" ${col.is_checked ? 'checked' : ''} 
+                   style="cursor: pointer; border-color: #ddd;">
+            <label class="form-check-label w-100 small" for="col_${col.id}" style="cursor: pointer; color: #444;">
+              ${col.name} ${col.is_default ? '<span class="text-muted">(Default)</span>' : ''}
+            </label>
+          </div>
+        `).join('');
+
+        // Attach listeners to checkboxes
+        document.querySelectorAll('.collection-checkbox').forEach(checkbox => {
+          checkbox.addEventListener('change', function () {
+            toggleItem(this.value, this.checked);
+          });
+        });
+      }
+
+      function toggleItem(collectionId, isAdding) {
+        const formData = new FormData();
+        formData.append('collection_id', collectionId);
 
         fetch(`/users/collections/toggle/${instrumentId}/`, {
           method: 'POST',
           headers: {
             'X-CSRFToken': '{{ csrf_token }}',
             'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.status === 'success') {
+            updateMainButtonState();
+            // Show toast
+            const toastBody = document.querySelector('.toast-body');
+            if (toastBody) {
+              toastBody.innerText = data.message;
+              new bootstrap.Toast(document.getElementById('liveToast')).show();
+            }
           }
         })
+        .catch(err => console.error('Error toggling item:', err));
+      }
+
+      function updateMainButtonState() {
+        // Re-fetch overall status to update heart icon/text
+        fetch(`/users/collections/status/${instrumentId}/`)
           .then(response => response.json())
           .then(data => {
             if (data.status === 'success') {
-              if (data.added) {
+              const isInAny = data.collections.some(c => c.is_checked);
+              const icon = dropdownBtn.querySelector('i');
+              const textSpan = dropdownBtn.querySelector('.collection-btn-text');
+              
+              if (isInAny) {
                 icon.classList.remove('bi-heart');
                 icon.classList.add('bi-heart-fill', 'text-danger');
-                textSpan.textContent = ' REMOVE FROM COLLECTION';
+                textSpan.textContent = ' CURATED FAVORITE';
               } else {
                 icon.classList.remove('bi-heart-fill', 'text-danger');
                 icon.classList.add('bi-heart');
                 textSpan.textContent = ' ADD TO COLLECTION';
               }
-
-              const toastBody = document.querySelector('.toast-body');
-              if (toastBody) {
-                toastBody.innerText = data.message;
-                const toast = new bootstrap.Toast(document.getElementById('liveToast'));
-                toast.show();
-              }
             }
-          })
-          .catch(error => console.error('Error:', error));
+          });
+      }
+
+      // Handle new collection creation
+      createCollBtn.addEventListener('click', function() {
+        const name = newCollInput.value.trim();
+        if (!name) return;
+
+        createCollBtn.disabled = true;
+        errorEl.classList.add('d-none');
+
+        fetch('/users/collections/create-ajax/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token }}',
+            'X-Requested-With': 'XMLHttpRequest'
+          },
+          body: JSON.stringify({ name: name })
+        })
+        .then(response => response.json())
+        .then(data => {
+          createCollBtn.disabled = false;
+          if (data.status === 'success') {
+            newCollInput.value = '';
+            fetchCollections(); // Reload list
+          } else {
+            errorEl.textContent = data.message;
+            errorEl.classList.remove('d-none');
+          }
+        })
+        .catch(err => {
+          createCollBtn.disabled = false;
+          console.error('Error creating collection:', err);
+        });
       });
     }
   });

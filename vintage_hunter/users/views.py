@@ -1,20 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib import messages
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
+
+from commons.functional import is_not_staff
+
 from .forms import UserProfileForm, CollectionForm
 from .models import Collection
 from catalog.models import Instrument
 
-from django.core.exceptions import PermissionDenied
-
-def is_not_staff(view_func):
-    def _wrapped_view(request, *args, **kwargs):
-        if request.user.is_staff:
-            raise PermissionDenied
-        return view_func(request, *args, **kwargs)
-    return _wrapped_view
 
 @login_required
 def profile_details(request):
@@ -33,7 +28,7 @@ def profile_details(request):
     })
 
 @login_required
-@is_not_staff
+@user_passes_test(is_not_staff)
 def get_collection_list(request):
     collections = request.user.collections.all()
     if request.method == 'POST':
@@ -52,8 +47,7 @@ def get_collection_list(request):
         'form': form
     })
 
-@login_required
-@is_not_staff
+@user_passes_test(is_not_staff)
 def get_collection_details(request, pk):
     collection = get_object_or_404(Collection, pk=pk, user=request.user)
     instruments = collection.instruments.all()
@@ -62,8 +56,7 @@ def get_collection_details(request, pk):
         'instruments': instruments
     })
 
-@login_required
-@is_not_staff
+@user_passes_test(is_not_staff)
 @require_POST
 def delete_collection(request, pk):
     collection = get_object_or_404(Collection, pk=pk, user=request.user)
@@ -72,13 +65,52 @@ def delete_collection(request, pk):
     messages.success(request, f'Collection "{name}" deleted.')
     return redirect('users:collection_list')
 
-@login_required
-@is_not_staff
+@user_passes_test(is_not_staff)
+@require_POST
+def create_collection_ajax(request):
+    import json
+    try:
+        data = json.loads(request.body)
+        name = data.get('name')
+    except (json.JSONDecodeError, AttributeError):
+        return JsonResponse({'status': 'error', 'message': 'Invalid data'}, status=400)
+    
+    if not name:
+        return JsonResponse({'status': 'error', 'message': 'Name is required'}, status=400)
+    
+    if request.user.collections.filter(name=name).exists():
+        return JsonResponse({'status': 'error', 'message': 'Collection with this name already exists'}, status=400)
+    
+    collection = Collection.objects.create(user=request.user, name=name)
+    return JsonResponse({
+        'status': 'success',
+        'id': collection.id,
+        'name': collection.name
+    })
+
+@user_passes_test(is_not_staff)
+def get_instrument_collections(request, instrument_id):
+    instrument = get_object_or_404(Instrument, id=instrument_id)
+    collections = request.user.collections.all().order_by('-is_default', 'name')
+    
+    data = []
+    for col in collections:
+        data.append({
+            'id': col.id,
+            'name': col.name,
+            'is_checked': col.instruments.filter(id=instrument.id).exists()
+        })
+    
+    return JsonResponse({
+        'status': 'success',
+        'collections': data
+    })
+
+@user_passes_test(is_not_staff)
 @require_POST
 def toggle_collection_item(request, instrument_id):
     instrument = get_object_or_404(Instrument, id=instrument_id)
     
-    # Support both JSON body and FormData
     collection_id = request.POST.get('collection_id')
     if not collection_id and request.content_type == 'application/json':
         import json

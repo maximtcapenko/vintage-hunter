@@ -63,6 +63,7 @@ class Instrument(Base):
 
     price = models.DecimalField(max_digits=12, decimal_places=2)
     is_auction = models.BooleanField(default=False)
+    is_sold = models.BooleanField(default=False)
     auction_end_date = models.DateTimeField(null=True, blank=True)
 
 

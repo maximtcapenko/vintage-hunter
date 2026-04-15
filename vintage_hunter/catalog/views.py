@@ -6,13 +6,13 @@ from django.views.decorators.http import require_GET, require_POST, require_http
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib import messages
 
+from commons.functional import is_staff
+
 from .forms import SearchCatalogForm, InstrumentForm, CategoryForm, BrandForm
 from .models import Instrument, Category, Brand, InstrumentImage
 
 DEFAULT_PAGE_SIZE = 50
 
-def is_staff(user):
-    return user.is_authenticated and user.is_staff
 
 @require_GET
 def get_list(request):
@@ -175,7 +175,7 @@ def upload_instrument_image(request, instrument_id):
             InstrumentImage.objects.create(
                 instrument=instrument,
                 image=image_file,
-                is_primary=not instrument.images.exists() # Set as primary if it's the first one
+                is_primary=not instrument.images.exists()
             )
         return JsonResponse({'status': 'success'})
     
@@ -186,10 +186,8 @@ def upload_instrument_image(request, instrument_id):
 def set_primary_image(request, image_id):
     image = get_object_or_404(InstrumentImage, id=image_id)
     
-    # 1. Reset all others for this instrument
     InstrumentImage.objects.filter(instrument=image.instrument).update(is_primary=False)
     
-    # 2. Set new primary
     image.is_primary = True
     image.save()
     
@@ -205,7 +203,6 @@ def delete_instrument_image(request, image_id):
     image = get_object_or_404(InstrumentImage, id=image_id)
     instrument = image.instrument
     
-    # Do not allow deletion if it's the last image
     if instrument.images.count() <= 1:
         return JsonResponse({
             'status': 'error', 
@@ -215,7 +212,6 @@ def delete_instrument_image(request, image_id):
     was_primary = image.is_primary
     image.delete()
     
-    # If we deleted the primary image, set the first remaining one as primary
     if was_primary:
         next_primary = instrument.images.first()
         if next_primary:

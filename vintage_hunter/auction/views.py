@@ -4,10 +4,13 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction, models
 from django.contrib import messages
-from django.shortcuts import get_object_or_404, redirect, render, Http404
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 from django.db.models import Q
+
+from commons.functional import is_not_staff, is_staff
 
 from .models import Auction, Bid, Lot
 from .forms import SearchAuctionForm, AuctionForm, LotForm, InstrumentSearchForm
@@ -16,8 +19,6 @@ from catalog.models import Instrument
 
 DEFAULT_PAGE_SIZE = 50
 
-def is_staff(user):
-    return user.is_authenticated and user.is_staff
 
 @login_required
 @require_GET
@@ -50,12 +51,12 @@ def get_details(request, id):
         'lots': auction.lots.exclude(status__in=('sold','withdrawn')).all(),
     })
 
-@login_required
+@user_passes_test(is_not_staff)
 @require_POST
 @transaction.atomic
 def place_bid(request, id, lot_id):
     lot = get_object_or_404(Lot, pk=lot_id, auction__id=id)
-    
+
     if not lot.auction.participants.filter(id=request.user.id).exists():
         messages.error(request, 'You must register for this auction to bid.')
         return redirect('auction:get_details', id=lot.auction.id)
@@ -86,14 +87,10 @@ def place_bid(request, id, lot_id):
 
     return redirect('auction:get_details', id=lot.auction.id)
 
-@login_required
+@user_passes_test(is_not_staff)
 @require_POST
 def register_as_participant(request, id):
     auction = get_object_or_404(Auction, pk=id)
-    
-    if request.user.is_staff:
-        messages.error(request, "Staff members cannot participate in auctions.")
-        return redirect('auction:get_details', id=auction.id)
 
     if auction.status != 'active':
         messages.error(request, "Registration is only available for active auctions.")
@@ -156,8 +153,7 @@ def add_lot_select(request, id):
     auction = get_object_or_404(Auction, pk=id)
     search_form = InstrumentSearchForm(request.GET)
     
-    # Filter instruments not in auction and not already assigned as a lot
-    instruments = Instrument.objects.filter(is_auction=False, auction_lot__isnull=True)
+    instruments = Instrument.objects.filter(is_auction=False, auction_lot__isnull=True, is_sold=False)
     
     if search_form.is_valid() and search_form.cleaned_data.get('q'):
         q = search_form.cleaned_data['q']
@@ -190,10 +186,6 @@ def add_lot_configure(request, id, instrument_id):
             lot.auction = auction
             lot.instrument = instrument
             lot.save()
-            
-            # Mark instrument as being in an auction
-            instrument.is_auction = True
-            instrument.save()
             
             messages.success(request, f'Lot added: {instrument}')
             return redirect('auction:manage_auction', id=auction.id)
@@ -242,10 +234,6 @@ def edit_lot(request, id, lot_id):
 def delete_lot(request, id, lot_id):
     auction = get_object_or_404(Auction, pk=id)
     lot = get_object_or_404(Lot, pk=lot_id, auction=auction)
-    
-    instrument = lot.instrument
-    instrument.is_auction = False
-    instrument.save()
     
     lot.delete()
     messages.success(request, 'Lot removed from auction.')

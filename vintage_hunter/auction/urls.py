@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, views_sse
 
 app_name = 'auction'
 
@@ -18,4 +18,5 @@ urlpatterns = [
     path('<uuid:id>/lots/add/configure/<uuid:instrument_id>/', views.add_lot_configure, name='add_lot_configure'),
     path('<uuid:id>/lots/<uuid:lot_id>/edit/', views.edit_lot, name='edit_lot'),
     path('<uuid:id>/lots/<uuid:lot_id>/delete/', views.delete_lot, name='delete_lot'),
+    path('stream/<uuid:auction_id>/', views_sse.stream_events, name='stream_events'),
 ]
