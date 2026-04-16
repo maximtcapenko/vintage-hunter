@@ -12,8 +12,7 @@ urlpatterns = [
     path('<uuid:id>/manage/', views.manage_auction, name='manage_auction'),
     path('<uuid:id>/bids/<uuid:lot_id>', views.place_bid, name='place_bid'),
     path('<uuid:id>/participants', views.register_as_participant, name='register_as_participant'),
-    
-    # Lot management
+
     path('<uuid:id>/lots/add/select/', views.add_lot_select, name='add_lot_select'),
     path('<uuid:id>/lots/add/configure/<uuid:instrument_id>/', views.add_lot_configure, name='add_lot_configure'),
     path('<uuid:id>/lots/<uuid:lot_id>/edit/', views.edit_lot, name='edit_lot'),

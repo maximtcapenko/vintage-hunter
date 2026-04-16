@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Instrument, Brand, InstrumentImage
+from .models import Brand, Category, Instrument, InstrumentImage
 
 
 admin.site.register(Category)

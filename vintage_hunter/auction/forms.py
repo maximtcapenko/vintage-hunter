@@ -1,12 +1,13 @@
-from django import forms
-from django.db import models
-from django.contrib.auth.models import User
 from decimal import Decimal
+
+from django import forms
+from django.contrib.auth.models import User
+from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from commons.mixins import SearchFormMixin
+
 from .models import Auction, Lot
-from catalog.models import Instrument
 
 
 class SearchAuctionForm(forms.Form, SearchFormMixin):

@@ -1,13 +1,13 @@
-import torch
 import logging
 
+import torch
 from django.conf import settings
-
 from PIL import Image
 from sentence_transformers import SentenceTransformer
-from transformers import CLIPProcessor, CLIPModel
+from transformers import CLIPModel, CLIPProcessor
 
-lpgger = logging.getLogger(__name__) 
+lpgger = logging.getLogger(__name__)
+
 
 class EmbeddingService:
     _model = None

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-xl-10">
+    <div class="d-md-flex align-items-center justify-content-between mb-5">
+      <div>
+        <h1 class="fw-bold mb-1">{% trans "My Purchases" %}</h1>
+        <p class="text-muted mb-0">{% trans "History of your acquired vintage instruments." %}</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for order in orders %}
+      <div class="col-12">
+        <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 12px;">
+          <div class="row g-0 align-items-center">
+            <div class="col-md-2 p-3">
+              {% if order.instrument.primary_image %}
+              <img src="{{ order.instrument.primary_image.image.url }}" alt="{{ order.instrument.title }}"
+                class="img-fluid rounded shadow-sm" style="height: 100px; width: 100%; object-fit: cover;">
+              {% else %}
+              <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted"
+                style="height: 100px; width: 100%;">
+                <i class="bi bi-image fs-1 opacity-25"></i>
+              </div>
+              {% endif %}
+            </div>
+            <div class="col-md-6 p-3">
+              <h5 class="fw-bold mb-1">{{ order.instrument.year }} {{ order.instrument.title }}</h5>
+              <p class="text-muted small mb-0">{{ order.instrument.brand.name }}</p>
+              <div class="mt-2">
+                <span class="badge bg-light text-dark border small">{% trans "Order #" %}{{ order.id|stringformat:"s"|slice:":8" }}</span>
+                <span class="text-muted small ms-2"><i class="bi bi-calendar3 me-1"></i> {{ order.created_at|date:"M d, Y" }}</span>
+              </div>
+            </div>
+            <div class="col-md-2 p-3 text-md-end">
+              <div class="fw-bold h5 mb-0">${{ order.amount }}</div>
+              <span class="badge bg-success-subtle text-success small">{% trans "Completed" %}</span>
+            </div>
+            <div class="col-md-2 p-3 text-center text-md-end">
+              <a href="{% url 'users:purchase_details' order.id %}" class="btn btn-outline-dark btn-sm px-4">{% trans "View Details" %}</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-5">
+        <div class="mb-4">
+          <i class="bi bi-cart-x text-muted opacity-25" style="font-size: 5rem;"></i>
+        </div>
+        <h3 class="fw-bold">{% trans "No purchases yet" %}</h3>
+        <p class="text-muted">{% trans "Your acquisition history will appear here once you purchase instruments from the catalog." %}</p>
+        <a href="{% url 'catalog:get_list' %}" class="btn btn-dark mt-3 px-4">{% trans "Browse Catalog" %}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

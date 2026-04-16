@@ -1,16 +1,16 @@
+from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
 from django.http import JsonResponse
-from django.shortcuts import get_object_or_404, render, redirect
-from django.views.decorators.http import require_GET, require_POST, require_http_methods
-from django.contrib.auth.decorators import user_passes_test
-from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
+from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
 from commons.functional import is_staff
 
-from .forms import SearchCatalogForm, InstrumentForm, CategoryForm, BrandForm
-from .models import Instrument, Category, Brand, InstrumentImage
+from .forms import BrandForm, CategoryForm, InstrumentForm, SearchCatalogForm
+from .models import Brand, Category, Instrument, InstrumentImage
 
 DEFAULT_PAGE_SIZE = 50
 

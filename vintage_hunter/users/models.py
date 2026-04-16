@@ -1,9 +1,10 @@
 from functools import cached_property
 
-from django.db import models
 from django.contrib.auth.models import User
-from commons.models import Base
+from django.db import models
+
 from catalog.models import Instrument
+from commons.models import Base
 
 class Collection(Base):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='collections')
@@ -22,7 +23,6 @@ class Collection(Base):
 
     def save(self, *args, **kwargs):
         if self.is_default:
-            # Ensure only one default collection per user
             Collection.objects.filter(user=self.user, is_default=True).update(is_default=False)
         super().save(*args, **kwargs)
 
@@ -36,3 +36,12 @@ user_collections_count_property = cached_property(get_user_user_collections_coun
 User.add_to_class('collections_count', user_collections_count_property)
 user_collections_count_property.__set_name__(User, 'collections_count')
 
+def get_user_orders_count(self):
+    if not self.is_authenticated:
+        return 0
+    
+    return self.orders.filter(status='completed').count()
+
+user_orders_count_property = cached_property(get_user_orders_count)
+User.add_to_class('orders_count', user_orders_count_property)
+user_orders_count_property.__set_name__(User, 'orders_count')

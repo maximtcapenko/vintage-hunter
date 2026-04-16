@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-xl-8">
+    <nav aria-label="breadcrumb" class="mb-4">
+      <ol class="breadcrumb small">
+        <li class="breadcrumb-item"><a href="{% url 'users:purchase_list' %}" class="text-muted text-decoration-none">{% trans "My Purchases" %}</a></li>
+        <li class="breadcrumb-item active">{% trans "Order" %} #{{ order.id|stringformat:"s"|slice:":8" }}</li>
+      </ol>
+    </nav>
+
+    <div class="card border-0 shadow-sm mb-4" style="border-radius: 12px;">
+      <div class="card-body p-4 p-md-5">
+        <div class="d-md-flex justify-content-between align-items-start mb-5">
+          <div>
+            <span class="badge bg-success-subtle text-success text-uppercase mb-2" style="letter-spacing: 1px;">{% trans "Payment Completed" %}</span>
+            <h2 class="fw-bold mb-1">{% trans "Purchase Receipt" %}</h2>
+            <p class="text-muted small mb-0">{% trans "Purchased on" %} {{ order.created_at|date:"F d, Y" }} {% trans "at" %} {{ order.created_at|date:"H:i" }}</p>
+          </div>
+          <div class="text-md-end mt-3 mt-md-0">
+            <h6 class="text-muted small text-uppercase fw-bold mb-1">{% trans "Transaction ID" %}</h6>
+            <p class="font-monospace small mb-0">{{ order.transaction_id }}</p>
+          </div>
+        </div>
+
+        <div class="row g-4 mb-5 pb-4 border-bottom">
+          <div class="col-md-3">
+            {% if order.instrument.primary_image %}
+            <img src="{{ order.instrument.primary_image.image.url }}" alt="{{ order.instrument.title }}"
+              class="img-fluid rounded shadow-sm" style="width: 100%; height: 150px; object-fit: cover;">
+            {% else %}
+            <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted" style="height: 150px; width: 100%;">
+              <i class="bi bi-image fs-1 opacity-25"></i>
+            </div>
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            <h4 class="fw-bold mb-1">{{ order.instrument.year }} {{ order.instrument.title }}</h4>
+            <p class="text-muted mb-3">{{ order.instrument.brand.name }}</p>
+            <div class="row g-3">
+              <div class="col-6">
+                <span class="text-muted small text-uppercase d-block">{% trans "Category" %}</span>
+                <span class="fw-medium">{{ order.instrument.category.name }}</span>
+              </div>
+              <div class="col-6">
+                <span class="text-muted small text-uppercase d-block">{% trans "Serial Number" %}</span>
+                <span class="fw-medium">{{ order.instrument.serial_number|default:"---" }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3 text-md-end">
+            <span class="text-muted small text-uppercase d-block mb-1">{% trans "Price Paid" %}</span>
+            <h3 class="fw-bold text-dark">${{ order.amount }}</h3>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-md-6">
+            <h6 class="fw-bold text-uppercase small mb-3">{% trans "Seller Details" %}</h6>
+            <p class="mb-0 fw-medium">Vintage Tone Marketplace</p>
+            <p class="text-muted small mb-0">{% trans "Curated Selection Division" %}</p>
+            <p class="text-muted small">support@vintagetone.com</p>
+          </div>
+          <div class="col-md-6 text-md-end">
+            <h6 class="fw-bold text-uppercase small mb-3">{% trans "Buyer" %}</h6>
+            <p class="mb-0 fw-medium">{{ order.user.get_full_name|default:order.user.username }}</p>
+            <p class="text-muted small mb-0">{{ order.user.email }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <a href="{% url 'users:purchase_list' %}" class="btn btn-outline-dark px-4">
+        <i class="bi bi-arrow-left me-2"></i> {% trans "Back to History" %}
+      </a>
+      <a href="{% url 'catalog:get_details' order.instrument.id %}" class="btn btn-dark px-4">
+        {% trans "View in Catalog" %}
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -64,7 +64,7 @@ class InstrumentForm(forms.ModelForm):
 class InstrumentImageForm(forms.ModelForm):
     class Meta:
         model = InstrumentImage
-        fields = [] # We don't want any editable fields here anymore!
+        fields = []
 
 class CategoryForm(forms.ModelForm):
     class Meta:

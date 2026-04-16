@@ -1,21 +1,21 @@
 from decimal import Decimal
 
-from django.core.paginator import Paginator
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.db import transaction, models
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.paginator import Paginator
+from django.db import models, transaction
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
-from django.db.models import Q
 
+from catalog.models import Instrument
 from commons.functional import is_not_staff, is_staff
 
+from .forms import AuctionForm, InstrumentSearchForm, LotForm, SearchAuctionForm
 from .models import Auction, Bid, Lot
-from .forms import SearchAuctionForm, AuctionForm, LotForm, InstrumentSearchForm
-from catalog.models import Instrument
 
 
 DEFAULT_PAGE_SIZE = 50
@@ -70,7 +70,6 @@ def place_bid(request, id, lot_id):
     try:
         amount = Decimal(amount_str)
         current_highest = lot.current_highest_bid
-        # Use a consistent increment (e.g., $50)
         min_bid = (current_highest.amount + 50) if current_highest else lot.starting_price
         
         if amount < min_bid:
@@ -107,8 +106,6 @@ def register_as_participant(request, id):
     messages.success(request, _('You are registered as a participant.'))
 
     return redirect('auction:get_details', id=auction.id)
-
-# Staff Management Views
 
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
@@ -154,8 +151,7 @@ def edit_auction(request, id):
 def manage_auction(request, id):
     auction = get_object_or_404(Auction, pk=id)
     lots = auction.lots.all().order_by('lot_number')
-    
-    # Calculate some summary stats
+
     total_low_estimate = lots.aggregate(models.Sum('estimated_price_min'))['estimated_price_min__sum'] or 0
     
     return render(request, 'auction_manage.html', {
@@ -210,7 +206,6 @@ def add_lot_configure(request, id, instrument_id):
             )
             return redirect('auction:manage_auction', id=auction.id)
     else:
-        # Default lot number: max + 1
         max_lot = auction.lots.aggregate(models.Max('lot_number'))['lot_number__max'] or 0
         form = LotForm(initial={
             'lot_number': max_lot + 1,

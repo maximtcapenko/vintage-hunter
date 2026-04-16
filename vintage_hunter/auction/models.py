@@ -1,10 +1,10 @@
+from decimal import Decimal
 from functools import cached_property
 
-from django.db import models, transaction
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
-from decimal import Decimal
 
 from catalog.models import Instrument
 from commons.models import Base

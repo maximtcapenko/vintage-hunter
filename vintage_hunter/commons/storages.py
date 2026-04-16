@@ -1,8 +1,6 @@
 from azure.identity import DefaultAzureCredential
-
-from storages.backends.azure_storage import AzureStorage
-
 from django.conf import settings
+from storages.backends.azure_storage import AzureStorage
 
 
 FILES = 'files'

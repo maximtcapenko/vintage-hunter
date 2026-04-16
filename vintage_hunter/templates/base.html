@@ -307,6 +307,15 @@
                 {% endif %}
               </a>
             </li>
+            <li>
+              <a class="dropdown-item d-flex justify-content-between align-items-center py-2"
+                href="{% url 'users:purchase_list' %}">
+                <span><i class="bi bi-bag-check me-2 opacity-75"></i> {% trans "My Purchases" %}</span>
+                {% if user.orders_count > 0 %}
+                <span class="badge rounded-pill bg-warning text-dark">{{ user.orders_count }}</span>
+                {% endif %}
+              </a>
+            </li>
             {% endif %}
             <li>
               <hr class="dropdown-divider">

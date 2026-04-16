@@ -17,7 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView
-from .views import signin, signup, password_reset, signout
+
+from .views import password_reset, signin, signout, signup
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,5 +31,6 @@ urlpatterns = [
     path('catalog/', include('catalog.urls')),
     path('auction/', include('auction.urls')),
     path('users/', include('users.urls', namespace='users')),
+    path('payments/', include('payments.urls')),
     path('profile/', RedirectView.as_view(pattern_name='users:profile', permanent=False), name='profile')
 ]

@@ -1,7 +1,8 @@
 import json
 import logging
-import redis
+
 from django.conf import settings
+import redis
 
 logger = logging.getLogger(__name__)
 
@@ -17,9 +18,10 @@ def broadcast_event(channel_name: str, event_type: str, data: dict):
     except Exception as e:
         logger.error(f"Failed to broadcast event {event_type} to {channel_name}: {e}")
 
+
 async def async_broadcast_event(channel_name: str, event_type: str, data: dict):
     from redis import asyncio as async_redis
-    
+
     try:
         redis = await async_redis.from_url(settings.REDIS_URL)
         message = {

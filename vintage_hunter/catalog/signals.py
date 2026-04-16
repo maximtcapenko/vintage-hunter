@@ -1,8 +1,9 @@
-from django.dispatch import receiver
 from django.db.models import signals
+from django.dispatch import receiver
 
 from .models import Instrument, InstrumentImage
 from .tasks import update_embeddings
+
 
 @receiver(signals.post_save, sender=Instrument)
 def trigger_embeddings_update(sender, instance, created, **kwargs):
@@ -12,7 +13,8 @@ def trigger_embeddings_update(sender, instance, created, **kwargs):
 
     update_embeddings.delay(instance.id)
 
+
 @receiver(signals.post_save, sender=InstrumentImage)
 def trigger_image_embeddings_update(sender, instance, created, **kwargs):
     if created and instance.is_primary:
-         update_embeddings.delay(instance.id)
+        update_embeddings.delay(instance.id)

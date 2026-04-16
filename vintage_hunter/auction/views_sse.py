@@ -1,8 +1,9 @@
 import asyncio
 import json
 import logging
-from django.http import HttpResponseForbidden, StreamingHttpResponse
+
 from django.conf import settings
+from django.http import HttpResponseForbidden, StreamingHttpResponse
 from redis import asyncio as async_redis
 
 logger = logging.getLogger(__name__)
@@ -21,7 +22,7 @@ async def event_stream(auction_id, user_id):
     
     try:
         while True:
-            message = await pubsub.get_message(ignore_subscribe_messages=True, timeout=20) #TODO: timeout replace with settings
+            message = await pubsub.get_message(ignore_subscribe_messages=True, timeout=20)
             
             if message:
                 data = json.loads(message['data'])
@@ -40,7 +41,7 @@ async def stream_events(request, auction_id):
     user = await request.auser()
 
     if not user.is_authenticated:
-          return HttpResponseForbidden("Authentication required.")
+        return HttpResponseForbidden("Authentication required.")
 
     response = StreamingHttpResponse(
         event_stream(auction_id, user.id),

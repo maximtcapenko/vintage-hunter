@@ -1,15 +1,18 @@
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required, user_passes_test
+import json
+
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.http import JsonResponse
-from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
+from django.views.decorators.http import require_POST
 
-from commons.functional import is_not_staff
-
-from .forms import UserProfileForm, CollectionForm
-from .models import Collection
 from catalog.models import Instrument
+from commons.functional import is_not_staff
+from payments.models import Order
+
+from .forms import CollectionForm, UserProfileForm
+from .models import Collection
 
 
 @login_required
@@ -52,8 +55,8 @@ def get_collection_list(request):
     })
 
 @user_passes_test(is_not_staff)
-def get_collection_details(request, pk):
-    collection = get_object_or_404(Collection, pk=pk, user=request.user)
+def get_collection_details(request, id):
+    collection = get_object_or_404(Collection, pk=id, user=request.user)
     instruments = collection.instruments.all()
     return render(request, 'collection_details.html', {
         'collection': collection,
@@ -62,8 +65,8 @@ def get_collection_details(request, pk):
 
 @user_passes_test(is_not_staff)
 @require_POST
-def delete_collection(request, pk):
-    collection = get_object_or_404(Collection, pk=pk, user=request.user)
+def delete_collection(request, id):
+    collection = get_object_or_404(Collection, pk=id, user=request.user)
     name = collection.name
     collection.delete()
     messages.success(request, _('Collection "%(collection)s" deleted.') % {'collection': name})
@@ -72,7 +75,6 @@ def delete_collection(request, pk):
 @user_passes_test(is_not_staff)
 @require_POST
 def create_collection_ajax(request):
-    import json
     try:
         data = json.loads(request.body)
         name = data.get('name')
@@ -118,10 +120,9 @@ def get_instrument_collections(request, instrument_id):
 @require_POST
 def toggle_collection_item(request, instrument_id):
     instrument = get_object_or_404(Instrument, id=instrument_id)
-    
+
     collection_id = request.POST.get('collection_id')
     if not collection_id and request.content_type == 'application/json':
-        import json
         try:
             collection_id = json.loads(request.body).get('collection_id')
         except (json.JSONDecodeError, AttributeError):
@@ -161,3 +162,15 @@ def toggle_collection_item(request, instrument_id):
         'message': message,
         'collection_name': collection.name
     })
+
+@login_required
+@user_passes_test(is_not_staff)
+def get_purchases_list(request):
+    orders = request.user.orders.filter(status='completed').order_by('-created_at')
+    return render(request, 'purchases_list.html', {'orders': orders})
+
+@login_required
+@user_passes_test(is_not_staff)
+def get_purchase_details(request, id):
+    order = get_object_or_404(Order, pk=id, user=request.user, status='completed')
+    return render(request, 'purchase_details.html', {'order': order})
