@@ -166,21 +166,57 @@
       vertical-align: middle;
     }
 
-    .language-switcher .form-select {
-      background-color: transparent;
-      color: rgba(255, 255, 255, 0.85);
-      border-color: rgba(255, 255, 255, 0.2);
-      font-size: 0.85rem;
-      min-width: 120px;
+    .text-gold {
+      color: #d4af37 !important;
+      /* Matching your JWICK circle color */
+      text-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
     }
 
-    .language-switcher .form-select:focus {
-      box-shadow: none;
-      border-color: var(--vt-gold);
+    .language-switcher button:hover {
+      color: #fff !important;
+      opacity: 1 !important;
+      transform: translateY(-1px);
     }
 
-    .language-switcher .form-select option {
-      color: var(--vt-dark);
+    .transition-all {
+      transition: all 0.2s ease-in-out;
+    }
+
+    .lang-btn {
+      font-size: 0.75rem;
+      letter-spacing: 1.2px;
+      font-weight: 700;
+    }
+
+    /* The Active State (Gold to match your profile circle) */
+    .active-lang {
+      color: #d4af37 !important;
+      /* That gold/brass tone */
+      opacity: 1;
+    }
+
+    /* The Inactive State (Visible Grey) */
+    .inactive-lang {
+      color: #ffffff !important;
+      opacity: 0.45;
+      /* High enough to see, low enough to look 'secondary' */
+    }
+
+    .inactive-lang:hover {
+      opacity: 1;
+      color: #ffffff !important;
+    }
+
+    /* Subtle Divider */
+    .lang-divider {
+      height: 12px;
+      width: 1px;
+      background-color: rgba(255, 255, 255, 0.2);
+      display: inline-block;
+    }
+
+    .transition-all {
+      transition: all 0.2s ease-in-out;
     }
   </style>
 </head>
@@ -194,31 +230,22 @@
       </a>
 
       <div class="ms-auto d-flex align-items-center">
-        <div class="dropdown me-3">
-          <button class="btn btn-link btn-sm dropdown-toggle text-dark text-decoration-none fw-bold d-flex align-items-center opacity-75 hover-opacity-100 transition" 
-          type="button" id="langDropdown" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 0.75rem; letter-spacing: 1px;">
-            <i class="bi bi-globe2 me-2"></i>
-            {{ language_code|upper }}
-          </button>
-          
-          <ul class="dropdown-menu dropdown-menu-end shadow-lg border-0 py-2" aria-labelledby="langDropdown" style="border-radius: 10px; min-width: 120px;">
-            {% get_available_languages as available_languages %}
-            {% for lang_code, lang_name in available_languages %}
-              <li>
-                <form action="{% url 'set_language' %}" method="post" class="mb-0">
-                  {% csrf_token %}
-                  <input type="hidden" name="next" value="{{ request.get_full_path }}">
-                  <input type="hidden" name="language" value="{{ lang_code }}">
-                  <button type="submit" class="dropdown-item py-2 d-flex justify-content-between align-items-center {% if lang_code == LANGUAGE_CODE %}active bg-dark{% endif %}">
-                    <span class="small">{{ lang_name }}</span>
-                    {% if lang_code == language_code %}
-                      <i class="bi bi-check2 small"></i>
-                    {% endif %}
-                  </button>
-                </form>
-              </li>
-            {% endfor %}
-          </ul>
+        <div class="language-switcher d-flex align-items-center me-4">
+          {% get_available_languages as available_languages %}
+          {% for lang_code, lang_name in available_languages %}
+          <form action="{% url 'set_language' %}" method="post" class="mb-0">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+            <input type="hidden" name="language" value="{{ lang_code }}">
+            <button type="submit" class="btn btn-link btn-sm p-0 text-decoration-none transition-all lang-btn 
+                    {% if lang_code == LANGUAGE_CODE %}active-lang{% else %}inactive-lang{% endif %}">
+              {{ lang_code|upper }}
+            </button>
+          </form>
+          {% if not forloop.last %}
+          <span class="lang-divider mx-2"></span>
+          {% endif %}
+          {% endfor %}
         </div>
 
         <a href="{% url 'catalog:get_list' %}" class="nav-link text-white-50 me-3 d-none d-md-block">{% trans "Catalog" %}</a>
@@ -261,18 +288,19 @@
             </li>
             {% if not user.is_staff %}
             <li>
-              <a class="dropdown-item d-flex justify-content-between align-items-center py-2" href="{% url 'users:collection_list' %}">
+              <a class="dropdown-item d-flex justify-content-between align-items-center py-2"
+                href="{% url 'users:collection_list' %}">
                 <span><i class="bi bi-collection me-2 opacity-75"></i> {% trans "My Collection" %}</span>
                 {% if user.collections_count > 0 %}
-                  <span class="badge rounded-pill bg-warning text-dark">{{ user.collections_count }}</span>
+                <span class="badge rounded-pill bg-warning text-dark">{{ user.collections_count }}</span>
                 {% endif %}
               </a>
             </li>
             {% endif %}
             {% if not user.is_staff %}
             <li>
-              <a class="dropdown-item d-flex justify-content-between align-items-center py-2" 
-                 href="{% url 'auction:get_list' %}?participant={{ user.id }}&status=active">
+              <a class="dropdown-item d-flex justify-content-between align-items-center py-2"
+                href="{% url 'auction:get_list' %}?participant={{ user.id }}&status=active">
                 <span><i class="bi bi-hammer me-2 opacity-75"></i> {% trans "My Auctions" %}</span>
                 {% if user.active_auctions_count > 0 %}
                 <span class="badge rounded-pill bg-warning text-dark">{{ user.active_auctions_count }}</span>

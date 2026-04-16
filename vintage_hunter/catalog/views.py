@@ -65,9 +65,9 @@ def get_details(request, id):
     })
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def create_instrument(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = InstrumentForm(request.POST)
         if form.is_valid():
             instrument = form.save()
@@ -91,9 +91,9 @@ def category_list(request):
     return render(request, 'catalog/category_list.html', {'categories': categories})
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def create_category(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = CategoryForm(request.POST)
         if form.is_valid():
             category = form.save()
@@ -111,10 +111,10 @@ def create_category(request):
     })
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def edit_category(request, id):
     category = get_object_or_404(Category, pk=id)
-    if request.method == "POST":
+    if request.method == 'POST':
         form = CategoryForm(request.POST, instance=category)
         if form.is_valid():
             form.save()
@@ -139,9 +139,9 @@ def brand_list(request):
     return render(request, 'catalog/brand_list.html', {'brands': brands})
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def create_brand(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = BrandForm(request.POST)
         if form.is_valid():
             brand = form.save()
@@ -159,10 +159,10 @@ def create_brand(request):
     })
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def edit_brand(request, id):
     brand = get_object_or_404(Brand, pk=id)
-    if request.method == "POST":
+    if request.method == 'POST':
         form = BrandForm(request.POST, instance=brand)
         if form.is_valid():
             form.save()
@@ -237,12 +237,12 @@ def delete_instrument_image(request, image_id):
     return JsonResponse({'status': 'success'})
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def edit_instrument(request, id):
     instrument = get_object_or_404(Instrument, pk=id)
     images = instrument.images.all().order_by('-is_primary', 'id')
 
-    if request.method == "POST":
+    if request.method == 'POST':
         form = InstrumentForm(request.POST, instance=instrument)
         if form.is_valid():
             form.save()

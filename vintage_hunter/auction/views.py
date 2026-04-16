@@ -111,9 +111,9 @@ def register_as_participant(request, id):
 # Staff Management Views
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def create_auction(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         form = AuctionForm(request.POST)
         if form.is_valid():
             auction = form.save()
@@ -128,10 +128,10 @@ def create_auction(request):
     return render(request, 'auction_form.html', {'form': form, 'title': _('Create New Auction')})
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def edit_auction(request, id):
     auction = get_object_or_404(Auction, pk=id)
-    if request.method == "POST":
+    if request.method == 'POST':
         form = AuctionForm(request.POST, instance=auction)
         if form.is_valid():
             auction = form.save()
@@ -190,13 +190,13 @@ def add_lot_select(request, id):
     })
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 @transaction.atomic
 def add_lot_configure(request, id, instrument_id):
     auction = get_object_or_404(Auction, pk=id)
     instrument = get_object_or_404(Instrument, pk=instrument_id, is_auction=False, auction_lot__isnull=True)
     
-    if request.method == "POST":
+    if request.method == 'POST':
         form = LotForm(request.POST)
         if form.is_valid():
             lot = form.save(commit=False)
@@ -227,12 +227,12 @@ def add_lot_configure(request, id, instrument_id):
     })
 
 @user_passes_test(is_staff)
-@require_http_methods(["GET", "POST"])
+@require_http_methods(['GET', 'POST'])
 def edit_lot(request, id, lot_id):
     auction = get_object_or_404(Auction, pk=id)
     lot = get_object_or_404(Lot, pk=lot_id, auction=auction)
     
-    if request.method == "POST":
+    if request.method == 'POST':
         form = LotForm(request.POST, instance=lot)
         if form.is_valid():
             form.save()
