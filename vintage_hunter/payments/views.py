@@ -69,10 +69,12 @@ def initiate_purchase(request, instrument_id):
     })
 
 @login_required
+@user_passes_test(is_not_staff)
 def payment_success(request, order_id):
     order = get_object_or_404(Order, pk=order_id, user=request.user, status='completed')
     return render(request, 'success.html', {'order': order})
 
 @login_required
+@user_passes_test(is_not_staff)
 def payment_failed(request):
     return render(request, 'failed.html')

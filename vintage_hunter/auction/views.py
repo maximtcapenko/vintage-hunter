@@ -52,6 +52,7 @@ def get_details(request, id):
         'lots': auction.lots.exclude(status__in=('sold','withdrawn')).all(),
     })
 
+@login_required
 @user_passes_test(is_not_staff)
 @require_POST
 @transaction.atomic
@@ -93,6 +94,7 @@ def place_bid(request, id, lot_id):
 
     return redirect('auction:get_details', id=lot.auction.id)
 
+@login_required
 @user_passes_test(is_not_staff)
 @require_POST
 def register_as_participant(request, id):
@@ -107,6 +109,7 @@ def register_as_participant(request, id):
 
     return redirect('auction:get_details', id=auction.id)
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def create_auction(request):
@@ -124,6 +127,7 @@ def create_auction(request):
     
     return render(request, 'auction_form.html', {'form': form, 'title': _('Create New Auction')})
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def edit_auction(request, id):
@@ -146,6 +150,7 @@ def edit_auction(request, id):
         {'form': form, 'title': _('Edit Auction: %(auction)s') % {'auction': auction.title}}
     )
 
+@login_required
 @user_passes_test(is_staff)
 @require_GET
 def manage_auction(request, id):
@@ -160,6 +165,7 @@ def manage_auction(request, id):
         'total_low_estimate': total_low_estimate,
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_GET
 def add_lot_select(request, id):
@@ -185,6 +191,7 @@ def add_lot_select(request, id):
         'search_form': search_form,
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 @transaction.atomic
@@ -221,6 +228,7 @@ def add_lot_configure(request, id, instrument_id):
         'title': _('Configure Lot Details')
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def edit_lot(request, id, lot_id):
@@ -246,6 +254,7 @@ def edit_lot(request, id, lot_id):
         'title': _('Edit Lot %(lot_number)s') % {'lot_number': lot.lot_number}
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_POST
 @transaction.atomic

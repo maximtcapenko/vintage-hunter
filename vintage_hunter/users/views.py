@@ -54,6 +54,7 @@ def get_collection_list(request):
         'form': form
     })
 
+@login_required
 @user_passes_test(is_not_staff)
 def get_collection_details(request, id):
     collection = get_object_or_404(Collection, pk=id, user=request.user)
@@ -63,6 +64,7 @@ def get_collection_details(request, id):
         'instruments': instruments
     })
 
+@login_required
 @user_passes_test(is_not_staff)
 @require_POST
 def delete_collection(request, id):
@@ -72,6 +74,7 @@ def delete_collection(request, id):
     messages.success(request, _('Collection "%(collection)s" deleted.') % {'collection': name})
     return redirect('users:collection_list')
 
+@login_required
 @user_passes_test(is_not_staff)
 @require_POST
 def create_collection_ajax(request):
@@ -97,6 +100,7 @@ def create_collection_ajax(request):
         'name': collection.name
     })
 
+@login_required
 @user_passes_test(is_not_staff)
 def get_instrument_collections(request, instrument_id):
     instrument = get_object_or_404(Instrument, id=instrument_id)
@@ -116,6 +120,7 @@ def get_instrument_collections(request, instrument_id):
         'collections': data
     })
 
+@login_required
 @user_passes_test(is_not_staff)
 @require_POST
 def toggle_collection_item(request, instrument_id):

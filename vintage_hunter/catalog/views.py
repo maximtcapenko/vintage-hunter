@@ -1,5 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
 from django.db.models import Prefetch
 from django.http import JsonResponse
@@ -64,6 +64,7 @@ def get_details(request, id):
         'user_collection_instrument_ids': user_collection_instrument_ids
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def create_instrument(request):
@@ -84,12 +85,14 @@ def create_instrument(request):
         'title': _('Add New Instrument')
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_GET
 def category_list(request):
     categories = Category.objects.all().order_by('name')
     return render(request, 'catalog/category_list.html', {'categories': categories})
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def create_category(request):
@@ -110,6 +113,7 @@ def create_category(request):
         'title': _('Create New Category')
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def edit_category(request, id):
@@ -132,12 +136,14 @@ def edit_category(request, id):
         'title': _('Edit Category: %(category)s') % {'category': category.name}
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_GET
 def brand_list(request):
     brands = Brand.objects.all().order_by('name')
     return render(request, 'catalog/brand_list.html', {'brands': brands})
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def create_brand(request):
@@ -158,6 +164,7 @@ def create_brand(request):
         'title': _('Create New Brand')
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def edit_brand(request, id):
@@ -180,6 +187,7 @@ def edit_brand(request, id):
         'title': _('Edit Brand: %(brand)s') % {'brand': brand.name}
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_POST
 def upload_instrument_image(request, instrument_id):
@@ -197,6 +205,7 @@ def upload_instrument_image(request, instrument_id):
     
     return JsonResponse({'status': 'error', 'message': _('No images uploaded.')}, status=400)
 
+@login_required
 @user_passes_test(is_staff)
 @require_POST
 def set_primary_image(request, image_id):
@@ -213,6 +222,7 @@ def set_primary_image(request, image_id):
         'image_id': image.id
     })
 
+@login_required
 @user_passes_test(is_staff)
 @require_POST
 def delete_instrument_image(request, image_id):
@@ -236,6 +246,7 @@ def delete_instrument_image(request, image_id):
             
     return JsonResponse({'status': 'success'})
 
+@login_required
 @user_passes_test(is_staff)
 @require_http_methods(['GET', 'POST'])
 def edit_instrument(request, id):
