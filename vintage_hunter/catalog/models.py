@@ -3,7 +3,6 @@ from functools import cached_property
 from io import BytesIO
 
 from django.core.files.base import ContentFile
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -72,6 +71,7 @@ class Instrument(Base):
     price = models.DecimalField(max_digits=12, decimal_places=2)
     is_auction = models.BooleanField(default=False)
     is_sold = models.BooleanField(default=False)
+    has_extra_info = models.BooleanField(default=False)
     auction_end_date = models.DateTimeField(null=True, blank=True)
 
 
@@ -82,6 +82,12 @@ class Instrument(Base):
 
     @cached_property
     def primary_image(self):
+        if hasattr(self, '_prefetched_objects_cache') and 'images' in self._prefetched_objects_cache:
+            for img in self.images.all():
+                if img.is_primary:
+                    return img
+            return None
+    
         return self.images.filter(is_primary=True).first()
     
     class Meta:

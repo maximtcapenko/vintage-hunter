@@ -16,5 +16,5 @@ def trigger_embeddings_update(sender, instance, created, **kwargs):
 
 @receiver(signals.post_save, sender=InstrumentImage)
 def trigger_image_embeddings_update(sender, instance, created, **kwargs):
-    if created and instance.is_primary:
-        update_embeddings.delay(instance.id)
+    if instance.is_primary:
+        update_embeddings.delay(instance.instrument.id)

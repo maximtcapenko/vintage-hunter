@@ -32,12 +32,21 @@ class Auction(Base):
     
     began_at = models.DateTimeField(null=True, blank=True)
     ended_at = models.DateTimeField(null=True, blank=True)
+    registration_deadline = models.DateTimeField(null=True, blank=True)
     
     participants = models.ManyToManyField(User, related_name='registered_auctions', blank=True)
 
     @cached_property
     def participants_count(self):
         return self.participants.distinct().count()
+
+    @property
+    def is_registration_available(self):
+        if self.status == 'scheduled' and not self.registration_deadline:
+            return True
+        
+        from django.utils import timezone
+        return self.status == 'scheduled' and timezone.now() < self.registration_deadline
     
     def __str__(self):
         return self.title

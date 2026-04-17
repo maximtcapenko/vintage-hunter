@@ -1,5 +1,4 @@
-from django.core.exceptions import PermissionDenied
-
+DEFAULT_PAGE_SIZE = 50
 
 def is_staff(user):
     return user.is_authenticated and user.is_staff

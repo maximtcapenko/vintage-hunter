@@ -12,13 +12,10 @@ from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
 from catalog.models import Instrument
-from commons.functional import is_not_staff, is_staff
+from commons.functional import is_not_staff, is_staff, DEFAULT_PAGE_SIZE
 
 from .forms import AuctionForm, InstrumentSearchForm, LotForm, SearchAuctionForm
 from .models import Auction, Bid, Lot
-
-
-DEFAULT_PAGE_SIZE = 50
 
 
 @login_required
@@ -100,8 +97,12 @@ def place_bid(request, id, lot_id):
 def register_as_participant(request, id):
     auction = get_object_or_404(Auction, pk=id)
 
-    if auction.status != 'active':
-        messages.error(request, _('Registration is only available for active auctions.'))
+    if auction.status != 'scheduled':
+        messages.error(request, _('Registration is only available for scheduled auctions.'))
+        return redirect('auction:get_details', id=auction.id)
+
+    if not auction.is_registration_available:
+        messages.error(request, _('Registration deadline has passed.'))
         return redirect('auction:get_details', id=auction.id)
 
     auction.participants.add(request.user)

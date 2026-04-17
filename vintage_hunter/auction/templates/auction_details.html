@@ -79,6 +79,12 @@
         <small class="d-block opacity-50 text-uppercase">{% trans "Starts" %}</small>
         <span>{{ auction.began_at|date:"M d, Y H:i" }}</span>
       </div>
+      {% if auction.registration_deadline %}
+      <div class="text-start border-start ps-4">
+        <small class="d-block opacity-50 text-uppercase">{% trans "Registration Ends" %}</small>
+        <span>{{ auction.registration_deadline|date:"M d, Y H:i" }}</span>
+      </div>
+      {% endif %}
       <div class="text-start border-start ps-4">
         <small class="d-block opacity-50 text-uppercase">{% trans "Closes" %}</small>
         <span>{{ auction.ended_at|date:"M d, Y H:i" }}</span>
@@ -113,14 +119,20 @@
   </div>
   <div>
     {% if not user.is_staff and not is_user_participant %}
-    <div class="alert shadow-sm border-0 d-flex justify-content-between align-items-center p-3"
-      style="background-color: #fff9e6; color: #856404;">
-      <span><i class="bi bi-info-circle-fill me-2"></i> {% trans "You must register before you can place bids." %}</span>
-      <form action="{% url 'auction:register_as_participant' auction.id %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-sm btn-warning fw-bold">{% trans "REGISTER NOW" %}</button>
-      </form>
-    </div>
+      {% if auction.is_registration_available %}
+        <div class="alert shadow-sm border-0 d-flex justify-content-between align-items-center p-3"
+          style="background-color: #fff9e6; color: #856404;">
+          <span><i class="bi bi-info-circle-fill me-2"></i> {% trans "You must register before you can place bids." %}</span>
+          <form action="{% url 'auction:register_as_participant' auction.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-sm btn-warning fw-bold">{% trans "REGISTER NOW" %}</button>
+          </form>
+        </div>
+      {% elif not auction.is_registration_available %}
+        <div class="alert alert-secondary shadow-sm border-0 p-3">
+          <i class="bi bi-lock-fill me-2"></i> {% trans "Registration is closed for this auction." %}
+        </div>
+      {% endif %}
     {% endif %}
   </div>
   {% for lot in lots %}

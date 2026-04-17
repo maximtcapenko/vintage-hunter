@@ -1,5 +1,3 @@
-from decimal import Decimal
-
 from django import forms
 from django.contrib.auth.models import User
 from django.db import models
@@ -30,17 +28,19 @@ class SearchAuctionForm(forms.Form, SearchFormMixin):
 class AuctionForm(forms.ModelForm):
     class Meta:
         model = Auction
-        fields = ['title', 'description', 'status', 'began_at', 'ended_at']
+        fields = ['title', 'description', 'status', 'began_at', 'ended_at', 'registration_deadline']
         labels = {
             'title': _('Title'),
             'description': _('Description'),
             'status': _('Status'),
             'began_at': _('Starts at'),
             'ended_at': _('Ends at'),
+            'registration_deadline': _('Registration deadline'),
         }
         widgets = {
             'began_at': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
             'ended_at': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
+            'registration_deadline': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
             'description': forms.Textarea(attrs={'rows': 4}),
         }
 
@@ -52,6 +52,24 @@ class AuctionForm(forms.ModelForm):
         ]
         for field in self.fields.values():
             field.widget.attrs.update({'class': 'form-control'})
+
+    def clean(self):
+        cleaned_data = super().clean()
+        status = cleaned_data.get('status')
+
+        if status != 'draft':
+            if self.instance.pk:
+                lots_count = self.instance.lots.count()
+            else:
+                lots_count = 0
+                
+            if lots_count == 0:
+                self.add_error(
+                    'status',
+                    _('Cannot schedule an auction without any lots. Please add at least one lot first.')
+                )
+        
+        return cleaned_data
 
 class LotForm(forms.ModelForm):
     class Meta:

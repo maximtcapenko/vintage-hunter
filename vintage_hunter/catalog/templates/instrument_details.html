@@ -226,7 +226,11 @@
         <div class="price-text mb-4">
           ${{ instrument.price }}
           {% if instrument.is_auction %}
-          <span class="badge bg-dark ms-2" style="font-size: 0.6rem; vertical-align: middle;">{% trans "AUCTION" %}</span>
+            {% if instrument.auction_lot.auction.is_registration_available %}
+            <span class="badge bg-success ms-2" style="font-size: 0.6rem; vertical-align: middle;">{% trans "REGISTRATION OPEN" %}</span>
+            {% else %}
+            <span class="badge bg-dark ms-2" style="font-size: 0.6rem; vertical-align: middle;">{% trans "AUCTION" %}</span>
+            {% endif %}
           {% endif %}
         </div>
 
@@ -234,7 +238,11 @@
           {% if instrument.is_sold %}
             <button class="btn btn-secondary btn-sm py-2" disabled>{% trans "INSTRUMENT SOLD" %}</button>
           {% elif instrument.is_auction %}
-            <a href="{% url 'auction:get_details' instrument.auction_lot.auction.id %}" class="btn btn-dark btn-sm py-2">{% trans "VIEW IN AUCTION" %}</a>
+            {% if instrument.auction_lot.auction.is_registration_available %}
+              <a href="{% url 'auction:get_details' instrument.auction_lot.auction.id %}" class="btn btn-success btn-sm py-2 fw-bold text-white">{% trans "REGISTER FOR AUCTION" %}</a>
+            {% else %}
+              <a href="{% url 'auction:get_details' instrument.auction_lot.auction.id %}" class="btn btn-dark btn-sm py-2">{% trans "VIEW IN AUCTION" %}</a>
+            {% endif %}
           {% elif not user.is_staff %}
             <a href="{% url 'payments:initiate_purchase' instrument.id %}" class="btn btn-dark btn-sm py-2">{% trans "PURCHASE INSTRUMENT" %}</a>
           {% endif %}
@@ -278,8 +286,9 @@
             </div>
           </div>
           {% endif %}
-          
-          <button class="btn btn-outline-secondary btn-sm py-2">{% trans "INQUIRE FOR DETAILS" %}</button>
+          {% if instrument.has_extra_info %}
+            <button class="btn btn-outline-secondary btn-sm py-2">{% trans "INQUIRE FOR DETAILS" %}</button>
+          {% endif %}
         </div>
 
         <span class="section-label">{% trans "Technical Specifications" %}</span>

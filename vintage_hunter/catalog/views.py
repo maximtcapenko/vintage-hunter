@@ -7,12 +7,11 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_GET, require_POST, require_http_methods
 
-from commons.functional import is_staff
+from auction.models import Lot
+from commons.functional import is_staff, DEFAULT_PAGE_SIZE
 
 from .forms import BrandForm, CategoryForm, InstrumentForm, SearchCatalogForm
 from .models import Brand, Category, Instrument, InstrumentImage
-
-DEFAULT_PAGE_SIZE = 50
 
 
 @require_GET
@@ -26,12 +25,23 @@ def get_list(request):
 
         return form.get_search_queryset(Instrument.objects.all())
     
-    paginator = Paginator(build_query_set(), DEFAULT_PAGE_SIZE)
-    page = paginator.get_page(request.GET.get('page'))
+    images_prefetch = Prefetch(
+        'images',
+        queryset=InstrumentImage.objects.all()
+    )
+    auction_lot_prefetch = Prefetch(
+        'auction_lot',
+        queryset=Lot.objects.select_related('auction'),
+        to_attr='prefetched_lot')
     
+    paginator = Paginator(build_query_set().prefetch_related(
+        auction_lot_prefetch,
+        images_prefetch
+    ).select_related('brand'), DEFAULT_PAGE_SIZE)
+    page = paginator.get_page(request.GET.get('page'))
+
     user_collection_instrument_ids = []
     if request.user.is_authenticated:
-        from users.models import Collection
         user_collection_instrument_ids = Instrument.objects.filter(
             in_collections__user=request.user
         ).values_list('id', flat=True)
