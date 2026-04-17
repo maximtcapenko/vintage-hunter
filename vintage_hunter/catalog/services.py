@@ -13,7 +13,7 @@ class EmbeddingService:
     _model = None
 
     @classmethod
-    def get_model(cls):
+    def load_model(cls):
         if cls._model is None:
             cls._model = SentenceTransformer(settings.EMBEDDING_MODEL_PATH)
         return cls._model
@@ -23,7 +23,7 @@ class EmbeddingService:
         if not text:
             return []
         
-        model = cls.get_model()
+        model = cls.load_model()
         return model.encode(
             text, 
             convert_to_tensor=False, 

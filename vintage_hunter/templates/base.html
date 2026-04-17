@@ -309,6 +309,15 @@
             </li>
             <li>
               <a class="dropdown-item d-flex justify-content-between align-items-center py-2"
+                href="{% url 'users:order_list' %}">
+                <span><i class="bi bi-receipt me-2 opacity-75"></i> {% trans "My Orders" %}</span>
+                {% if user.active_orders_count > 0 %}
+                <span class="badge rounded-pill bg-warning text-dark">{{ user.active_orders_count }}</span>
+                {% endif %}
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex justify-content-between align-items-center py-2"
                 href="{% url 'users:purchase_list' %}">
                 <span><i class="bi bi-bag-check me-2 opacity-75"></i> {% trans "My Purchases" %}</span>
                 {% if user.orders_count > 0 %}

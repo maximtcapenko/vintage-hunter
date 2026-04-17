@@ -155,6 +155,12 @@
           {{ lot.instrument.year }} {{ lot.instrument.title }}
         </h5>
 
+        {% if lot.instrument.is_draft %}
+        <div class="mb-3">
+          <span class="badge bg-light text-dark border">{% trans "UNDER REVIEW" %}</span>
+        </div>
+        {% endif %}
+
         <div class="estimate-text mb-3">
           {% blocktrans with min_price=lot.estimated_price_min max_price=lot.estimated_price_max %}EST: ${{ min_price }} – ${{ max_price }}{% endblocktrans %}
         </div>
@@ -167,7 +173,13 @@
             </div>
           </div>
 
-          {% if not user.is_staff %}
+          {% if lot.instrument.is_draft %}
+          <div class="bid-container">
+            <button class="btn btn-outline-secondary btn-sm fw-bold px-2" type="button" style="font-size: 0.75rem;" disabled>
+              {% trans "LOCKED FOR REVIEW" %}
+            </button>
+          </div>
+          {% elif not user.is_staff %}
           <div class="bid-container">
             <form action="{% url 'auction:place_bid' auction.id lot.id %}" method="post"
               class="input-group input-group-sm" style="width: 130px;">

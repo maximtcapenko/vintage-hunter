@@ -55,6 +55,9 @@ def get_details(request, id):
 @transaction.atomic
 def place_bid(request, id, lot_id):
     lot = get_object_or_404(Lot, pk=lot_id, auction__id=id)
+    if lot.instrument.is_draft:
+        messages.error(request, _('This instrument is under review and bidding is temporarily locked.'))
+        return redirect('auction:get_details', id=lot.auction.id)
 
     if not lot.auction.participants.filter(id=request.user.id).exists():
         messages.error(request, _('You must register for this auction to bid.'))
@@ -173,7 +176,12 @@ def add_lot_select(request, id):
     auction = get_object_or_404(Auction, pk=id)
     search_form = InstrumentSearchForm(request.GET)
     
-    instruments = Instrument.objects.filter(is_auction=False, auction_lot__isnull=True, is_sold=False)
+    instruments = Instrument.objects.filter(
+        is_auction=False,
+        auction_lot__isnull=True,
+        is_sold=False,
+        is_draft=False
+    )
     
     if search_form.is_valid() and search_form.cleaned_data.get('q'):
         q = search_form.cleaned_data['q']
@@ -198,7 +206,13 @@ def add_lot_select(request, id):
 @transaction.atomic
 def add_lot_configure(request, id, instrument_id):
     auction = get_object_or_404(Auction, pk=id)
-    instrument = get_object_or_404(Instrument, pk=instrument_id, is_auction=False, auction_lot__isnull=True)
+    instrument = get_object_or_404(
+        Instrument,
+        pk=instrument_id,
+        is_auction=False,
+        auction_lot__isnull=True,
+        is_draft=False
+    )
     
     if request.method == 'POST':
         form = LotForm(request.POST)

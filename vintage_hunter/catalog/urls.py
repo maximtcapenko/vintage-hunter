@@ -9,6 +9,7 @@ urlpatterns = [
     path('create/', views.create_instrument, name='create_instrument'),
     path('<uuid:id>/', views.get_details, name='get_details'),
     path('<uuid:id>/edit/', views.edit_instrument, name='edit_instrument'),
+    path('<uuid:id>/publish/', views.publish_instrument, name='publish_instrument'),
 
     path('categories/', views.category_list, name='category_list'),
     path('categories/create/', views.create_category, name='create_category'),

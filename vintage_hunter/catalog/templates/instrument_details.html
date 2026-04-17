@@ -217,26 +217,39 @@
       <div class="col-md-6">
         <div class="mb-2 d-flex align-items-center gap-2">
           <span class="condition-pill">{{ instrument.condition_label }}</span>
+          {% if instrument.is_draft %}
+          <span class="badge bg-light text-dark border">{% trans "UNDER REVIEW" %}</span>
+          {% endif %}
           <span class="text-muted small">{% blocktrans with instrument_id=instrument.id|stringformat:"05d" %}ID: #{{ instrument_id }}{% endblocktrans %}</span>
         </div>
 
         <h1 class="instrument-title mb-1">{{ instrument.year }} {{ instrument.title }}</h1>
         <p class="text-muted small mb-4">{% trans "Authored by Vintage Tone Curators" %}</p>
 
+        {% if instrument.is_draft %}
+        <div class="alert alert-light border small mb-4">
+          {% trans "This instrument remains visible while the latest edits are under review. Purchasing and bidding stay locked until it is published again." %}
+        </div>
+        {% endif %}
+
         <div class="price-text mb-4">
-          ${{ instrument.price }}
           {% if instrument.is_auction %}
+            ${{ instrument.auction_lot.starting_price }}
             {% if instrument.auction_lot.auction.is_registration_available %}
             <span class="badge bg-success ms-2" style="font-size: 0.6rem; vertical-align: middle;">{% trans "REGISTRATION OPEN" %}</span>
             {% else %}
             <span class="badge bg-dark ms-2" style="font-size: 0.6rem; vertical-align: middle;">{% trans "AUCTION" %}</span>
             {% endif %}
+          {% else %}
+            ${{ instrument.price }}
           {% endif %}
         </div>
 
         <div class="d-grid gap-2 mb-5">
           {% if instrument.is_sold %}
             <button class="btn btn-secondary btn-sm py-2" disabled>{% trans "INSTRUMENT SOLD" %}</button>
+          {% elif instrument.is_draft %}
+            <button class="btn btn-outline-secondary btn-sm py-2" disabled>{% trans "TEMPORARILY UNAVAILABLE" %}</button>
           {% elif instrument.is_auction %}
             {% if instrument.auction_lot.auction.is_registration_available %}
               <a href="{% url 'auction:get_details' instrument.auction_lot.auction.id %}" class="btn btn-success btn-sm py-2 fw-bold text-white">{% trans "REGISTER FOR AUCTION" %}</a>
@@ -248,7 +261,15 @@
           {% endif %}
 
           {% if user.is_staff %}
-          <a href="{% url 'catalog:edit_instrument' instrument.id %}" class="btn btn-warning btn-sm py-2 fw-bold">{% trans "EDIT CATALOG ENTRY" %}</a>
+            {% if instrument.is_edit_locked_in_auction %}
+            <a href="{% url 'auction:manage_auction' instrument.auction_lot.auction.id %}" class="btn btn-outline-dark btn-sm py-2 fw-bold">{% trans "MANAGE AUCTION" %}</a>
+            <button class="btn btn-warning btn-sm py-2 fw-bold" disabled>{% trans "EDIT LOCKED IN AUCTION" %}</button>
+            {% elif instrument.has_active_purchase_lock %}
+            <button class="btn btn-outline-secondary btn-sm py-2" disabled>{% trans "CHECKOUT IN PROGRESS" %}</button>
+            <button class="btn btn-warning btn-sm py-2 fw-bold" disabled>{% trans "EDIT LOCKED DURING CHECKOUT" %}</button>
+            {% else %}
+            <a href="{% url 'catalog:edit_instrument' instrument.id %}" class="btn btn-warning btn-sm py-2 fw-bold">{% trans "EDIT CATALOG ENTRY" %}</a>
+            {% endif %}
           {% endif %}
           
           {% if user.is_authenticated and not user.is_staff %}

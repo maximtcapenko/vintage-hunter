@@ -56,6 +56,67 @@
     transform: scale(1.1);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15) !important;
   }
+
+  .status-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    backdrop-filter: blur(1.5px);
+    z-index: 5;
+  }
+
+  .status-overlay-card {
+    max-width: 190px;
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 24px rgba(64, 41, 12, 0.08);
+  }
+
+  .status-overlay-title {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+  }
+
+  .status-overlay-subtitle {
+    font-size: 0.72rem;
+    color: #6c757d;
+    margin-top: 0.35rem;
+  }
+
+  .status-overlay--sold {
+    background: linear-gradient(180deg, rgba(243, 244, 246, 0.2) 0%, rgba(248, 249, 250, 0.86) 100%);
+  }
+
+  .status-overlay--sold .status-overlay-card {
+    border: 1px solid rgba(108, 117, 125, 0.18);
+  }
+
+  .status-overlay--sold .status-overlay-title {
+    color: #495057;
+  }
+
+  .status-overlay--review {
+    background: linear-gradient(180deg, rgba(247, 242, 233, 0.18) 0%, rgba(255, 249, 241, 0.84) 100%);
+  }
+
+  .status-overlay--review .status-overlay-card {
+    border: 1px solid rgba(145, 111, 52, 0.18);
+  }
+
+  .status-overlay--review .status-overlay-title {
+    color: #7b5924;
+  }
+
+  .review-card-body .review-title,
+  .review-card-body .review-price {
+    color: #6c757d !important;
+  }
 </style>
 
 <div class="row">
@@ -150,7 +211,20 @@
               {{ instrument.year }}
             </span>
 
-            {% if instrument.is_auction %}
+            {% if instrument.is_sold %}
+            <div class="status-overlay status-overlay--sold">
+              <div class="status-overlay-card">
+                <div class="status-overlay-title">{% trans "SOLD" %}</div>
+              </div>
+            </div>
+            {% elif instrument.is_draft %}
+            <div class="status-overlay status-overlay--review">
+              <div class="status-overlay-card">
+                <div class="status-overlay-title">{% trans "UNDER REVIEW" %}</div>
+                <div class="status-overlay-subtitle">{% trans "Temporarily unavailable" %}</div>
+              </div>
+            </div>
+            {% elif instrument.is_auction %}
               {% if instrument.prefetched_lot.auction.is_registration_available %}
               <span class="position-absolute bottom-0 start-0 m-3 badge bg-success text-white px-2 py-1 rounded-1 fw-bold small shadow-sm" style="font-size: 0.65rem; letter-spacing: 0.5px;">
                 <i class="bi bi-gavel me-1"></i> {% trans "REGISTRATION OPEN" %}
@@ -160,23 +234,19 @@
                 <i class="bi bi-gavel me-1"></i> {% trans "IN AUCTION" %}
               </span>
               {% endif %}
-            {% elif instrument.is_sold %}
-            <div class="position-absolute top-0 start-0 w-100 h-100 d-flex align-items-center justify-content-center" style="background: rgba(255,255,255,0.6); z-index: 5;">
-               <span class="badge bg-secondary px-3 py-2 fs-6 shadow-sm">{% trans "SOLD" %}</span>
-            </div>
             {% endif %}
           </div>
 
-          <div class="card-body p-4 d-flex flex-column">
+          <div class="card-body p-4 d-flex flex-column {% if instrument.is_draft and not instrument.is_sold %}review-card-body{% endif %}">
             <div class="mb-1 text-uppercase fw-semibold text-muted small" style="letter-spacing: 0.5px;">
               {{ instrument.brand.name }}
             </div>
-            <h5 class="card-title h6 fw-bold mb-3">{{ instrument.title }}</h5>
+            <h5 class="card-title h6 fw-bold mb-3 review-title">{{ instrument.title }}</h5>
 
             <div class="mt-auto d-flex justify-content-between align-items-end">
               <div>
                 <span class="d-block text-muted small mb-0">{% if instrument.is_auction %}{% trans "Starting Price" %}{% else %}{% trans "Price" %}{% endif %}</span>
-                <span class="h5 fw-bold text-dark mb-0">${{ instrument.price }}</span>
+                <span class="h5 fw-bold text-dark mb-0 review-price">${% if instrument.is_auction %}{{ instrument.prefetched_lot.starting_price }}{% else %}{{ instrument.price }}{% endif %}</span>
               </div>
               <a href="{% url 'catalog:get_details' instrument.id %}"
                 class="btn btn-sm btn-outline-dark px-3">{% trans "Details" %}</a>

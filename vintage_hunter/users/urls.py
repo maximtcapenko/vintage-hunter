@@ -21,6 +21,7 @@ urlpatterns = [
     path('collections/status/<uuid:instrument_id>/', get_instrument_collections, name='get_instrument_collections'),
     path('collections/create-ajax/', create_collection_ajax, name='create_collection_ajax'),
     path('collections/toggle/<uuid:instrument_id>/', toggle_collection_item, name='toggle_collection_item'),
+    path('orders/', views.get_orders_list, name='order_list'),
     path('purchases/', views.get_purchases_list, name='purchase_list'),
     path('purchases/<uuid:id>/', views.get_purchase_details, name='purchase_details'),
 ]

@@ -1,10 +1,10 @@
 from django.db import models
 from pgvector.django import CosineDistance
 
-SEARCH_RESULTS_LIMITS = 25
+from commons.functional import SEARCH_RESULTS_LIMITS
+
 
 class InstrumentManager(models.Manager):
-
     def search_by_text(self, query_text, limit=SEARCH_RESULTS_LIMITS):
         if not query_text or not query_text.strip():
             return self.get_queryset().none()
@@ -22,3 +22,6 @@ class InstrumentManager(models.Manager):
         
         return self.get_queryset().exclude(id=instrument.id) \
         .order_by(CosineDistance('image_embedding', instrument.image_embedding))[:limit]
+    
+    def query_without_embeddings(self):
+        return self.get_queryset().defer('image_embedding', 'text_embedding')

@@ -170,8 +170,25 @@ def toggle_collection_item(request, instrument_id):
 
 @login_required
 @user_passes_test(is_not_staff)
+def get_orders_list(request):
+    request.user.orders.expired_reservations().update(status='failed')
+    orders = request.user.orders.select_related(
+        'instrument',
+        'instrument__brand'
+    ).prefetch_related(
+        'instrument__images'
+    ).order_by('-created_at')
+    return render(request, 'orders_list.html', {'orders': orders})
+
+@login_required
+@user_passes_test(is_not_staff)
 def get_purchases_list(request):
-    orders = request.user.orders.filter(status='completed').order_by('-created_at')
+    orders = request.user.orders.filter(status='completed').select_related(
+        'instrument',
+        'instrument__brand'
+    ).prefetch_related(
+        'instrument__images'
+    ).order_by('-created_at')
     return render(request, 'purchases_list.html', {'orders': orders})
 
 @login_required

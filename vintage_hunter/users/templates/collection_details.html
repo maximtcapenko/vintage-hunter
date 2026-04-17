@@ -22,6 +22,56 @@
     opacity: 1;
     transform: scale(1);
   }
+  .status-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    backdrop-filter: blur(1.5px);
+    z-index: 5;
+  }
+  .status-overlay-card {
+    max-width: 190px;
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 24px rgba(64, 41, 12, 0.08);
+  }
+  .status-overlay-title {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+  }
+  .status-overlay-subtitle {
+    font-size: 0.72rem;
+    color: #6c757d;
+    margin-top: 0.35rem;
+  }
+  .status-overlay--sold {
+    background: linear-gradient(180deg, rgba(243, 244, 246, 0.2) 0%, rgba(248, 249, 250, 0.86) 100%);
+  }
+  .status-overlay--sold .status-overlay-card {
+    border: 1px solid rgba(108, 117, 125, 0.18);
+  }
+  .status-overlay--sold .status-overlay-title {
+    color: #495057;
+  }
+  .status-overlay--review {
+    background: linear-gradient(180deg, rgba(247, 242, 233, 0.18) 0%, rgba(255, 249, 241, 0.84) 100%);
+  }
+  .status-overlay--review .status-overlay-card {
+    border: 1px solid rgba(145, 111, 52, 0.18);
+  }
+  .status-overlay--review .status-overlay-title {
+    color: #7b5924;
+  }
+  .review-card-body .review-title,
+  .review-card-body .review-price {
+    color: #6c757d !important;
+  }
 </style>
 
 <div class="d-flex justify-content-between align-items-end mb-5">
@@ -72,18 +122,33 @@
             {{ instrument.year }}
           </span>
         </div>
+
+        {% if instrument.is_sold %}
+        <div class="status-overlay status-overlay--sold">
+          <div class="status-overlay-card">
+            <div class="status-overlay-title">{% trans "SOLD" %}</div>
+          </div>
+        </div>
+        {% elif instrument.is_draft %}
+        <div class="status-overlay status-overlay--review">
+          <div class="status-overlay-card">
+            <div class="status-overlay-title">{% trans "UNDER REVIEW" %}</div>
+            <div class="status-overlay-subtitle">{% trans "Temporarily unavailable" %}</div>
+          </div>
+        </div>
+        {% endif %}
       </div>
 
-      <div class="card-body p-4 d-flex flex-column">
+      <div class="card-body p-4 d-flex flex-column {% if instrument.is_draft and not instrument.is_sold %}review-card-body{% endif %}">
         <div class="mb-1 text-uppercase fw-bold text-muted" style="font-size: 0.65rem; letter-spacing: 1px;">
           {{ instrument.brand.name }}
         </div>
-        <h5 class="h6 fw-bold mb-3 text-dark lh-base">{{ instrument.title }}</h5>
+        <h5 class="h6 fw-bold mb-3 text-dark lh-base review-title">{{ instrument.title }}</h5>
 
         <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
           <div>
             <span class="d-block text-muted fw-semibold" style="font-size: 0.65rem; text-transform: uppercase;">{% trans "Estimated Value" %}</span>
-            <span class="h5 fw-bold mb-0">${{ instrument.price|default:"0" }}</span>
+            <span class="h5 fw-bold mb-0 review-price">${{ instrument.price|default:"0" }}</span>
           </div>
           <a href="{% url 'catalog:get_details' instrument.id %}" class="btn btn-sm btn-outline-dark px-3 fw-bold">{% trans "View Details" %}</a>
         </div>

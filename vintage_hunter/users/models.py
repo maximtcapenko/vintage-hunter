@@ -45,3 +45,13 @@ def get_user_orders_count(self):
 user_orders_count_property = cached_property(get_user_orders_count)
 User.add_to_class('orders_count', user_orders_count_property)
 user_orders_count_property.__set_name__(User, 'orders_count')
+
+def get_user_active_orders_count(self):
+    if not self.is_authenticated:
+        return 0
+
+    return self.orders.active_reservations().count()
+
+user_active_orders_count_property = cached_property(get_user_active_orders_count)
+User.add_to_class('active_orders_count', user_active_orders_count_property)
+user_active_orders_count_property.__set_name__(User, 'active_orders_count')

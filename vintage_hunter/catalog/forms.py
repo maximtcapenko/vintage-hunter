@@ -60,6 +60,11 @@ class InstrumentForm(forms.ModelForm):
                 field.widget.attrs.update({'class': 'form-control'})
             else:
                 field.widget.attrs.update({'class': 'form-check-input'})
+    
+    def save(self, commit=True):
+        self.instance.is_draft = True
+        
+        return super().save(commit=commit)
 
 class InstrumentImageForm(forms.ModelForm):
     class Meta:

@@ -78,6 +78,9 @@ class Instrument(Base):
     text_embedding = VectorField(dimensions=768, null=True, blank=True)
     image_embedding = VectorField(dimensions=512, null=True, blank=True)
 
+    is_draft = models.BooleanField(default=True)
+    is_new = models.BooleanField(default=True)
+
     updated_at = models.DateTimeField(auto_now=True, null=True)
 
     @cached_property
@@ -109,12 +112,26 @@ class Instrument(Base):
             ),
         ]
 
+    def save(self, *args, **kwargs):
+        if self.pk:
+            self.is_new = False
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return f'{self.year} {self.brand.name} {self.title}'
 
     @property
     def condition_label(self):
         return self.CONDITION_LABELS.get(self.condition, self.condition)
+
+    @property
+    def is_edit_locked_in_auction(self):
+        return hasattr(self, 'auction_lot')
+
+    @property
+    def has_active_purchase_lock(self):
+        from payments.models import Order
+        return Order.objects.active_reservations().filter(instrument=self).exists()
     
     def get_full_description_for_ai(self):        
         return (

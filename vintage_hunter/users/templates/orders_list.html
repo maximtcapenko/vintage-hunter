@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-xl-10">
+    <div class="d-md-flex align-items-center justify-content-between mb-5">
+      <div>
+        <h1 class="fw-bold mb-1">{% trans "My Orders" %}</h1>
+        <p class="text-muted mb-0">{% trans "Checkout attempts, active reservations, and completed purchases." %}</p>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      {% for order in orders %}
+      <div class="col-12">
+        <div class="card border-0 shadow-sm overflow-hidden" style="border-radius: 12px;">
+          <div class="row g-0 align-items-center">
+            <div class="col-md-2 p-3">
+              {% if order.instrument.primary_image %}
+              <img src="{{ order.instrument.primary_image.image.url }}" alt="{{ order.instrument.title }}"
+                class="img-fluid rounded shadow-sm" style="height: 100px; width: 100%; object-fit: cover;">
+              {% else %}
+              <div class="bg-light rounded d-flex align-items-center justify-content-center text-muted"
+                style="height: 100px; width: 100%;">
+                <i class="bi bi-image fs-1 opacity-25"></i>
+              </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-5 p-3">
+              <h5 class="fw-bold mb-1">{{ order.instrument.year }} {{ order.instrument.title }}</h5>
+              <p class="text-muted small mb-0">{{ order.instrument.brand.name }}</p>
+              <div class="mt-2">
+                <span class="badge bg-light text-dark border small">{% trans "Order #" %}{{ order.id|stringformat:"s"|slice:":8" }}</span>
+                <span class="text-muted small ms-2"><i class="bi bi-calendar3 me-1"></i> {{ order.created_at|date:"M d, Y" }}</span>
+              </div>
+            </div>
+
+            <div class="col-md-2 p-3">
+              {% if order.status == 'completed' %}
+              <span class="badge bg-success-subtle text-success small text-uppercase">{% trans "Completed" %}</span>
+              <div class="small text-muted mt-2">{% trans "Purchase finished successfully." %}</div>
+              {% elif order.status == 'pending' %}
+              <span class="badge bg-warning-subtle text-warning small text-uppercase">{% trans "Pending" %}</span>
+              <div class="small text-muted mt-2">
+                {% trans "Reservation expires in" %}:
+                <span class="fw-bold text-dark reservation-countdown" data-expires-at="{{ order.expires_at|date:'c' }}">--:--</span>
+              </div>
+              {% else %}
+              <span class="badge bg-danger-subtle text-danger small text-uppercase">{% trans "Failed" %}</span>
+              <div class="small text-muted mt-2">{% trans "Checkout was not completed." %}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-3 p-3 text-center text-md-end">
+              {% if order.status == 'completed' %}
+              <a href="{% url 'users:purchase_details' order.id %}" class="btn btn-outline-dark btn-sm px-4">{% trans "View Receipt" %}</a>
+              {% elif order.status == 'pending' %}
+              <a href="{% url 'payments:initiate_purchase' order.instrument.id %}" class="btn btn-dark btn-sm px-4">{% trans "Resume Checkout" %}</a>
+              {% else %}
+              <a href="{% url 'payments:initiate_purchase' order.instrument.id %}" class="btn btn-outline-dark btn-sm px-4">{% trans "Try Again" %}</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12 text-center py-5">
+        <div class="mb-4">
+          <i class="bi bi-receipt text-muted opacity-25" style="font-size: 5rem;"></i>
+        </div>
+        <h3 class="fw-bold">{% trans "No orders yet" %}</h3>
+        <p class="text-muted">{% trans "Your checkout activity will appear here once you start reserving or purchasing instruments." %}</p>
+        <a href="{% url 'catalog:get_list' %}" class="btn btn-dark mt-3 px-4">{% trans "Browse Catalog" %}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+<script>
+  {% translate "Expired" as expired_label %}
+  const expiredLabel = "{{ expired_label|escapejs }}";
+
+  function updateOrderCountdowns() {
+    document.querySelectorAll('.reservation-countdown').forEach((element) => {
+      const expiresAt = element.dataset.expiresAt;
+      const diff = new Date(expiresAt).getTime() - Date.now();
+
+      if (diff <= 0) {
+        element.textContent = expiredLabel;
+        return;
+      }
+
+      const totalSeconds = Math.floor(diff / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      element.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    });
+  }
+
+  updateOrderCountdowns();
+  setInterval(updateOrderCountdowns, 1000);
+</script>
+{% endblock %}

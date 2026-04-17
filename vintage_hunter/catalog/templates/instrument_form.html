@@ -73,6 +73,23 @@
             <a href="{% if instrument %}{% url 'catalog:get_details' instrument.id %}{% else %}{% url 'catalog:get_list' %}{% endif %}"
               class="btn-close"></a>
           </div>
+
+          {% if instrument %}
+          <div class="d-flex flex-wrap gap-2 mb-4">
+            {% if instrument.is_new %}
+            <span class="badge rounded-pill bg-warning text-dark px-3 py-2 text-uppercase">{% trans "New" %}</span>
+            {% endif %}
+            {% if instrument.is_draft %}
+            <span class="badge rounded-pill bg-light text-dark border px-3 py-2 text-uppercase">{% trans "Draft" %}</span>
+            {% endif %}
+          </div>
+          {% endif %}
+
+          {% if instrument and instrument.is_draft %}
+          <div class="alert alert-warning border-0 rounded-4 mb-4">
+            {% trans "This entry stays visible to visitors as under review. Save changes first if needed, then publish the latest saved version." %}
+          </div>
+          {% endif %}
         </div>
 
         <form method="post" enctype="multipart/form-data" novalidate id="instrument-form">
@@ -88,36 +105,71 @@
                 <div class="col-12">
                   <label class="form-label small fw-bold">{% trans "Instrument Title" %}</label>
                   {{ form.title }}
+                  {% if form.title.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.title.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label small fw-bold">{% trans "Category" %}</label>
                   {{ form.category }}
+                  {% if form.category.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.category.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="col-md-6">
                   <label class="form-label small fw-bold">{% trans "Brand" %}</label>
                   {{ form.brand }}
+                  {% if form.brand.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.brand.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="col-md-3">
                   <label class="form-label small fw-bold">{% trans "Year" %}</label>
                   {{ form.year }}
+                  {% if form.year.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.year.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="col-md-3">
                   <label class="form-label small fw-bold">{% trans "Serial Number" %}</label>
                   {{ form.serial_number }}
+                  {% if form.serial_number.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.serial_number.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="col-md-3">
                   <label class="form-label small fw-bold">{% trans "Price ($)" %}</label>
                   {{ form.price }}
+                  {% if form.price.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.price.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="col-md-3">
                   <label class="form-label small fw-bold">{% trans "Condition" %}</label>
                   {{ form.condition }}
+                  {% if form.condition.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.condition.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="col-12 mt-4">
@@ -142,11 +194,21 @@
                     {% trans "Technical Specifications" %}
                   </label>
                   {{ form.specifications }}
+                  {% if form.specifications.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.specifications.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
 
                 <div class="col-12 mt-4">
                   <label class="form-label small fw-bold">{% trans "Description" %}</label>
                   {{ form.description }}
+                  {% if form.description.errors %}
+                    <div class="invalid-feedback d-block small">
+                      {{ form.description.errors|join:", " }}
+                    </div>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -221,12 +283,30 @@
             </div>
           </div>
 
-          <div class="p-5 pt-4 border-top bg-white d-flex justify-content-end gap-2">
-            <a href="{% if instrument %}{% url 'catalog:get_details' instrument.id %}{% else %}{% url 'catalog:get_list' %}{% endif %}"
-              class="btn btn-light px-5 py-2 rounded-pill fw-bold text-muted">{% trans "Discard" %}</a>
-            <button type="submit" class="btn btn-dark px-5 py-2 rounded-pill fw-bold shadow">{% trans "Save Instrument" %}</button>
+          <div class="p-5 pt-4 border-top bg-white d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+            <div class="small text-muted">
+              {% if instrument and instrument.is_draft %}
+              {% trans "Publishing clears the draft flag without submitting any unsaved form changes." %}
+              {% endif %}
+            </div>
+            <div class="d-flex justify-content-end gap-2 flex-wrap">
+              <a href="{% if instrument %}{% url 'catalog:get_details' instrument.id %}{% else %}{% url 'catalog:get_list' %}{% endif %}"
+                class="btn btn-light px-5 py-2 rounded-pill fw-bold text-muted">{% trans "Discard" %}</a>
+              {% if instrument and instrument.is_draft %}
+              <button type="button" onclick="document.getElementById('publish-instrument-form').submit()" class="btn btn-outline-success px-5 py-2 rounded-pill fw-bold">
+                {% trans "Publish to Catalog" %}
+              </button>
+              {% endif %}
+              <button type="submit" class="btn btn-dark px-5 py-2 rounded-pill fw-bold shadow">{% trans "Save Instrument" %}</button>
+            </div>
           </div>
         </form>
+
+        {% if instrument and instrument.is_draft %}
+        <form method="post" action="{% url 'catalog:publish_instrument' instrument.id %}" id="publish-instrument-form" class="d-none">
+          {% csrf_token %}
+        </form>
+        {% endif %}
       </div>
     </div>
   </div>

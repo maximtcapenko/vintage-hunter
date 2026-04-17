@@ -14,6 +14,18 @@ from .forms import BrandForm, CategoryForm, InstrumentForm, SearchCatalogForm
 from .models import Brand, Category, Instrument, InstrumentImage
 
 
+def instrument_edit_lock_message(instrument):
+    if instrument.is_edit_locked_in_auction:
+        return _('This instrument cannot be edited because it is already included in an auction.')
+    if instrument.has_active_purchase_lock:
+        return _('This instrument cannot be edited because checkout is currently in progress.')
+    return _('This instrument cannot be edited right now.')
+
+
+def is_instrument_edit_locked(instrument):
+    return instrument.is_edit_locked_in_auction or instrument.has_active_purchase_lock
+
+
 @require_GET
 def get_list(request):
     form = SearchCatalogForm(request.GET)
@@ -23,7 +35,7 @@ def get_list(request):
         if query:
             return Instrument.objects.search_by_text(query)
 
-        return form.get_search_queryset(Instrument.objects.all())
+        return form.get_search_queryset(Instrument.objects.query_without_embeddings().all())
     
     images_prefetch = Prefetch(
         'images',
@@ -34,7 +46,9 @@ def get_list(request):
         queryset=Lot.objects.select_related('auction'),
         to_attr='prefetched_lot')
     
-    paginator = Paginator(build_query_set().prefetch_related(
+    paginator = Paginator(build_query_set().exclude(
+        is_new=True
+    ).prefetch_related(
         auction_lot_prefetch,
         images_prefetch
     ).select_related('brand'), DEFAULT_PAGE_SIZE)
@@ -84,7 +98,7 @@ def create_instrument(request):
             instrument = form.save()
             messages.success(
                 request,
-                _('Instrument "%(instrument)s" created. Now you can add photos.') % {'instrument': instrument}
+                _('Instrument "%(instrument)s" created as draft. Now you can add photos.') % {'instrument': instrument}
             )
             return redirect('catalog:edit_instrument', id=instrument.id)
     else:
@@ -202,6 +216,11 @@ def edit_brand(request, id):
 @require_POST
 def upload_instrument_image(request, instrument_id):
     instrument = get_object_or_404(Instrument, id=instrument_id)
+    if is_instrument_edit_locked(instrument):
+        return JsonResponse({
+            'status': 'error',
+            'message': instrument_edit_lock_message(instrument),
+        }, status=400)
     images = request.FILES.getlist('images')
     
     if images:
@@ -220,6 +239,11 @@ def upload_instrument_image(request, instrument_id):
 @require_POST
 def set_primary_image(request, image_id):
     image = get_object_or_404(InstrumentImage, id=image_id)
+    if is_instrument_edit_locked(image.instrument):
+        return JsonResponse({
+            'status': 'error',
+            'message': instrument_edit_lock_message(image.instrument),
+        }, status=400)
     
     InstrumentImage.objects.filter(instrument=image.instrument).update(is_primary=False)
     
@@ -238,6 +262,11 @@ def set_primary_image(request, image_id):
 def delete_instrument_image(request, image_id):
     image = get_object_or_404(InstrumentImage, id=image_id)
     instrument = image.instrument
+    if is_instrument_edit_locked(instrument):
+        return JsonResponse({
+            'status': 'error',
+            'message': instrument_edit_lock_message(instrument),
+        }, status=400)
     
     if instrument.images.count() <= 1:
         return JsonResponse({
@@ -261,6 +290,9 @@ def delete_instrument_image(request, image_id):
 @require_http_methods(['GET', 'POST'])
 def edit_instrument(request, id):
     instrument = get_object_or_404(Instrument, pk=id)
+    if is_instrument_edit_locked(instrument):
+        messages.error(request, instrument_edit_lock_message(instrument))
+        return redirect('catalog:get_details', id=instrument.id)
     images = instrument.images.all().order_by('-is_primary', 'id')
 
     if request.method == 'POST':
@@ -269,7 +301,7 @@ def edit_instrument(request, id):
             form.save()
             messages.success(
                 request,
-                _('Instrument "%(instrument)s" updated.') % {'instrument': instrument}
+                _('Instrument "%(instrument)s" updated and moved to draft review.') % {'instrument': instrument}
             )
             return redirect('catalog:get_details', id=instrument.id)
     else:
@@ -281,3 +313,21 @@ def edit_instrument(request, id):
         'instrument': instrument,
         'title': _('Edit %(instrument)s') % {'instrument': instrument}
     })
+
+
+@login_required
+@user_passes_test(is_staff)
+@require_POST
+def publish_instrument(request, id):
+    instrument = get_object_or_404(Instrument, pk=id)
+    if is_instrument_edit_locked(instrument):
+        messages.error(request, instrument_edit_lock_message(instrument))
+        return redirect('catalog:get_details', id=instrument.id)
+    instrument.is_draft = False
+    instrument.save(update_fields=['is_draft', 'is_new', 'updated_at'])
+
+    messages.success(
+        request,
+        _('Instrument "%(instrument)s" is now published.') % {'instrument': instrument}
+    )
+    return redirect('catalog:edit_instrument', id=instrument.id)

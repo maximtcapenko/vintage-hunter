@@ -7,6 +7,21 @@
     <div class="card shadow-sm border-0" style="border-radius: 12px;">
       <div class="card-body p-4">
         <h3 class="card-title mb-4 fw-bold">{% trans "Complete Your Purchase" %}</h3>
+
+        <div class="alert alert-warning border-0 mb-4">
+          <div class="d-flex justify-content-between align-items-center gap-3">
+            <div>
+              <div class="small fw-bold text-uppercase text-muted">{% trans "Reservation expires in" %}</div>
+              <div class="h5 fw-bold mb-0" id="reservation-countdown">--:--</div>
+            </div>
+            <div class="small text-muted text-end">
+              {% blocktrans with minutes=reservation_minutes %}Reserved for {{ minutes }} minutes{% endblocktrans %}
+            </div>
+          </div>
+          <div class="small text-muted mt-2">
+            {% trans "This checkout session is reserved for you for a limited time." %}
+          </div>
+        </div>
         
         <div class="d-flex align-items-center mb-4 p-3 bg-light rounded">
           {% if instrument.primary_image %}
@@ -21,6 +36,7 @@
 
         <form method="post" novalidate>
           {% csrf_token %}
+          <input type="hidden" name="order_id" value="{{ order.id }}">
           
           {% for field in form %}
             <div class="mb-3">
@@ -35,7 +51,7 @@
           {% endfor %}
 
           <div class="d-grid gap-2 mt-4">
-            <button type="submit" class="btn btn-dark py-2 fw-bold">{% trans "PAY NOW" %}</button>
+            <button type="submit" class="btn btn-dark py-2 fw-bold" id="pay-now-button">{% trans "PAY NOW" %}</button>
             <a href="{% url 'catalog:get_details' instrument.id %}" class="btn btn-outline-secondary py-2 small">{% trans "CANCEL" %}</a>
           </div>
         </form>
@@ -50,4 +66,30 @@
     </div>
   </div>
 </div>
+
+<script>
+  {% translate "Expired" as expired_label %}
+  const reservationExpiresAt = "{{ order.expires_at|date:'c' }}";
+  const expiredLabel = "{{ expired_label|escapejs }}";
+  const countdownElement = document.getElementById('reservation-countdown');
+  const payNowButton = document.getElementById('pay-now-button');
+
+  function updateReservationCountdown() {
+    const diff = new Date(reservationExpiresAt).getTime() - Date.now();
+
+    if (diff <= 0) {
+      countdownElement.textContent = expiredLabel;
+      payNowButton.disabled = true;
+      return;
+    }
+
+    const totalSeconds = Math.floor(diff / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    countdownElement.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+  }
+
+  updateReservationCountdown();
+  setInterval(updateReservationCountdown, 1000);
+</script>
 {% endblock %}
