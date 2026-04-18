@@ -48,6 +48,10 @@ class Auction(Base):
         from django.utils import timezone
         return self.status == 'scheduled' and timezone.now() < self.registration_deadline
     
+    @property
+    def has_begun(self):
+        return self.status in ['active', 'ended', 'cancelled']
+
     def __str__(self):
         return self.title
 

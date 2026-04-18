@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vintage_hunter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-16 17:00+0000\n"
+"POT-Creation-Date: 2026-04-18 09:27+0000\n"
 "PO-Revision-Date: 2026-04-17 17:05+0000\n"
 "Last-Translator: OpenAI\n"
 "Language-Team: Ukrainian\n"
@@ -15,40 +15,40 @@ msgstr ""
 "100 > 14) ? 1 : n % 1 == 0 && (n % 10 == 0 || (n % 10 >= 5 && n % 10 <= 9) "
 "|| (n % 100 >= 11 && n % 100 <= 14)) ? 2 : 3);\n"
 
-#: auction/forms.py:14
+#: auction/forms.py:12
 msgid "Participant"
 msgstr "Учасник"
 
-#: auction/forms.py:15 auction/forms.py:37
+#: auction/forms.py:13 auction/forms.py:35
 #: auction/templates/auction_details.html:116
 msgid "Status"
 msgstr "Статус"
 
-#: auction/forms.py:35
+#: auction/forms.py:33
 msgid "Title"
 msgstr "Назва"
 
-#: auction/forms.py:36 catalog/forms.py:44 catalog/forms.py:75
+#: auction/forms.py:34 catalog/forms.py:44 catalog/forms.py:80
 #: catalog/templates/catalog/category_form.html:23
 #: catalog/templates/catalog/category_list.html:20
-#: catalog/templates/instrument_form.html:148 users/forms.py:45
+#: catalog/templates/instrument_form.html:205 users/forms.py:45
 #: users/templates/collection_list.html:154
 msgid "Description"
 msgstr "Опис"
 
-#: auction/forms.py:38
+#: auction/forms.py:36
 msgid "Starts at"
 msgstr "Початок"
 
-#: auction/forms.py:39
+#: auction/forms.py:37
 msgid "Ends at"
 msgstr "Завершення"
 
-#: auction/forms.py:40
+#: auction/forms.py:38
 msgid "Registration deadline"
 msgstr "Крайній термін реєстрації"
 
-#: auction/forms.py:70
+#: auction/forms.py:69
 msgid ""
 "Cannot schedule an auction without any lots. Please add at least one lot "
 "first."
@@ -56,35 +56,35 @@ msgstr ""
 "Неможливо запланувати аукціон без лотів. Будь ласка, спочатку додайте хоча б "
 "один лот."
 
-#: auction/forms.py:83
+#: auction/forms.py:82
 msgid "Lot number"
 msgstr "Номер лота"
 
-#: auction/forms.py:84
+#: auction/forms.py:83
 msgid "Starting price"
 msgstr "Стартова ціна"
 
-#: auction/forms.py:85
+#: auction/forms.py:84
 msgid "Reserve price"
 msgstr "Резервна ціна"
 
-#: auction/forms.py:86
+#: auction/forms.py:85
 msgid "Low estimate"
 msgstr "Нижня оцінка"
 
-#: auction/forms.py:87
+#: auction/forms.py:86
 msgid "High estimate"
 msgstr "Верхня оцінка"
 
-#: auction/forms.py:98
+#: auction/forms.py:97
 msgid "Search instruments"
 msgstr "Пошук інструментів"
 
-#: auction/forms.py:99
+#: auction/forms.py:98
 msgid "Search by title, brand, or year..."
 msgstr "Шукайте за назвою, брендом або роком..."
 
-#: auction/models.py:22
+#: auction/models.py:22 catalog/templates/instrument_form.html:83
 msgid "Draft"
 msgstr "Чернетка"
 
@@ -117,11 +117,12 @@ msgid "Closes"
 msgstr "Завершення"
 
 #: auction/templates/auction_details.html:97
+#: catalog/templates/instrument_details.html:265
 msgid "MANAGE AUCTION"
 msgstr "КЕРУВАТИ АУКЦІОНОМ"
 
 #: auction/templates/auction_details.html:108
-#: auction/templates/auction_manage.html:139
+#: auction/templates/auction_manage.html:147
 msgid "Total Lots"
 msgstr "Усього лотів"
 
@@ -146,38 +147,50 @@ msgstr "Реєстрація на цей аукціон закрита."
 msgid "LOT %(lot_number)s"
 msgstr "ЛОТ %(lot_number)s"
 
-#: auction/templates/auction_details.html:159
+#: auction/templates/auction_details.html:160
+#: catalog/templates/instrument_details.html:221
+#: catalog/templates/instruments_list.html:223
+#: users/templates/collection_details.html:135
+msgid "UNDER REVIEW"
+msgstr "НА ПЕРЕВІРЦІ"
+
+#: auction/templates/auction_details.html:165
 #, python-format
 msgid "EST: $%(min_price)s – $%(max_price)s"
 msgstr "ОЦІНКА: $%(min_price)s – $%(max_price)s"
 
-#: auction/templates/auction_details.html:164
+#: auction/templates/auction_details.html:170
 msgid "Current Bid"
 msgstr "Поточна ставка"
 
 #: auction/templates/auction_details.html:179
+msgid "LOCKED FOR REVIEW"
+msgstr "ЗАБЛОКОВАНО НА ПЕРЕВІРКУ"
+
+#: auction/templates/auction_details.html:191
 msgid "BID"
 msgstr "СТАВКА"
 
-#: auction/templates/auction_details.html:190
-#: auction/templates/auction_manage.html:122
+#: auction/templates/auction_details.html:202
+#: auction/templates/auction_manage.html:128
 msgid "No lots have been added to this auction yet."
 msgstr "До цього аукціону ще не додано жодного лота."
 
-#: auction/templates/auction_details.html:197
-#: catalog/templates/instruments_list.html:165
+#: auction/templates/auction_details.html:209
+#: catalog/templates/instruments_list.html:217
+#: users/templates/collection_details.html:129
 msgid "SOLD"
 msgstr "ПРОДАНО"
 
-#: auction/templates/auction_form.html:35
-#: auction/templates/auction_manage.html:106 auction/templates/lot_form.html:86
+#: auction/templates/auction_form.html:46
+#: auction/templates/auction_manage.html:112 auction/templates/lot_form.html:86
 #: catalog/templates/catalog/brand_form.html:40
 #: catalog/templates/catalog/category_form.html:31
 #: users/templates/collection_list.html:163
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: auction/templates/auction_form.html:36
+#: auction/templates/auction_form.html:47
 msgid "Save Auction"
 msgstr "Зберегти аукціон"
 
@@ -249,49 +262,53 @@ msgstr "Публічний вигляд"
 msgid "Auction Lots"
 msgstr "Лоти аукціону"
 
-#: auction/templates/auction_manage.html:44
+#: auction/templates/auction_manage.html:45
 #: auction/templates/lot_add_select.html:13
 msgid "Add Lot"
 msgstr "Додати лот"
 
-#: auction/templates/auction_manage.html:51
+#: auction/templates/auction_manage.html:53
 msgid "Lot"
 msgstr "Лот"
 
-#: auction/templates/auction_manage.html:52 payments/templates/success.html:20
+#: auction/templates/auction_manage.html:54 payments/templates/success.html:20
 msgid "Instrument"
 msgstr "Інструмент"
 
-#: auction/templates/auction_manage.html:53
-#: catalog/templates/instruments_list.html:178
+#: auction/templates/auction_manage.html:55
+#: catalog/templates/instruments_list.html:248
 msgid "Starting Price"
 msgstr "Стартова ціна"
 
-#: auction/templates/auction_manage.html:54
+#: auction/templates/auction_manage.html:56
 msgid "Estimates"
 msgstr "Оцінки"
 
-#: auction/templates/auction_manage.html:55
+#: auction/templates/auction_manage.html:57
 #: catalog/templates/catalog/brand_list.html:22
 #: catalog/templates/catalog/category_list.html:21
 msgid "Actions"
 msgstr "Дії"
 
-#: auction/templates/auction_manage.html:86
+#: auction/templates/auction_manage.html:89
 msgid "Edit Lot"
 msgstr "Редагувати лот"
 
-#: auction/templates/auction_manage.html:90
-#: auction/templates/auction_manage.html:109
+#: auction/templates/auction_manage.html:93
+#: auction/templates/auction_manage.html:115
 msgid "Remove Lot"
 msgstr "Видалити лот"
 
-#: auction/templates/auction_manage.html:103
+#: auction/templates/auction_manage.html:98
+msgid "Locked"
+msgstr "Заблоковано"
+
+#: auction/templates/auction_manage.html:109
 #, python-format
 msgid "Remove Lot #%(lot_number)s?"
 msgstr "Видалити лот #%(lot_number)s?"
 
-#: auction/templates/auction_manage.html:104
+#: auction/templates/auction_manage.html:110
 msgid ""
 "This will remove the instrument from the auction. The instrument will become "
 "available for other auctions or direct sale."
@@ -299,27 +316,27 @@ msgstr ""
 "Це видалить інструмент з аукціону. Інструмент знову стане доступним для "
 "інших аукціонів або прямого продажу."
 
-#: auction/templates/auction_manage.html:124
+#: auction/templates/auction_manage.html:131
 msgid "Add your first lot"
 msgstr "Додайте перший лот"
 
-#: auction/templates/auction_manage.html:137
+#: auction/templates/auction_manage.html:145
 msgid "Auction Summary"
 msgstr "Підсумок аукціону"
 
-#: auction/templates/auction_manage.html:143
+#: auction/templates/auction_manage.html:151
 msgid "Total Value (Low Est.)"
 msgstr "Загальна вартість (нижня оцінка)"
 
-#: auction/templates/auction_manage.html:147
+#: auction/templates/auction_manage.html:155
 msgid "Participants"
 msgstr "Учасники"
 
-#: auction/templates/auction_manage.html:151
+#: auction/templates/auction_manage.html:159
 msgid "Quick Help"
 msgstr "Швидка підказка"
 
-#: auction/templates/auction_manage.html:152
+#: auction/templates/auction_manage.html:160
 msgid ""
 "Draft auctions are only visible to staff. Set status to Scheduled to make it "
 "visible to users, or Active to begin bidding."
@@ -328,11 +345,11 @@ msgstr ""
 "«Заплановано», щоб зробити аукціон видимим для користувачів, або «Активний», "
 "щоб розпочати торги."
 
-#: auction/templates/auction_manage.html:158
+#: auction/templates/auction_manage.html:166
 msgid "Quick Status Action"
 msgstr "Швидка зміна статусу"
 
-#: auction/templates/auction_manage.html:162
+#: auction/templates/auction_manage.html:170
 msgid ""
 "Need to change status quickly? Use the edit page for full control over "
 "timing and status."
@@ -340,7 +357,7 @@ msgstr ""
 "Потрібно швидко змінити статус? Скористайтеся сторінкою редагування для "
 "повного керування часом і статусом."
 
-#: auction/templates/auction_manage.html:163
+#: auction/templates/auction_manage.html:171
 msgid "Update Auction Settings"
 msgstr "Оновити налаштування аукціону"
 
@@ -430,9 +447,14 @@ msgstr "Верхня оцінка ($)"
 msgid "Confirm Lot Details"
 msgstr "Підтвердити параметри лота"
 
-#: auction/views.py:46
+#: auction/views.py:43
 msgid "Auction not found."
 msgstr "Аукціон не знайдено."
+
+#: auction/views.py:59
+msgid "This instrument is under review and bidding is temporarily locked."
+msgstr ""
+"Цей інструмент перебуває на перевірці, тому ставки тимчасово заблоковані."
 
 #: auction/views.py:63
 msgid "You must register for this auction to bid."
@@ -487,31 +509,43 @@ msgstr "Аукціон \"%(auction)s\" оновлено."
 msgid "Edit Auction: %(auction)s"
 msgstr "Редагувати аукціон: %(auction)s"
 
-#: auction/views.py:216
+#: auction/views.py:178 auction/views.py:214
+msgid "Cannot add lots after auction has begun."
+msgstr "Неможливо додавати лоти після початку аукціону."
+
+#: auction/views.py:235
 #, python-format
 msgid "Lot added: %(instrument)s"
 msgstr "Лот додано: %(instrument)s"
 
-#: auction/views.py:232
+#: auction/views.py:251
 msgid "Configure Lot Details"
 msgstr "Налаштувати параметри лота"
 
-#: auction/views.py:248
+#: auction/views.py:260
+msgid "Cannot edit lots after auction has begun."
+msgstr "Неможливо редагувати лоти після початку аукціону."
+
+#: auction/views.py:271
 #, python-format
 msgid "Lot %(lot_number)s updated."
 msgstr "Лот %(lot_number)s оновлено."
 
-#: auction/views.py:258
+#: auction/views.py:281
 #, python-format
 msgid "Edit Lot %(lot_number)s"
 msgstr "Редагувати лот %(lot_number)s"
 
-#: auction/views.py:270
+#: auction/views.py:291
+msgid "Cannot delete lots after auction has begun."
+msgstr "Неможливо видаляти лоти після початку аукціону."
+
+#: auction/views.py:297
 msgid "Lot removed from auction."
 msgstr "Лот видалено з аукціону."
 
 #: catalog/forms.py:14 catalog/forms.py:35
-#: catalog/templates/instrument_form.html:94
+#: catalog/templates/instrument_form.html:116
 #: users/templates/purchase_details.html:44
 msgid "Category"
 msgstr "Категорія"
@@ -520,12 +554,12 @@ msgstr "Категорія"
 msgid "Instrument title"
 msgstr "Назва інструмента"
 
-#: catalog/forms.py:36 catalog/templates/instrument_details.html:297
-#: catalog/templates/instrument_form.html:99
+#: catalog/forms.py:36 catalog/templates/instrument_details.html:318
+#: catalog/templates/instrument_form.html:126
 msgid "Brand"
 msgstr "Бренд"
 
-#: catalog/forms.py:37 catalog/templates/instrument_form.html:104
+#: catalog/forms.py:37 catalog/templates/instrument_form.html:136
 msgid "Year"
 msgstr "Рік"
 
@@ -533,7 +567,7 @@ msgstr "Рік"
 msgid "Serial number"
 msgstr "Серійний номер"
 
-#: catalog/forms.py:39 catalog/templates/instrument_form.html:119
+#: catalog/forms.py:39 catalog/templates/instrument_form.html:166
 msgid "Condition"
 msgstr "Стан"
 
@@ -549,7 +583,7 @@ msgstr "Має ремонти"
 msgid "Concert ready"
 msgstr "Готовий до виступів"
 
-#: catalog/forms.py:43 catalog/templates/instruments_list.html:178
+#: catalog/forms.py:43 catalog/templates/instruments_list.html:248
 msgid "Price"
 msgstr "Ціна"
 
@@ -557,19 +591,19 @@ msgstr "Ціна"
 msgid "Technical specifications"
 msgstr "Технічні характеристики"
 
-#: catalog/forms.py:74
+#: catalog/forms.py:79
 msgid "Category name"
 msgstr "Назва категорії"
 
-#: catalog/forms.py:91
+#: catalog/forms.py:96
 msgid "Brand name"
 msgstr "Назва бренду"
 
-#: catalog/forms.py:92
+#: catalog/forms.py:97
 msgid "Origin country"
 msgstr "Країна походження"
 
-#: catalog/forms.py:93 catalog/templates/catalog/brand_form.html:31
+#: catalog/forms.py:98 catalog/templates/catalog/brand_form.html:31
 #: catalog/templates/catalog/brand_list.html:21
 msgid "History"
 msgstr "Історія"
@@ -610,7 +644,7 @@ msgstr "Коротка історія для контексту."
 msgid "Save Brand"
 msgstr "Зберегти бренд"
 
-#: catalog/templates/catalog/brand_list.html:8 templates/base.html:341
+#: catalog/templates/catalog/brand_list.html:8 templates/base.html:350
 msgid "Manage Brands"
 msgstr "Керування брендами"
 
@@ -645,7 +679,7 @@ msgstr "Назва категорії"
 msgid "Save Category"
 msgstr "Зберегти категорію"
 
-#: catalog/templates/catalog/category_list.html:8 templates/base.html:336
+#: catalog/templates/catalog/category_list.html:8 templates/base.html:345
 msgid "Manage Categories"
 msgstr "Керування категоріями"
 
@@ -682,152 +716,189 @@ msgstr "Вид %(counter)s"
 msgid "Historical Context & Description"
 msgstr "Історичний контекст і опис"
 
-#: catalog/templates/instrument_details.html:220
+#: catalog/templates/instrument_details.html:223
 #, python-format
 msgid "ID: #%(instrument_id)s"
 msgstr "ID: #%(instrument_id)s"
 
-#: catalog/templates/instrument_details.html:224
+#: catalog/templates/instrument_details.html:227
 msgid "Authored by Vintage Tone Curators"
 msgstr "Підготовлено кураторами Vintage Tone"
 
-#: catalog/templates/instrument_details.html:230
-#: catalog/templates/instruments_list.html:156
+#: catalog/templates/instrument_details.html:231
+msgid ""
+"This instrument remains visible while the latest edits are under review. "
+"Purchasing and bidding stay locked until it is published again."
+msgstr ""
+"Цей інструмент залишається видимим, поки останні зміни проходять перевірку. "
+"Купівля та ставки заблоковані, доки його не буде опубліковано знову."
+
+#: catalog/templates/instrument_details.html:239
+#: catalog/templates/instruments_list.html:230
 msgid "REGISTRATION OPEN"
 msgstr "РЕЄСТРАЦІЯ ВІДКРИТА"
 
-#: catalog/templates/instrument_details.html:232
+#: catalog/templates/instrument_details.html:241
 msgid "AUCTION"
 msgstr "АУКЦІОН"
 
-#: catalog/templates/instrument_details.html:239
+#: catalog/templates/instrument_details.html:250
 msgid "INSTRUMENT SOLD"
 msgstr "ІНСТРУМЕНТ ПРОДАНО"
 
-#: catalog/templates/instrument_details.html:242
+#: catalog/templates/instrument_details.html:252
+msgid "TEMPORARILY UNAVAILABLE"
+msgstr "ТИМЧАСОВО НЕДОСТУПНО"
+
+#: catalog/templates/instrument_details.html:255
 msgid "REGISTER FOR AUCTION"
 msgstr "ЗАРЕЄСТРУВАТИСЯ НА АУКЦІОН"
 
-#: catalog/templates/instrument_details.html:244
+#: catalog/templates/instrument_details.html:257
 msgid "VIEW IN AUCTION"
 msgstr "ПЕРЕГЛЯНУТИ НА АУКЦІОНІ"
 
-#: catalog/templates/instrument_details.html:247
+#: catalog/templates/instrument_details.html:260
 msgid "PURCHASE INSTRUMENT"
 msgstr "ПРИДБАТИ ІНСТРУМЕНТ"
 
-#: catalog/templates/instrument_details.html:251
+#: catalog/templates/instrument_details.html:266
+msgid "EDIT LOCKED IN AUCTION"
+msgstr "РЕДАГУВАННЯ ЗАБЛОКОВАНЕ НА АУКЦІОНІ"
+
+#: catalog/templates/instrument_details.html:268
+msgid "CHECKOUT IN PROGRESS"
+msgstr "ОФОРМЛЕННЯ ПОКУПКИ ТРИВАЄ"
+
+#: catalog/templates/instrument_details.html:269
+msgid "EDIT LOCKED DURING CHECKOUT"
+msgstr "РЕДАГУВАННЯ ЗАБЛОКОВАНЕ ПІД ЧАС ОФОРМЛЕННЯ"
+
+#: catalog/templates/instrument_details.html:271
 msgid "EDIT CATALOG ENTRY"
 msgstr "РЕДАГУВАТИ ЗАПИС У КАТАЛОЗІ"
 
-#: catalog/templates/instrument_details.html:261
-#: catalog/templates/instrument_details.html:333
+#: catalog/templates/instrument_details.html:282
+#: catalog/templates/instrument_details.html:354
 msgid "CURATED FAVORITE"
 msgstr "У ДОБІРЦІ"
 
-#: catalog/templates/instrument_details.html:261
-#: catalog/templates/instrument_details.html:334
+#: catalog/templates/instrument_details.html:282
+#: catalog/templates/instrument_details.html:355
 msgid "ADD TO COLLECTION"
 msgstr "ДОДАТИ ДО КОЛЕКЦІЇ"
 
-#: catalog/templates/instrument_details.html:265
-#: catalog/templates/instruments_list.html:135
+#: catalog/templates/instrument_details.html:286
+#: catalog/templates/instruments_list.html:196
 msgid "Select Curations"
 msgstr "Виберіть добірки"
 
-#: catalog/templates/instrument_details.html:279
+#: catalog/templates/instrument_details.html:300
 msgid "Create new curation..."
 msgstr "Створити нову добірку..."
 
-#: catalog/templates/instrument_details.html:290
+#: catalog/templates/instrument_details.html:311
 msgid "INQUIRE FOR DETAILS"
 msgstr "ЗАПИТАТИ ДЕТАЛІ"
 
-#: catalog/templates/instrument_details.html:294
-#: catalog/templates/instrument_form.html:142
+#: catalog/templates/instrument_details.html:315
+#: catalog/templates/instrument_form.html:194
 msgid "Technical Specifications"
 msgstr "Технічні характеристики"
 
-#: catalog/templates/instrument_details.html:301
-#: catalog/templates/instrument_form.html:109
+#: catalog/templates/instrument_details.html:322
+#: catalog/templates/instrument_form.html:146
 #: users/templates/purchase_details.html:48
 msgid "Serial Number"
 msgstr "Серійний номер"
 
-#: catalog/templates/instrument_details.html:313
+#: catalog/templates/instrument_details.html:334
 msgid "AI Curated: Visually Similar"
 msgstr "Добірка AI: візуально схожі"
 
-#: catalog/templates/instrument_details.html:332
+#: catalog/templates/instrument_details.html:353
 msgid "Default"
 msgstr "За замовчуванням"
 
-#: catalog/templates/instrument_form.html:84
+#: catalog/templates/instrument_form.html:80
+msgid "New"
+msgstr "Нове"
+
+#: catalog/templates/instrument_form.html:90
+msgid ""
+"This entry stays visible to visitors as under review. Save changes first if "
+"needed, then publish the latest saved version."
+msgstr ""
+"Цей запис залишається видимим для відвідувачів зі статусом «на перевірці». "
+"За потреби спочатку збережіть зміни, а потім опублікуйте останню збережену "
+"версію."
+
+#: catalog/templates/instrument_form.html:101
 msgid "Instrument Details"
 msgstr "Дані інструмента"
 
-#: catalog/templates/instrument_form.html:89
+#: catalog/templates/instrument_form.html:106
 msgid "Instrument Title"
 msgstr "Назва інструмента"
 
-#: catalog/templates/instrument_form.html:114
+#: catalog/templates/instrument_form.html:156
 msgid "Price ($)"
 msgstr "Ціна ($)"
 
-#: catalog/templates/instrument_form.html:127
+#: catalog/templates/instrument_form.html:179
 msgid "All Original"
 msgstr "Усе оригінальне"
 
-#: catalog/templates/instrument_form.html:131
+#: catalog/templates/instrument_form.html:183
 msgid "Has Repairs"
 msgstr "Має ремонти"
 
-#: catalog/templates/instrument_form.html:135
+#: catalog/templates/instrument_form.html:187
 msgid "Concert Ready"
 msgstr "Готовий до виступів"
 
-#: catalog/templates/instrument_form.html:158
+#: catalog/templates/instrument_form.html:220
 msgid "Gallery Manager"
 msgstr "Керування галереєю"
 
-#: catalog/templates/instrument_form.html:166
+#: catalog/templates/instrument_form.html:228
 msgid "Add Photo"
 msgstr "Додати фото"
 
-#: catalog/templates/instrument_form.html:174
+#: catalog/templates/instrument_form.html:236
 msgid "Uploading images..."
 msgstr "Завантаження зображень..."
 
-#: catalog/templates/instrument_form.html:184
-#: catalog/templates/instrument_form.html:238
+#: catalog/templates/instrument_form.html:246
+#: catalog/templates/instrument_form.html:318
 #: users/templates/collection_list.html:93
 msgid "Primary"
 msgstr "Основне"
 
-#: catalog/templates/instrument_form.html:188
+#: catalog/templates/instrument_form.html:250
 msgid "Instrument View"
 msgstr "Зображення інструмента"
 
-#: catalog/templates/instrument_form.html:195
-#: catalog/templates/instrument_form.html:236
+#: catalog/templates/instrument_form.html:257
+#: catalog/templates/instrument_form.html:316
 msgid "ACTIVE"
 msgstr "АКТИВНЕ"
 
-#: catalog/templates/instrument_form.html:195
-#: catalog/templates/instrument_form.html:237
+#: catalog/templates/instrument_form.html:257
+#: catalog/templates/instrument_form.html:317
 msgid "SET PRIMARY"
 msgstr "ЗРОБИТИ ОСНОВНИМ"
 
-#: catalog/templates/instrument_form.html:210
+#: catalog/templates/instrument_form.html:272
 msgid "Set the Primary image to determine the main catalog thumbnail."
 msgstr ""
 "Встановіть основне зображення, щоб визначити головну мініатюру в каталозі."
 
-#: catalog/templates/instrument_form.html:217
+#: catalog/templates/instrument_form.html:279
 msgid "Image Gallery"
 msgstr "Галерея зображень"
 
-#: catalog/templates/instrument_form.html:218
+#: catalog/templates/instrument_form.html:280
 msgid ""
 "You'll be able to upload and manage the instrument's gallery after the "
 "initial details are saved."
@@ -835,84 +906,99 @@ msgstr ""
 "Ви зможете завантажувати зображення та керувати галереєю інструмента після "
 "збереження основних даних."
 
-#: catalog/templates/instrument_form.html:226
+#: catalog/templates/instrument_form.html:289
+msgid ""
+"Publishing clears the draft flag without submitting any unsaved form changes."
+msgstr ""
+"Публікація знімає позначку чернетки без надсилання незбережених змін форми."
+
+#: catalog/templates/instrument_form.html:294
 msgid "Discard"
 msgstr "Відкинути"
 
-#: catalog/templates/instrument_form.html:227
+#: catalog/templates/instrument_form.html:297
+msgid "Publish to Catalog"
+msgstr "Опублікувати в каталозі"
+
+#: catalog/templates/instrument_form.html:300
 msgid "Save Instrument"
 msgstr "Зберегти інструмент"
 
-#: catalog/templates/instrument_form.html:239
+#: catalog/templates/instrument_form.html:319
 msgid "Are you sure you want to delete this image?"
 msgstr "Ви впевнені, що хочете видалити це зображення?"
 
-#: catalog/templates/instrument_form.html:240
+#: catalog/templates/instrument_form.html:320
 msgid "Delete failed."
 msgstr "Не вдалося видалити."
 
-#: catalog/templates/instruments_list.html:64
+#: catalog/templates/instruments_list.html:125
 msgid "AI Search"
 msgstr "AI-пошук"
 
-#: catalog/templates/instruments_list.html:65
+#: catalog/templates/instruments_list.html:126
 msgid "Describe the tone, era, or feel you're looking for."
 msgstr "Опишіть тон, епоху або характер звучання, які ви шукаєте."
 
-#: catalog/templates/instruments_list.html:69
+#: catalog/templates/instruments_list.html:130
 msgid "e.g. 'Warm 60s blues tone'"
 msgstr "напр. «Теплий блюзовий тон 60-х»"
 
-#: catalog/templates/instruments_list.html:72
+#: catalog/templates/instruments_list.html:133
 msgid "Find via LLM"
 msgstr "Знайти через LLM"
 
-#: catalog/templates/instruments_list.html:77
+#: catalog/templates/instruments_list.html:138
 msgid "Categories"
 msgstr "Категорії"
 
-#: catalog/templates/instruments_list.html:81
+#: catalog/templates/instruments_list.html:142
 msgid "All Instruments"
 msgstr "Усі інструменти"
 
-#: catalog/templates/instruments_list.html:95
+#: catalog/templates/instruments_list.html:156
 msgid "Vintage Collection"
 msgstr "Вінтажна колекція"
 
-#: catalog/templates/instruments_list.html:99
+#: catalog/templates/instruments_list.html:160
 msgid "ADD INSTRUMENT"
 msgstr "ДОДАТИ ІНСТРУМЕНТ"
 
-#: catalog/templates/instruments_list.html:104
+#: catalog/templates/instruments_list.html:165
 #, python-format
 msgid "Showing %(start)s–%(end)s of %(total)s"
 msgstr "Показано %(start)s–%(end)s з %(total)s"
 
-#: catalog/templates/instruments_list.html:106
+#: catalog/templates/instruments_list.html:167
 msgid "Showing 0 items"
 msgstr "Показано 0 елементів"
 
-#: catalog/templates/instruments_list.html:121
+#: catalog/templates/instruments_list.html:182
 msgid "No Image"
 msgstr "Немає зображення"
 
-#: catalog/templates/instruments_list.html:142
+#: catalog/templates/instruments_list.html:203
 msgid "New curation..."
 msgstr "Нова добірка..."
 
-#: catalog/templates/instruments_list.html:160
+#: catalog/templates/instruments_list.html:224
+#: users/templates/collection_details.html:136
+msgid "Temporarily unavailable"
+msgstr "Тимчасово недоступно"
+
+#: catalog/templates/instruments_list.html:234
 msgid "IN AUCTION"
 msgstr "НА АУКЦІОНІ"
 
-#: catalog/templates/instruments_list.html:182
+#: catalog/templates/instruments_list.html:252
 msgid "Details"
 msgstr "Деталі"
 
-#: catalog/templates/instruments_list.html:191
+#: catalog/templates/instruments_list.html:261
 msgid "The Vault is Currently Empty"
 msgstr "Сховище наразі порожнє"
 
-#: catalog/templates/instruments_list.html:193
+#: catalog/templates/instruments_list.html:263
 msgid ""
 "Our AI agents are currently scouting global markets for rare vintage finds. "
 "Try adjusting your filters or place a custom request."
@@ -920,85 +1006,111 @@ msgstr ""
 "Наші AI-агенти зараз відстежують світові ринки в пошуках рідкісних вінтажних "
 "знахідок. Спробуйте змінити фільтри або залишити індивідуальний запит."
 
-#: catalog/templates/instruments_list.html:196
+#: catalog/templates/instruments_list.html:266
 msgid "Clear All Filters"
 msgstr "Очистити всі фільтри"
 
-#: catalog/templates/instruments_list.html:198
+#: catalog/templates/instruments_list.html:268
 msgid "Custom Hunt Request"
 msgstr "Індивідуальний запит на пошук"
 
-#: catalog/views.py:77
-#, python-format
-msgid "Instrument \"%(instrument)s\" created. Now you can add photos."
-msgstr "Інструмент \"%(instrument)s\" створено. Тепер можна додати фото."
+#: catalog/views.py:19
+msgid ""
+"This instrument cannot be edited because it is already included in an "
+"auction."
+msgstr ""
+"Цей інструмент не можна редагувати, оскільки його вже включено до аукціону."
 
-#: catalog/views.py:85
+#: catalog/views.py:21
+msgid ""
+"This instrument cannot be edited because checkout is currently in progress."
+msgstr ""
+"Цей інструмент не можна редагувати, оскільки зараз триває оформлення покупки."
+
+#: catalog/views.py:22
+msgid "This instrument cannot be edited right now."
+msgstr "Цей інструмент зараз не можна редагувати."
+
+#: catalog/views.py:101
+#, python-format
+msgid "Instrument \"%(instrument)s\" created as draft. Now you can add photos."
+msgstr ""
+"Інструмент \"%(instrument)s\" створено як чернетку. Тепер ви можете додати "
+"фотографії."
+
+#: catalog/views.py:109
 msgid "Add New Instrument"
 msgstr "Додати новий інструмент"
 
-#: catalog/views.py:105
+#: catalog/views.py:129
 #, python-format
 msgid "Category \"%(category)s\" created."
 msgstr "Категорію \"%(category)s\" створено."
 
-#: catalog/views.py:113
+#: catalog/views.py:137
 msgid "Create New Category"
 msgstr "Створити нову категорію"
 
-#: catalog/views.py:127
+#: catalog/views.py:151
 #, python-format
 msgid "Category \"%(category)s\" updated."
 msgstr "Категорію \"%(category)s\" оновлено."
 
-#: catalog/views.py:136
+#: catalog/views.py:160
 #, python-format
 msgid "Edit Category: %(category)s"
 msgstr "Редагувати категорію: %(category)s"
 
-#: catalog/views.py:156
+#: catalog/views.py:180
 #, python-format
 msgid "Brand \"%(brand)s\" created."
 msgstr "Бренд \"%(brand)s\" створено."
 
-#: catalog/views.py:164
+#: catalog/views.py:188
 msgid "Create New Brand"
 msgstr "Створити новий бренд"
 
-#: catalog/views.py:178
+#: catalog/views.py:202
 #, python-format
 msgid "Brand \"%(brand)s\" updated."
 msgstr "Бренд \"%(brand)s\" оновлено."
 
-#: catalog/views.py:187
+#: catalog/views.py:211
 #, python-format
 msgid "Edit Brand: %(brand)s"
 msgstr "Редагувати бренд: %(brand)s"
 
-#: catalog/views.py:206
+#: catalog/views.py:235
 msgid "No images uploaded."
 msgstr "Зображення не завантажено."
 
-#: catalog/views.py:221
+#: catalog/views.py:255
 msgid "Image set as primary."
 msgstr "Зображення встановлено як основне."
 
-#: catalog/views.py:235
+#: catalog/views.py:274
 msgid ""
 "Cannot delete the last image. An instrument must have at least one photo."
 msgstr ""
 "Не можна видалити останнє зображення. Інструмент повинен мати щонайменше "
 "одне фото."
 
-#: catalog/views.py:262
+#: catalog/views.py:304
 #, python-format
-msgid "Instrument \"%(instrument)s\" updated."
-msgstr "Інструмент \"%(instrument)s\" оновлено."
+msgid "Instrument \"%(instrument)s\" updated and moved to draft review."
+msgstr ""
+"Інструмент \"%(instrument)s\" оновлено та переведено в чернетку для "
+"перевірки."
 
-#: catalog/views.py:272
+#: catalog/views.py:314
 #, python-format
 msgid "Edit %(instrument)s"
 msgstr "Редагувати %(instrument)s"
+
+#: catalog/views.py:331
+#, python-format
+msgid "Instrument \"%(instrument)s\" is now published."
+msgstr "Інструмент \"%(instrument)s\" опубліковано."
 
 #: payments/forms.py:7
 msgid "Card Number"
@@ -1016,15 +1128,16 @@ msgstr "CVV"
 msgid "Cardholder Name"
 msgstr "Ім'я власника картки"
 
-#: payments/models.py:10
+#: payments/models.py:16 users/templates/orders_list.html:45
 msgid "Pending"
 msgstr "Очікується"
 
-#: payments/models.py:11 users/templates/purchases_list.html:40
+#: payments/models.py:17 users/templates/orders_list.html:42
+#: users/templates/purchases_list.html:40
 msgid "Completed"
 msgstr "Завершено"
 
-#: payments/models.py:12
+#: payments/models.py:18 users/templates/orders_list.html:51
 msgid "Failed"
 msgstr "Помилка"
 
@@ -1056,17 +1169,34 @@ msgstr "НАЗАД ДО КАТАЛОГУ"
 msgid "Complete Your Purchase"
 msgstr "Завершіть покупку"
 
-#: payments/templates/purchase_form.html:38
+#: payments/templates/purchase_form.html:14 users/templates/orders_list.html:47
+msgid "Reservation expires in"
+msgstr "Резервування закінчиться через"
+
+#: payments/templates/purchase_form.html:18
+#, python-format
+msgid "Reserved for %(minutes)s minutes"
+msgstr "Зарезервовано на %(minutes)s хвилин"
+
+#: payments/templates/purchase_form.html:22
+msgid "This checkout session is reserved for you for a limited time."
+msgstr "Ця сесія оформлення покупки зарезервована для вас на обмежений час."
+
+#: payments/templates/purchase_form.html:54
 msgid "PAY NOW"
 msgstr "ОПЛАТИТИ ЗАРАЗ"
 
-#: payments/templates/purchase_form.html:39
+#: payments/templates/purchase_form.html:55
 msgid "CANCEL"
 msgstr "СКАСУВАТИ"
 
-#: payments/templates/purchase_form.html:48
+#: payments/templates/purchase_form.html:64
 msgid "Secure Encrypted Payment"
 msgstr "Безпечний зашифрований платіж"
+
+#: payments/templates/purchase_form.html:71 users/templates/orders_list.html:83
+msgid "Expired"
+msgstr "Час вийшов"
 
 #: payments/templates/success.html:11
 msgid "Purchase Successful!"
@@ -1100,15 +1230,38 @@ msgstr "Дата"
 msgid "CONTINUE BROWSING"
 msgstr "ПРОДОВЖИТИ ПЕРЕГЛЯД"
 
-#: payments/views.py:27
+#: payments/views.py:17
+msgid ""
+"This instrument is temporarily reserved by another buyer. Please try again "
+"shortly."
+msgstr ""
+"Цей інструмент тимчасово зарезервований іншим покупцем. Спробуйте ще раз "
+"трохи пізніше."
+
+#: payments/views.py:21
+msgid "Your purchase reservation expired. Please start checkout again."
+msgstr ""
+"Термін резервування для покупки закінчився. Будь ласка, почніть оформлення "
+"знову."
+
+#: payments/views.py:39 payments/views.py:109
 msgid "Sorry, this instrument has already been sold."
 msgstr "Вибачте, цей інструмент уже продано."
 
-#: payments/views.py:58
+#: payments/views.py:42 payments/views.py:112
+msgid "This instrument is no longer available for direct purchase."
+msgstr "Цей інструмент більше недоступний для прямої покупки."
+
+#: payments/views.py:45 payments/views.py:115
+msgid "This instrument is under review and cannot be purchased right now."
+msgstr ""
+"Цей інструмент перебуває на перевірці, тому зараз його не можна придбати."
+
+#: payments/views.py:98
 msgid "Payment failed."
 msgstr "Помилка оплати."
 
-#: payments/views.py:61
+#: payments/views.py:101 payments/views.py:137
 msgid "An error occurred during transaction: "
 msgstr "Під час транзакції сталася помилка: "
 
@@ -1141,33 +1294,37 @@ msgstr "Моя колекція"
 msgid "My Auctions"
 msgstr "Мої аукціони"
 
-#: templates/base.html:313 users/templates/purchase_details.html:9
+#: templates/base.html:313 users/templates/orders_list.html:9
+msgid "My Orders"
+msgstr "Мої замовлення"
+
+#: templates/base.html:322 users/templates/purchase_details.html:9
 #: users/templates/purchases_list.html:9
 msgid "My Purchases"
 msgstr "Мої покупки"
 
-#: templates/base.html:326
+#: templates/base.html:335
 msgid "Staff Tools"
 msgstr "Інструменти співробітника"
 
-#: templates/base.html:331
+#: templates/base.html:340
 msgid "Manage Auctions"
 msgstr "Керування аукціонами"
 
-#: templates/base.html:352
+#: templates/base.html:361
 msgid "Sign Out"
 msgstr "Вийти"
 
-#: templates/base.html:359 templates/signup.html:180
+#: templates/base.html:368 templates/signup.html:180
 msgid "Sign In"
 msgstr "Увійти"
 
-#: templates/base.html:383 users/templates/collection_list.html:145
+#: templates/base.html:392 users/templates/collection_list.html:145
 #: users/templates/profile.html:24
 msgid "Close"
 msgstr "Закрити"
 
-#: templates/base.html:391
+#: templates/base.html:400
 msgid "© 2026 Vintage Tone Marketplace. Expertly Curated Vintage Gear."
 msgstr ""
 "© 2026 Vintage Tone Marketplace. Експертно відібрані вінтажні інструменти."
@@ -1335,11 +1492,11 @@ msgstr "Назва колекції (наприклад, Мої улюблені
 msgid "Optional description..."
 msgstr "Необов’язковий опис..."
 
-#: users/templates/collection_details.html:31
+#: users/templates/collection_details.html:81
 msgid "Collections"
 msgstr "Колекції"
 
-#: users/templates/collection_details.html:37
+#: users/templates/collection_details.html:87
 #, python-format
 msgid "%(instrument_count)s Instrument"
 msgid_plural "%(instrument_count)s Instruments"
@@ -1348,28 +1505,28 @@ msgstr[1] "%(instrument_count)s інструменти"
 msgstr[2] "%(instrument_count)s інструментів"
 msgstr[3] "%(instrument_count)s інструмента"
 
-#: users/templates/collection_details.html:45
+#: users/templates/collection_details.html:95
 msgid "Add More"
 msgstr "Додати ще"
 
-#: users/templates/collection_details.html:85
+#: users/templates/collection_details.html:150
 msgid "Estimated Value"
 msgstr "Орієнтовна вартість"
 
-#: users/templates/collection_details.html:88
+#: users/templates/collection_details.html:153
 #: users/templates/purchases_list.html:43
 msgid "View Details"
 msgstr "Переглянути деталі"
 
-#: users/templates/collection_details.html:99
+#: users/templates/collection_details.html:164
 msgid "This collection is empty"
 msgstr "Ця колекція порожня"
 
-#: users/templates/collection_details.html:100
+#: users/templates/collection_details.html:165
 msgid "Your curated collections are best when filled with legendary gear."
 msgstr "Ваші добірки найкращі, коли в них є легендарні інструменти."
 
-#: users/templates/collection_details.html:101
+#: users/templates/collection_details.html:166
 msgid "Open Catalog"
 msgstr "Відкрити каталог"
 
@@ -1435,6 +1592,50 @@ msgstr "Встановити як основну колекцію (за замо
 #: users/templates/collection_list.html:164
 msgid "Create Collection"
 msgstr "Створити колекцію"
+
+#: users/templates/orders_list.html:10
+msgid "Checkout attempts, active reservations, and completed purchases."
+msgstr "Спроби оформлення, активні резервування та завершені покупки."
+
+#: users/templates/orders_list.html:35 users/templates/purchases_list.html:34
+msgid "Order #"
+msgstr "Замовлення №"
+
+#: users/templates/orders_list.html:43
+msgid "Purchase finished successfully."
+msgstr "Покупку успішно завершено."
+
+#: users/templates/orders_list.html:52
+msgid "Checkout was not completed."
+msgstr "Оформлення замовлення не було завершене."
+
+#: users/templates/orders_list.html:58
+msgid "View Receipt"
+msgstr "Переглянути квитанцію"
+
+#: users/templates/orders_list.html:60
+msgid "Resume Checkout"
+msgstr "Продовжити оформлення"
+
+#: users/templates/orders_list.html:62
+msgid "Try Again"
+msgstr "Спробувати ще раз"
+
+#: users/templates/orders_list.html:73
+msgid "No orders yet"
+msgstr "Замовлень ще немає"
+
+#: users/templates/orders_list.html:74
+msgid ""
+"Your checkout activity will appear here once you start reserving or "
+"purchasing instruments."
+msgstr ""
+"Тут з’явиться ваша активність з оформлення замовлень, щойно ви почнете "
+"резервувати або купувати інструменти."
+
+#: users/templates/orders_list.html:75 users/templates/purchases_list.html:55
+msgid "Browse Catalog"
+msgstr "Переглянути каталог"
 
 #: users/templates/profile.html:4
 msgid "My Profile - Vintage Tone"
@@ -1505,10 +1706,6 @@ msgstr "Переглянути в каталозі"
 msgid "History of your acquired vintage instruments."
 msgstr "Історія ваших придбаних вінтажних інструментів."
 
-#: users/templates/purchases_list.html:34
-msgid "Order #"
-msgstr "Замовлення №"
-
 #: users/templates/purchases_list.html:53
 msgid "No purchases yet"
 msgstr "Покупок ще немає"
@@ -1520,10 +1717,6 @@ msgid ""
 msgstr ""
 "Ваша історія придбань з'явиться тут, як тільки ви купите інструменти з "
 "каталогу."
-
-#: users/templates/purchases_list.html:55
-msgid "Browse Catalog"
-msgstr "Переглянути каталог"
 
 #: users/views.py:24
 msgid "Your profile has been updated successfully!"
@@ -1605,169 +1798,10 @@ msgstr "Англійська"
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: auction/templates/auction_details.html:160
-#: catalog/templates/instrument_details.html:221
-#: catalog/templates/instruments_list.html:178
-#: users/templates/collection_details.html:85
-msgid "UNDER REVIEW"
-msgstr "НА ПЕРЕВІРЦІ"
-
-#: auction/templates/auction_details.html:179
-#: catalog/templates/instrument_details.html:252
-msgid "LOCKED FOR REVIEW"
-msgstr "ЗАБЛОКОВАНО НА ПЕРЕВІРКУ"
-
-#: auction/views.py:59
-msgid "This instrument is under review and bidding is temporarily locked."
-msgstr "Цей інструмент перебуває на перевірці, тому ставки тимчасово заблоковані."
-
-#: catalog/templates/instrument_form.html:80
-msgid "New"
-msgstr "Нове"
-
-#: catalog/templates/instrument_form.html:90
-msgid ""
-"This entry stays visible to visitors as under review. Save changes first if "
-"needed, then publish the latest saved version."
-msgstr ""
-"Цей запис залишається видимим для відвідувачів зі статусом «на перевірці». "
-"За потреби спочатку збережіть зміни, а потім опублікуйте останню збережену "
-"версію."
-
-#: catalog/templates/instrument_form.html:289
-msgid "Publishing clears the draft flag without submitting any unsaved form changes."
-msgstr "Публікація знімає позначку чернетки без надсилання незбережених змін форми."
-
-#: catalog/templates/instrument_form.html:297
-msgid "Publish to Catalog"
-msgstr "Опублікувати в каталозі"
-
-#: catalog/templates/instrument_details.html:231
-msgid ""
-"This instrument remains visible while the latest edits are under review. "
-"Purchasing and bidding stay locked until it is published again."
-msgstr ""
-"Цей інструмент залишається видимим, поки останні зміни проходять перевірку. "
-"Купівля та ставки заблоковані, доки його не буде опубліковано знову."
-
-#: catalog/views.py:89
 #, python-format
-msgid "Instrument \"%(instrument)s\" created as draft. Now you can add photos."
-msgstr "Інструмент \"%(instrument)s\" створено як чернетку. Тепер ви можете додати фотографії."
+#~ msgid "Instrument \"%(instrument)s\" created. Now you can add photos."
+#~ msgstr "Інструмент \"%(instrument)s\" створено. Тепер можна додати фото."
 
-#: catalog/views.py:274
 #, python-format
-msgid "Instrument \"%(instrument)s\" updated and moved to draft review."
-msgstr "Інструмент \"%(instrument)s\" оновлено та переведено в чернетку для перевірки."
-
-#: catalog/views.py:298
-#, python-format
-msgid "Instrument \"%(instrument)s\" is now published."
-msgstr "Інструмент \"%(instrument)s\" опубліковано."
-
-#: payments/views.py:20 payments/views.py:33
-msgid "This instrument is under review and cannot be purchased right now."
-msgstr "Цей інструмент перебуває на перевірці, тому зараз його не можна придбати."
-
-#: catalog/templates/instrument_details.html:252
-msgid "TEMPORARILY UNAVAILABLE"
-msgstr "ТИМЧАСОВО НЕДОСТУПНО"
-
-#: catalog/templates/instruments_list.html:176
-#: users/templates/collection_details.html:102
-msgid "Temporarily unavailable"
-msgstr "Тимчасово недоступно"
-
-#: catalog/templates/instrument_details.html:267
-msgid "EDIT LOCKED IN AUCTION"
-msgstr "РЕДАГУВАННЯ ЗАБЛОКОВАНЕ НА АУКЦІОНІ"
-
-#: catalog/views.py:17
-#: catalog/views.py:219
-#: catalog/views.py:239
-#: catalog/views.py:261
-#: catalog/views.py:286
-#: catalog/views.py:309
-msgid "This instrument cannot be edited because it is already included in an auction."
-msgstr "Цей інструмент не можна редагувати, оскільки його вже включено до аукціону."
-
-#: catalog/views.py:21
-msgid "This instrument cannot be edited because checkout is currently in progress."
-msgstr "Цей інструмент не можна редагувати, оскільки зараз триває оформлення покупки."
-
-#: catalog/views.py:22
-msgid "This instrument cannot be edited right now."
-msgstr "Цей інструмент зараз не можна редагувати."
-
-#: catalog/templates/instrument_details.html:268
-msgid "CHECKOUT IN PROGRESS"
-msgstr "ОФОРМЛЕННЯ ПОКУПКИ ТРИВАЄ"
-
-#: catalog/templates/instrument_details.html:269
-msgid "EDIT LOCKED DURING CHECKOUT"
-msgstr "РЕДАГУВАННЯ ЗАБЛОКОВАНЕ ПІД ЧАС ОФОРМЛЕННЯ"
-
-#: payments/views.py:18
-msgid "This instrument is temporarily reserved by another buyer. Please try again shortly."
-msgstr "Цей інструмент тимчасово зарезервований іншим покупцем. Спробуйте ще раз трохи пізніше."
-
-#: payments/views.py:22
-msgid "Your purchase reservation expired. Please start checkout again."
-msgstr "Термін резервування для покупки закінчився. Будь ласка, почніть оформлення знову."
-
-#: payments/views.py:43 payments/views.py:113
-msgid "This instrument is no longer available for direct purchase."
-msgstr "Цей інструмент більше недоступний для прямої покупки."
-
-#: payments/templates/purchase_form.html:14
-msgid "Reservation expires in"
-msgstr "Резервування закінчиться через"
-
-#: payments/templates/purchase_form.html:18
-#, python-format
-msgid "Reserved for %(minutes)s minutes"
-msgstr "Зарезервовано на %(minutes)s хвилин"
-
-#: payments/templates/purchase_form.html:22
-msgid "This checkout session is reserved for you for a limited time."
-msgstr "Ця сесія оформлення покупки зарезервована для вас на обмежений час."
-
-#: payments/templates/purchase_form.html:71
-msgid "Expired"
-msgstr "Час вийшов"
-
-#: templates/base.html:313 users/templates/orders_list.html:9
-msgid "My Orders"
-msgstr "Мої замовлення"
-
-#: users/templates/orders_list.html:10
-msgid "Checkout attempts, active reservations, and completed purchases."
-msgstr "Спроби оформлення, активні резервування та завершені покупки."
-
-#: users/templates/orders_list.html:43
-msgid "Purchase finished successfully."
-msgstr "Покупку успішно завершено."
-
-#: users/templates/orders_list.html:52
-msgid "Checkout was not completed."
-msgstr "Оформлення замовлення не було завершене."
-
-#: users/templates/orders_list.html:58
-msgid "View Receipt"
-msgstr "Переглянути квитанцію"
-
-#: users/templates/orders_list.html:60
-msgid "Resume Checkout"
-msgstr "Продовжити оформлення"
-
-#: users/templates/orders_list.html:62
-msgid "Try Again"
-msgstr "Спробувати ще раз"
-
-#: users/templates/orders_list.html:73
-msgid "No orders yet"
-msgstr "Замовлень ще немає"
-
-#: users/templates/orders_list.html:74
-msgid "Your checkout activity will appear here once you start reserving or purchasing instruments."
-msgstr "Тут з’явиться ваша активність з оформлення замовлень, щойно ви почнете резервувати або купувати інструменти."
+#~ msgid "Instrument \"%(instrument)s\" updated."
+#~ msgstr "Інструмент \"%(instrument)s\" оновлено."

@@ -174,6 +174,10 @@ def manage_auction(request, id):
 @require_GET
 def add_lot_select(request, id):
     auction = get_object_or_404(Auction, pk=id)
+    if auction.has_begun:
+        messages.error(request, _('Cannot add lots after auction has begun.'))
+        return redirect('auction:manage_auction', id=auction.id)
+
     search_form = InstrumentSearchForm(request.GET)
     
     instruments = Instrument.objects.filter(
@@ -206,6 +210,10 @@ def add_lot_select(request, id):
 @transaction.atomic
 def add_lot_configure(request, id, instrument_id):
     auction = get_object_or_404(Auction, pk=id)
+    if auction.has_begun:
+        messages.error(request, _('Cannot add lots after auction has begun.'))
+        return redirect('auction:manage_auction', id=auction.id)
+
     instrument = get_object_or_404(
         Instrument,
         pk=instrument_id,
@@ -248,6 +256,10 @@ def add_lot_configure(request, id, instrument_id):
 @require_http_methods(['GET', 'POST'])
 def edit_lot(request, id, lot_id):
     auction = get_object_or_404(Auction, pk=id)
+    if auction.has_begun:
+        messages.error(request, _('Cannot edit lots after auction has begun.'))
+        return redirect('auction:manage_auction', id=auction.id)
+
     lot = get_object_or_404(Lot, pk=lot_id, auction=auction)
     
     if request.method == 'POST':
@@ -275,6 +287,10 @@ def edit_lot(request, id, lot_id):
 @transaction.atomic
 def delete_lot(request, id, lot_id):
     auction = get_object_or_404(Auction, pk=id)
+    if auction.has_begun:
+        messages.error(request, _('Cannot delete lots after auction has begun.'))
+        return redirect('auction:manage_auction', id=auction.id)
+
     lot = get_object_or_404(Lot, pk=lot_id, auction=auction)
     
     lot.delete()
