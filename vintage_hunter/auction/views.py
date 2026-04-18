@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.core.paginator import Paginator
@@ -108,6 +109,10 @@ def register_as_participant(request, id):
         messages.error(request, _('Registration deadline has passed.'))
         return redirect('auction:get_details', id=auction.id)
 
+    if auction.is_full:
+        messages.error(request, _('This auction has reached the maximum number of participants.'))
+        return redirect('auction:get_details', id=auction.id)
+
     auction.participants.add(request.user)
     messages.success(request, _('You are registered as a participant.'))
 
@@ -127,7 +132,10 @@ def create_auction(request):
             )
             return redirect('auction:manage_auction', id=auction.id)
     else:
-        form = AuctionForm(initial={'status': 'draft'})
+        form = AuctionForm(initial={
+            'status': 'draft',
+            'min_participants': settings.AUCTION_DEFAULT_MIN_PARTICIPANTS
+            })
     
     return render(request, 'auction_form.html', {'form': form, 'title': _('Create New Auction')})
 

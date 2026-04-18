@@ -35,10 +35,18 @@ class Auction(Base):
     registration_deadline = models.DateTimeField(null=True, blank=True)
     
     participants = models.ManyToManyField(User, related_name='registered_auctions', blank=True)
+    min_participants = models.PositiveIntegerField(default=0)
+    max_participants = models.PositiveIntegerField(null=True, blank=True)
 
     @cached_property
     def participants_count(self):
         return self.participants.distinct().count()
+
+    @property
+    def is_full(self):
+        if self.max_participants is None:
+            return False
+        return self.participants_count >= self.max_participants
 
     @property
     def is_registration_available(self):

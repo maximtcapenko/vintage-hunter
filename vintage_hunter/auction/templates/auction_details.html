@@ -120,14 +120,25 @@
   <div>
     {% if not user.is_staff and not is_user_participant %}
       {% if auction.is_registration_available %}
-        <div class="alert shadow-sm border-0 d-flex justify-content-between align-items-center p-3"
-          style="background-color: #fff9e6; color: #856404;">
-          <span><i class="bi bi-info-circle-fill me-2"></i> {% trans "You must register before you can place bids." %}</span>
-          <form action="{% url 'auction:register_as_participant' auction.id %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-sm btn-warning fw-bold">{% trans "REGISTER NOW" %}</button>
-          </form>
-        </div>
+        {% if auction.max_participants and auction.is_full %}
+          <div class="alert alert-secondary shadow-sm border-0 p-3">
+            <i class="bi bi-x-circle-fill me-2"></i> {% trans "This auction is full." %}
+          </div>
+        {% else %}
+          <div class="alert shadow-sm border-0 d-flex justify-content-between align-items-center p-3"
+            style="background-color: #fff9e6; color: #856404;">
+            <span>
+              <i class="bi bi-info-circle-fill me-2"></i> {% trans "You must register before you can place bids." %}
+              {% if auction.max_participants %}
+                <br><small>{% blocktrans with count=auction.participants_count max=auction.max_participants %}{{ count }} / {{ max }} spots taken.{% endblocktrans %}</small>
+              {% endif %}
+            </span>
+            <form action="{% url 'auction:register_as_participant' auction.id %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-sm btn-warning fw-bold">{% trans "REGISTER NOW" %}</button>
+            </form>
+          </div>
+        {% endif %}
       {% elif not auction.is_registration_available %}
         <div class="alert alert-secondary shadow-sm border-0 p-3">
           <i class="bi bi-lock-fill me-2"></i> {% trans "Registration is closed for this auction." %}
@@ -170,6 +181,9 @@
             <span class="text-uppercase text-muted fw-bold" style="font-size: 0.65rem; letter-spacing: 0.5px;">{% trans "Current Bid" %}</span>
             <div class="fw-bold h4 mb-0 current-price" style="color: #1a1a1a;">
               ${{ lot.current_highest_bid.amount|default:lot.starting_price|floatformat:0 }}
+            </div>
+            <div class="leading-badge" {% if lot.current_highest_bid.participant != user %} style="display: none;" {% endif %}>
+              <span class="badge bg-success" style="font-size: 0.65rem;">{% trans "LEADING" %}</span>
             </div>
           </div>
 
@@ -217,10 +231,20 @@
       source.addEventListener('new_bid', (event) => {
         const data = JSON.parse(event.data);
         const priceEl = document.querySelector(`[data-lot-id="${data.lot_id}"] .current-price`);
+        const leadingBadge = document.querySelector(`[data-lot-id="${data.lot_id}"] .leading-badge`);
+        
         if (priceEl) {
           priceEl.innerText = `$${data.amount}`;
           priceEl.classList.add('text-warning');
           setTimeout(() => priceEl.classList.remove('text-warning'), 1000);
+        }
+
+        if (leadingBadge) {
+          if (data.bidder === "{{ user.username }}") {
+            leadingBadge.style.display = 'block';
+          } else {
+            leadingBadge.style.display = 'none';
+          }
         }
       });
 

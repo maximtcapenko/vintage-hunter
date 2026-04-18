@@ -28,7 +28,10 @@ class SearchAuctionForm(forms.Form, SearchFormMixin):
 class AuctionForm(forms.ModelForm):
     class Meta:
         model = Auction
-        fields = ['title', 'description', 'status', 'began_at', 'ended_at', 'registration_deadline']
+        fields = [
+            'title', 'description', 'status', 'began_at', 'ended_at', 
+            'registration_deadline', 'min_participants', 'max_participants'
+        ]
         labels = {
             'title': _('Title'),
             'description': _('Description'),
@@ -36,6 +39,8 @@ class AuctionForm(forms.ModelForm):
             'began_at': _('Starts at'),
             'ended_at': _('Ends at'),
             'registration_deadline': _('Registration deadline'),
+            'min_participants': _('Min participants'),
+            'max_participants': _('Max participants'),
         }
         widgets = {
             'began_at': forms.DateTimeInput(attrs={'type': 'datetime-local'}, format='%Y-%m-%dT%H:%M'),
@@ -56,6 +61,14 @@ class AuctionForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         status = cleaned_data.get('status')
+        min_participants = cleaned_data.get('min_participants')
+        max_participants = cleaned_data.get('max_participants')
+
+        if max_participants is not None and min_participants > max_participants:
+            self.add_error(
+                'min_participants',
+                _('Minimum participants cannot be greater than maximum participants.')
+            )
 
         if status != 'draft':
             if self.instance.pk:
@@ -70,6 +83,8 @@ class AuctionForm(forms.ModelForm):
                 )
         
         return cleaned_data
+# ... (LotForm and InstrumentSearchForm remain the same)
+
 
 class LotForm(forms.ModelForm):
     class Meta:

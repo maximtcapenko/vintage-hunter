@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vintage_hunter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-18 09:27+0000\n"
+"POT-Creation-Date: 2026-04-18 10:55+0000\n"
 "PO-Revision-Date: 2026-04-17 17:05+0000\n"
 "Last-Translator: OpenAI\n"
 "Language-Team: Ukrainian\n"
@@ -48,13 +48,30 @@ msgstr "Завершення"
 msgid "Registration deadline"
 msgstr "Крайній термін реєстрації"
 
-#: auction/forms.py:69
-msgid ""
-"Cannot schedule an auction without any lots. Please add at least one lot "
-"first."
-msgstr ""
-"Неможливо запланувати аукціон без лотів. Будь ласка, спочатку додайте хоча б "
-"один лот."
+#: auction/forms.py:40
+msgid "Min participants"
+msgstr "Мін. учасників"
+
+#: auction/forms.py:41
+msgid "Max participants"
+msgstr "Макс. учасників"
+
+#: auction/forms.py:64
+msgid "Minimum participants cannot be greater than maximum participants."
+msgstr "Мінімальна кількість учасників не може бути більшою за максимальну."
+
+#: auction/templates/auction_details.html:123
+msgid "This auction is full."
+msgstr "Цей аукціон переповнений."
+
+#: auction/templates/auction_details.html:131
+#, python-format
+msgid "%(count)s / %(max)s spots taken."
+msgstr "%(count)s / %(max)s зайнятих місць."
+
+#: auction/views.py:117
+msgid "This auction has reached the maximum number of participants."
+msgstr "На цьому аукціоні досягнуто максимальної кількості учасників."
 
 #: auction/forms.py:82
 msgid "Lot number"
@@ -163,20 +180,24 @@ msgstr "ОЦІНКА: $%(min_price)s – $%(max_price)s"
 msgid "Current Bid"
 msgstr "Поточна ставка"
 
-#: auction/templates/auction_details.html:179
+#: auction/templates/auction_details.html:175
+msgid "LEADING"
+msgstr "ЛІДЕР"
+
+#: auction/templates/auction_details.html:182
 msgid "LOCKED FOR REVIEW"
 msgstr "ЗАБЛОКОВАНО НА ПЕРЕВІРКУ"
 
-#: auction/templates/auction_details.html:191
+#: auction/templates/auction_details.html:194
 msgid "BID"
 msgstr "СТАВКА"
 
-#: auction/templates/auction_details.html:202
+#: auction/templates/auction_details.html:205
 #: auction/templates/auction_manage.html:128
 msgid "No lots have been added to this auction yet."
 msgstr "До цього аукціону ще не додано жодного лота."
 
-#: auction/templates/auction_details.html:209
+#: auction/templates/auction_details.html:212
 #: catalog/templates/instruments_list.html:217
 #: users/templates/collection_details.html:129
 msgid "SOLD"
