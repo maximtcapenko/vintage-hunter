@@ -37,6 +37,7 @@ class Auction(Base):
     participants = models.ManyToManyField(User, related_name='registered_auctions', blank=True)
     min_participants = models.PositiveIntegerField(default=0)
     max_participants = models.PositiveIntegerField(null=True, blank=True)
+    bid_interval = models.PositiveIntegerField(default=60, help_text='Timeout between bids in seconds')
 
     @cached_property
     def participants_count(self):
@@ -81,6 +82,7 @@ class Lot(Base):
     LOT_STATUS = [
         ('waiting', 'Waiting'),
         ('active', 'Active'),
+        ('payment_pending', 'Payment Pending'),
         ('sold', 'Sold'),
         ('withdrawn', 'Withdrawn'),
     ]
@@ -90,6 +92,8 @@ class Lot(Base):
     
     lot_number = models.PositiveIntegerField(db_index=True)
     status = models.CharField(max_length=20, choices=LOT_STATUS, default='waiting')
+    expires_at = models.DateTimeField(null=True, blank=True)
+    payment_expires_at = models.DateTimeField(null=True, blank=True)
 
     starting_price = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(Decimal('0.01'))])
     reserve_price = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True, help_text='Minimum price to sell')
@@ -123,9 +127,6 @@ class Lot(Base):
             self.instrument.is_sold = True
             self.instrument.is_auction = False
             self.instrument.save(update_fields=['is_sold', 'is_auction'])
-        elif self.status == 'withdrawn':
-            self.instrument.is_auction = False
-            self.instrument.save(update_fields=['is_auction'])
         elif self.status in ['waiting', 'active'] and not self.instrument.is_auction:
             self.instrument.is_auction = True
             self.instrument.save(update_fields=['is_auction'])

@@ -14,6 +14,7 @@ from django.views.decorators.http import require_GET, require_POST, require_http
 
 from catalog.models import Instrument
 from commons.functional import is_not_staff, is_staff, DEFAULT_PAGE_SIZE
+from commons.sse import broadcast_event
 
 from .forms import AuctionForm, InstrumentSearchForm, LotForm, SearchAuctionForm
 from .models import Auction, Bid, Lot
@@ -64,8 +65,12 @@ def place_bid(request, id, lot_id):
         messages.error(request, _('You must register for this auction to bid.'))
         return redirect('auction:get_details', id=lot.auction.id)
 
-    if lot.auction.status != 'active':
+    if lot.status != 'active':
         messages.error(request, _('Bidding is not currently open.'))
+        return redirect('auction:get_details', id=lot.auction.id)
+    
+    if lot.expires_at and timezone.now() > lot.expires_at:
+        messages.error(request, _('Bidding is closed.'))
         return redirect('auction:get_details', id=lot.auction.id)
 
     amount_str = request.POST.get('amount')
@@ -80,11 +85,25 @@ def place_bid(request, id, lot_id):
                 _('Bid too low. Minimum is $%(amount)s') % {'amount': min_bid}
             )
         else:
-            Bid.objects.create(
+            bid = Bid.objects.create(
                 participant=request.user,
                 lot=lot,
                 amount=amount
             )
+            
+            lot.expires_at = timezone.now() + timezone.timedelta(seconds=lot.auction.bid_interval)
+            lot.save(update_fields=['expires_at'])
+            
+            broadcast_event(
+            f'auction:{lot.auction.id}',
+            'new_bid',
+            {
+                'lot_id': f'{lot.id}',
+                'amount': float(bid.amount),
+                'bidder': request.user.username,
+                'expires_at': lot.expires_at.isoformat() if lot.expires_at else None
+            })
+
             messages.success(
                 request,
                 _('Bid of $%(amount)s placed!') % {'amount': amount}

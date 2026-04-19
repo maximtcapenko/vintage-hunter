@@ -3,20 +3,7 @@ from django.dispatch import receiver
 
 from commons.sse import broadcast_event
 
-from .models import Auction, Bid, Lot
-
-@receiver(post_save, sender=Bid)
-def broadcast_new_bid(sender, instance, created, **kwargs):
-    if created and instance.is_valid:
-        broadcast_event(
-            f'auction:{instance.lot.auction.id}',
-            'new_bid',
-            {
-                'lot_id': str(instance.lot.id),
-                'amount': float(instance.amount),
-                'bidder': instance.participant.username
-            }
-        )
+from .models import Auction, Lot
 
 
 @receiver(post_save, sender=Lot)
@@ -26,8 +13,9 @@ def broadcast_lot_status_update(sender, instance, created, **kwargs):
             f'auction:{instance.auction.id}',
             'status_update',
             {
-                'lot_id': str(instance.id),
-                'status': instance.status
+                'lot_id': f'{instance.id}',
+                'status': instance.status,
+                'winner': instance.winner.username if instance.winner else None
             }
         )
 
@@ -39,7 +27,7 @@ def broadcast_auction_participant_joined(sender, instance, action, pk_set, **kwa
             f'auction:{instance.id}',
             'participant_update',
             {
-                'auction_id': str(instance.id),
+                'auction_id': f'{instance.id}',
                 'participants_count': instance.participants_count
             }
         )

@@ -62,6 +62,11 @@ class InstrumentForm(forms.ModelForm):
                 field.widget.attrs.update({'class': 'form-check-input'})
     
     def save(self, commit=True):
+        if not self.instance.pk:
+            self.instance.is_new = True
+        else:
+            self.instance.is_new = False
+            
         self.instance.is_draft = True
         
         return super().save(commit=commit)

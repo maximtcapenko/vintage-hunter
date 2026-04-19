@@ -101,9 +101,18 @@ msgstr "Пошук інструментів"
 msgid "Search by title, brand, or year..."
 msgstr "Шукайте за назвою, брендом або роком..."
 
-#: auction/models.py:22 catalog/templates/instrument_form.html:83
-msgid "Draft"
-msgstr "Чернетка"
+#: auction/templates/auction_details.html:176
+msgid "YOU WON!"
+msgstr "ВИ ПЕРЕМОГЛИ!"
+
+#: auction/templates/auction_details.html:177
+msgid "PAY NOW"
+msgstr "ОПЛАТИТИ ЗАРАЗ"
+
+#: auction/templates/auction_details.html:181
+msgid "AUCTION CLOSED"
+msgstr "АУКЦІОН ЗАВЕРШЕНО"
+
 
 #: auction/models.py:23
 msgid "Scheduled"
@@ -159,10 +168,14 @@ msgstr "ЗАРЕЄСТРУВАТИСЯ"
 msgid "Registration is closed for this auction."
 msgstr "Реєстрація на цей аукціон закрита."
 
-#: auction/templates/auction_details.html:141
-#, python-format
-msgid "LOT %(lot_number)s"
-msgstr "ЛОТ %(lot_number)s"
+#: auction/templates/auction_details.html:168
+msgid "CLOSES IN: "
+msgstr "ЗАКРИТТЯ ЧЕРЕЗ: "
+
+#: auction/templates/auction_details.html:174
+msgid "CLOSED"
+msgstr "ЗАКРИТО"
+
 
 #: auction/templates/auction_details.html:160
 #: catalog/templates/instrument_details.html:221

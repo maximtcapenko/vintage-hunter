@@ -141,6 +141,12 @@ CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
 CELERY_ENABLE_UTC = True
+CELERY_BEAT_SCHEDULE = {
+    'check_lot_timeouts': {
+        'task': 'auction.tasks.check_lot_timeouts',
+        'schedule': 10.0,
+    },
+}
 
 LOGGING = {
     'version': 1,

@@ -39,8 +39,9 @@ def initiate_purchase(request, instrument_id):
                     messages.error(request, _("Sorry, this instrument has already been sold."))
                     return redirect('catalog:get_details', id=instrument.id)
                 if instrument.is_auction:
-                    messages.error(request, _('This instrument is no longer available for direct purchase.'))
-                    return redirect('catalog:get_details', id=instrument.id)
+                     if instrument.auction_lot.winner != request.user:
+                        messages.error(request, _('This instrument is no longer available for direct purchase.'))
+                        return redirect('catalog:get_details', id=instrument.id)
                 if instrument.is_draft:
                     messages.error(request, _('This instrument is under review and cannot be purchased right now.'))
                     return redirect('catalog:get_details', id=instrument.id)
@@ -88,6 +89,10 @@ def initiate_purchase(request, instrument_id):
                         instrument.is_sold = True
                         instrument.save()
 
+                        if instrument.is_edit_locked_in_auction:
+                            instrument.auction_lot.status = 'sold'
+                            instrument.auction_lot.save()
+
                         return redirect('payments:payment_success', order_id=order.id)
 
                     order.status = 'failed'
@@ -109,8 +114,9 @@ def initiate_purchase(request, instrument_id):
                     messages.error(request, _("Sorry, this instrument has already been sold."))
                     return redirect('catalog:get_details', id=instrument.id)
                 if instrument.is_auction:
-                    messages.error(request, _('This instrument is no longer available for direct purchase.'))
-                    return redirect('catalog:get_details', id=instrument.id)
+                    if instrument.auction_lot.winner != request.user:
+                        messages.error(request, _('This instrument is no longer available for direct purchase.'))
+                        return redirect('catalog:get_details', id=instrument.id)
                 if instrument.is_draft:
                     messages.error(request, _('This instrument is under review and cannot be purchased right now.'))
                     return redirect('catalog:get_details', id=instrument.id)
