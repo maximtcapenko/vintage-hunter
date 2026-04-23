@@ -146,6 +146,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'auction.tasks.check_lot_timeouts',
         'schedule': 10.0,
     },
+    'start_scheduled_auctions': {
+        'task': 'auction.tasks.start_scheduled_auctions',
+        'schedule': 10.0,
+    },
 }
 
 LOGGING = {

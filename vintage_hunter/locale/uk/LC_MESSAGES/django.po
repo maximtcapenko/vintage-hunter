@@ -105,14 +105,13 @@ msgstr "Шукайте за назвою, брендом або роком..."
 msgid "YOU WON!"
 msgstr "ВИ ПЕРЕМОГЛИ!"
 
-#: auction/templates/auction_details.html:177
-msgid "PAY NOW"
-msgstr "ОПЛАТИТИ ЗАРАЗ"
-
 #: auction/templates/auction_details.html:181
 msgid "AUCTION CLOSED"
 msgstr "АУКЦІОН ЗАВЕРШЕНО"
 
+#: auction/templates/auction_details.html:186
+msgid "REGISTER TO BID"
+msgstr "ЗАРАЄСТРУЙТЕСЯ ЯК УЧАСНИК"
 
 #: auction/models.py:23
 msgid "Scheduled"
@@ -1217,6 +1216,7 @@ msgid "This checkout session is reserved for you for a limited time."
 msgstr "Ця сесія оформлення покупки зарезервована для вас на обмежений час."
 
 #: payments/templates/purchase_form.html:54
+#: auction/templates/auction_details.html:177
 msgid "PAY NOW"
 msgstr "ОПЛАТИТИ ЗАРАЗ"
 

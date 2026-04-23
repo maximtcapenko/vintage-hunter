@@ -131,7 +131,7 @@
     </span>
     <h1 class="display-4 fw-bold mb-3">{{ auction.title }}</h1>
     <p class="lead opacity-75 mx-auto" style="max-width: 750px;">{{ auction.description }}</p>
-    
+
     <div class="mt-5 d-flex justify-content-center flex-wrap gap-5">
       <div class="text-start">
         <small class="d-block opacity-50 text-uppercase fw-bold" style="font-size: 0.7rem;">{% trans "Starts" %}</small>
@@ -163,33 +163,34 @@
 <div class="container pb-5">
   <div class="row mb-5">
     <div class="col-12">
-      <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded-3 border" data-auction-id="{{ auction.id }}">
+      <div class="d-flex justify-content-between align-items-center bg-light p-4 rounded-3 border"
+        data-auction-id="{{ auction.id }}">
         <div class="d-flex gap-5">
-            <div class="text-center">
-              <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.65rem;">{% trans "Total Lots" %}</small>
-              <span class="h5 mb-0 fw-bold">{{ lots.count }}</span>
-            </div>
-            <div class="text-center border-start ps-5">
-              <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.65rem;">{% trans "Registered Bidders" %}</small>
-              <span class="h5 mb-0 fw-bold participant-count">{{ auction.participants_count }}</span>
-            </div>
+          <div class="text-center">
+            <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.65rem;">{% trans "Total Lots" %}</small>
+            <span class="h5 mb-0 fw-bold">{{ lots.count }}</span>
+          </div>
+          <div class="text-center border-start ps-5">
+            <small class="d-block text-muted text-uppercase fw-bold" style="font-size: 0.65rem;">{% trans "Registered Bidders" %}</small>
+            <span class="h5 mb-0 fw-bold participant-count">{{ auction.participants_count }}</span>
+          </div>
         </div>
 
         <div>
-            {% if not user.is_staff and not is_user_participant %}
-                {% if auction.is_registration_available %}
-                    {% if auction.max_participants and auction.is_full %}
-                        <span class="badge bg-secondary p-2">{% trans "Auction Full" %}</span>
-                    {% else %}
-                        <form action="{% url 'auction:register_as_participant' auction.id %}" method="post">
-                            {% csrf_token %}
-                            <button type="submit" class="btn btn-warning fw-bold px-4">{% trans "REGISTER TO BID" %}</button>
-                        </form>
-                    {% endif %}
-                {% else %}
-                    <span class="text-muted small fw-bold">{% trans "REGISTRATION CLOSED" %}</span>
-                {% endif %}
+          {% if not user.is_staff and not is_user_participant %}
+            {% if auction.is_registration_available %}
+              {% if auction.max_participants and auction.is_full %}
+              <span class="badge bg-secondary p-2">{% trans "Auction Full" %}</span>
+              {% else %}
+              <form action="{% url 'auction:register_as_participant' auction.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-warning fw-bold px-4">{% trans "REGISTER TO BID" %}</button>
+              </form>
+              {% endif %}
+            {% else %}
+            <span class="text-muted small fw-bold">{% trans "REGISTRATION CLOSED" %}</span>
             {% endif %}
+          {% endif %}
         </div>
       </div>
     </div>
@@ -228,44 +229,45 @@
 
           <div class="mt-auto pt-3 border-top" data-lot-id="{{ lot.id }}">
             {% if lot.status == 'payment_pending' or lot.status == 'sold' %}
-                <div class="text-center">
-                    <span class="status-badge-closed">{% trans "CLOSED" %}</span>
-                </div>
+            <div class="text-center">
+              <span class="status-badge-closed">{% trans "CLOSED" %}</span>
+            </div>
             {% elif lot.expires_at %}
-                <div class="mb-3 text-center" data-expires-at="{{ lot.expires_at|date:'c' }}">
-                    <small class="text-uppercase fw-bold text-danger timer-display">{% trans "CLOSES IN: " %} 00:00</small>
-                </div>
+            <div class="mb-3 text-center" data-expires-at="{{ lot.expires_at|date:'c' }}">
+              <small class="text-uppercase fw-bold text-danger timer-display">{% trans "CLOSES IN: " %} 00:00</small>
+            </div>
             {% endif %}
 
             <div class="d-flex justify-content-between align-items-end mb-3">
-                <div>
-                    <span class="current-bid-label">{% trans "Current Bid" %}</span>
-                    <div class="fw-bold current-price">
-                        ${{ lot.current_highest_bid.amount|default:lot.starting_price|floatformat:0 }}
-                    </div>
+              <div>
+                <span class="current-bid-label">{% trans "Current Bid" %}</span>
+                <div class="fw-bold current-price">
+                  ${{ lot.current_highest_bid.amount|default:lot.starting_price|floatformat:0 }}
                 </div>
-                <div class="leading-badge" {% if lot.current_highest_bid.participant != user %} style="display: none;" {% endif %}>
-                    <span class="badge bg-success py-2 px-3">{% trans "LEADING" %}</span>
-                </div>
+              </div>
+              <div class="leading-badge" {% if lot.current_highest_bid.participant !=user %} style="display: none;" {% endif %}>
+                <span class="badge bg-success py-2 px-3">{% trans "LEADING" %}</span>
+              </div>
             </div>
 
             {% if lot.status == 'payment_pending' and lot.winner == user %}
-                <a href="{% url 'payments:initiate_purchase' lot.instrument.id %}" class="btn btn-pay-now w-100 rounded-3">
-                    {% trans "PAY NOW" %}
-                </a>
+            <a href="{% url 'payments:initiate_purchase' lot.instrument.id %}" class="btn btn-pay-now w-100 rounded-3">
+              {% trans "PAY NOW" %}
+            </a>
             {% elif lot.status == 'payment_pending' or lot.status == 'sold' %}
-                <div class="btn btn-outline-secondary w-100 disabled" style="opacity: 0.5;">
-                    {% trans "AUCTION CLOSED" %}
-                </div>
+            <div class="btn btn-outline-secondary w-100 disabled" style="opacity: 0.5;">
+              {% trans "AUCTION CLOSED" %}
+            </div>
             {% elif not lot.instrument.is_draft and not user.is_staff %}
-                <form action="{% url 'auction:place_bid' auction.id lot.id %}" method="post" class="input-group input-group-sm">
-                    {% csrf_token %}
-                    <input type="number" name="amount" class="form-control bid-input" 
-                           placeholder="${{ lot.current_highest_bid.amount|default:lot.starting_price }}" required>
-                    <button class="btn btn-dark btn-bid fw-bold" type="submit" {% if not is_user_participant %} disabled {% endif %}>
-                        {% trans "BID" %}
-                    </button>
-                </form>
+            <form action="{% url 'auction:place_bid' auction.id lot.id %}" method="post"
+              class="input-group input-group-sm">
+              {% csrf_token %}
+              <input type="number" name="amount" class="form-control bid-input"
+                placeholder="${{ lot.current_highest_bid.amount|default:lot.starting_price }}" required>
+              <button class="btn btn-dark btn-bid fw-bold" type="submit" {% if not is_user_participant %} disabled {% endif %}>
+                {% trans "BID" %}
+              </button>
+            </form>
             {% endif %}
           </div>
         </div>
@@ -283,17 +285,17 @@
 <script>
   {% translate "SOLD" as sold_label %}
   const soldLabel = "{{ sold_label|escapejs }}";
-  
+
   document.addEventListener('DOMContentLoaded', () => {
     if (typeof (EventSource) !== "undefined") {
       const auctionId = '{{ auction.id }}';
       const source = new EventSource(`/auction/stream/${auctionId}/`);
-      
+
       source.addEventListener('new_bid', (event) => {
         const data = JSON.parse(event.data);
         // Find the main container for this lot
         const lotContainer = document.querySelector(`[data-lot-id="${data.lot_id}"]`);
-        
+
         if (lotContainer) {
           // 1. Update Price
           const priceEl = lotContainer.querySelector('.current-price');
@@ -312,18 +314,18 @@
           // 3. Update Timer (FIXED SELECTOR)
           const timerEl = lotContainer.querySelector('[data-expires-at]');
           if (timerEl === null) {
-           const timerHtml = `
+            const timerHtml = `
             <div class="mb-3 text-center timer-wrapper" data-expires-at="${data.expires_at}">
                 <small class="text-uppercase fw-bold text-danger timer-display">
                     {% trans "CLOSES IN: " %} --:--
                 </small>
             </div>`;
-    
-          lotContainer.insertAdjacentHTML('afterbegin', timerHtml);
-          timerEl = lotContainer.querySelector('[data-expires-at]');
-        }
-        
-        if (timerEl && data.expires_at) {
+
+            lotContainer.insertAdjacentHTML('afterbegin', timerHtml);
+            timerEl = lotContainer.querySelector('[data-expires-at]');
+          }
+
+          if (timerEl && data.expires_at) {
             timerEl.dataset.expiresAt = data.expires_at;
           }
         }
@@ -349,12 +351,12 @@
           if (diff <= 0) {
             display.innerText = "{% trans 'CLOSED' %}";
             // Optional: remove attribute so we stop processing this finished timer
-            el.removeAttribute('data-expires-at'); 
+            el.removeAttribute('data-expires-at');
           } else {
             const totalSeconds = Math.floor(diff / 1000);
             const minutes = Math.floor(totalSeconds / 60);
             const seconds = totalSeconds % 60;
-            
+
             display.innerText = `{% trans 'CLOSES IN: ' %} ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
           }
         });
@@ -388,8 +390,8 @@
 
       source.addEventListener('participant_update', (event) => {
         const data = JSON.parse(event.data);
-        const span = document.querySelector(`[data-auction-id="${data.auction_id}"] .participant-count`) || 
-                     document.querySelector('.participant-count');
+        const span = document.querySelector(`[data-auction-id="${data.auction_id}"] .participant-count`) ||
+          document.querySelector('.participant-count');
         if (span) {
           span.innerText = `${data.participants_count}`;
         }

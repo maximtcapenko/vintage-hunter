@@ -68,6 +68,34 @@ class Auction(Base):
     def status_label(self):
         return self.STATUS_LABELS.get(self.status, self.status)
 
+    @transaction.atomic
+    def activate(self):
+        """Activates the auction and all its waiting lots."""
+        if self.status != 'scheduled':
+            return False
+            
+        self.status = 'active'
+        self.save(update_fields=['status', 'updated_at'])
+        
+        for lot in self.lots.filter(status='waiting'):
+            lot.activate()
+            
+        return True
+
+    @transaction.atomic
+    def cancel(self):
+        """Cancels the auction and withdraws all its lots."""
+        if self.status in ['ended', 'cancelled']:
+            return False
+
+        self.status = 'cancelled'
+        self.save(update_fields=['status', 'updated_at'])
+        
+        for lot in self.lots.filter(status__in=['waiting', 'active']):
+            lot.withdraw()
+            
+        return True
+
 def get_user_active_auctions_count(self):
     if not self.is_authenticated:
         return 0
@@ -127,9 +155,14 @@ class Lot(Base):
             self.instrument.is_sold = True
             self.instrument.is_auction = False
             self.instrument.save(update_fields=['is_sold', 'is_auction'])
-        elif self.status in ['waiting', 'active'] and not self.instrument.is_auction:
-            self.instrument.is_auction = True
-            self.instrument.save(update_fields=['is_auction'])
+        elif self.status in ['waiting', 'active']:
+            if not self.instrument.is_auction:
+                self.instrument.is_auction = True
+                self.instrument.save(update_fields=['is_auction'])
+        else:
+            if self.instrument.is_auction:
+                self.instrument.is_auction = False
+                self.instrument.save(update_fields=['is_auction'])
 
     @transaction.atomic
     def delete(self, *args, **kwargs):
@@ -140,6 +173,23 @@ class Lot(Base):
     @property
     def current_highest_bid(self):
         return self.bets.filter(is_valid=True).order_by('-amount').first()
+
+    def activate(self):
+        """Sets lot status to active. Timing is handled on first bid."""
+        if self.status == 'waiting':
+            self.status = 'active'
+            self.expires_at = None
+            self.save(update_fields=['status', 'expires_at', 'updated_at'])
+            return True
+        return False
+
+    def withdraw(self):
+        """Withdraws the lot."""
+        if self.status in ['waiting', 'active']:
+            self.status = 'withdrawn'
+            self.save(update_fields=['status', 'updated_at'])
+            return True
+        return False
 
 class Bid(Base):
     participant = models.ForeignKey(User, on_delete=models.PROTECT, related_name='bids')
