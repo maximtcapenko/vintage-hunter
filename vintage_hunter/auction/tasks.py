@@ -23,7 +23,9 @@ def check_lot_timeouts():
                 f'auction:{lot.auction.id}', 
                 'lot_payment_pending', { 
                     'lot_id': f'{lot.id}',
-                    'payment_expires_at': lot.payment_expires_at
+                    'winner_username': lot.winner.username,
+                    'instrument_id': f'{lot.instrument.id}',
+                    'payment_expires_at': lot.payment_expires_at.isoformat() if lot.payment_expires_at else None
             })
         else:
             lot.status = 'withdrawn'

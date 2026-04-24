@@ -250,25 +250,27 @@
               </div>
             </div>
 
-            {% if lot.status == 'payment_pending' and lot.winner == user %}
-            <a href="{% url 'payments:initiate_purchase' lot.instrument.id %}" class="btn btn-pay-now w-100 rounded-3">
-              {% trans "PAY NOW" %}
-            </a>
-            {% elif lot.status == 'payment_pending' or lot.status == 'sold' %}
-            <div class="btn btn-outline-secondary w-100 disabled" style="opacity: 0.5;">
-              {% trans "AUCTION CLOSED" %}
+            <div class="bid-actions-container">
+              {% if lot.status == 'payment_pending' and lot.winner == user %}
+              <a href="{% url 'payments:initiate_purchase' lot.instrument.id %}" class="btn btn-pay-now w-100 rounded-3">
+                {% trans "PAY NOW" %}
+              </a>
+              {% elif lot.status == 'payment_pending' or lot.status == 'sold' or lot.status == 'withdrawn' %}
+              <div class="btn btn-outline-secondary w-100 disabled" style="opacity: 0.5;">
+                {% trans "AUCTION CLOSED" %}
+              </div>
+              {% elif not lot.instrument.is_draft and not user.is_staff %}
+              <form action="{% url 'auction:place_bid' auction.id lot.id %}" method="post"
+                class="input-group input-group-sm">
+                {% csrf_token %}
+                <input type="number" name="amount" class="form-control bid-input"
+                  placeholder="${{ lot.current_highest_bid.amount|default:lot.starting_price }}" required>
+                <button class="btn btn-dark btn-bid fw-bold" type="submit" {% if not is_user_participant %} disabled {% endif %}>
+                  {% trans "BID" %}
+                </button>
+              </form>
+              {% endif %}
             </div>
-            {% elif not lot.instrument.is_draft and not user.is_staff %}
-            <form action="{% url 'auction:place_bid' auction.id lot.id %}" method="post"
-              class="input-group input-group-sm">
-              {% csrf_token %}
-              <input type="number" name="amount" class="form-control bid-input"
-                placeholder="${{ lot.current_highest_bid.amount|default:lot.starting_price }}" required>
-              <button class="btn btn-dark btn-bid fw-bold" type="submit" {% if not is_user_participant %} disabled {% endif %}>
-                {% trans "BID" %}
-              </button>
-            </form>
-            {% endif %}
           </div>
         </div>
       </div>
@@ -362,28 +364,64 @@
         });
       }, 1000);
 
+      source.addEventListener('lot_payment_pending', (event) => {
+        const data = JSON.parse(event.data);
+        const lotContainer = document.querySelector(`[data-lot-id="${data.lot_id}"]`);
+        if (!lotContainer) return;
+
+        // 1. Update Timer to CLOSED
+        const timerDisplay = lotContainer.querySelector('.timer-display');
+        if (timerDisplay) {
+          timerDisplay.innerText = "{% trans 'CLOSED' %}";
+        }
+        const timerWrapper = lotContainer.querySelector('[data-expires-at]');
+        if (timerWrapper) {
+          timerWrapper.removeAttribute('data-expires-at');
+        }
+
+        // 2. Update Actions Container
+        const actionsContainer = lotContainer.querySelector('.bid-actions-container');
+        if (actionsContainer) {
+          if (data.winner_username === "{{ user.username }}") {
+            actionsContainer.innerHTML = `
+              <a href="/payments/purchase/${data.instrument_id}/" class="btn btn-pay-now w-100 rounded-3">
+                {% trans "PAY NOW" %}
+              </a>`;
+          } else {
+            actionsContainer.innerHTML = `
+              <div class="btn btn-outline-secondary w-100 disabled" style="opacity: 0.5;">
+                {% trans "AUCTION CLOSED" %}
+              </div>`;
+          }
+        }
+      });
+
+      source.addEventListener('lot_payment_withdrawn', (event) => {
+        const data = JSON.parse(event.data);
+        const lotContainer = document.querySelector(`[data-lot-id="${data.lot_id}"]`);
+        if (!lotContainer) return;
+
+        const timerDisplay = lotContainer.querySelector('.timer-display');
+        if (timerDisplay) timerDisplay.innerText = "{% trans 'CLOSED' %}";
+        
+        const actionsContainer = lotContainer.querySelector('.bid-actions-container');
+        if (actionsContainer) {
+          actionsContainer.innerHTML = `
+            <div class="btn btn-outline-secondary w-100 disabled" style="opacity: 0.5;">
+              {% trans "AUCTION CLOSED" %}
+            </div>`;
+        }
+      });
+
       source.addEventListener('status_update', (event) => {
         const data = JSON.parse(event.data);
         const lotEl = document.querySelector(`[data-lot-id="${data.lot_id}"]`);
         if (!lotEl) return;
 
-        if (data.status === 'payment_pending') {
-          const bidContainer = lotEl.querySelector('.bid-container');
-          if (bidContainer) {
-            if (data.winner === "{{ user.username }}") {
-              bidContainer.innerHTML = `
-                <div class="alert alert-success p-2 small">
-                  {% trans "YOU WON! COMPLETE PURCHASE" %}
-                  <a href="/payments/checkout/${data.lot_id}/" class="btn btn-sm btn-pay-now w-100 mt-1 rounded">{% trans "PAY NOW" %}</a>
-                </div>`;
-            } else {
-              bidContainer.innerHTML = `<span class="badge bg-secondary">{% trans "AUCTION CLOSED" %}</span>`;
-            }
-          }
-        } else if (data.status === 'sold') {
-          const container = lotEl.querySelector('.bid-container');
+        if (data.status === 'sold') {
+          const container = lotEl.querySelector('.bid-actions-container');
           if (container) {
-            container.innerHTML = `<span class="badge bg-danger">${soldLabel}</span>`;
+            container.innerHTML = `<span class="badge bg-danger w-100 py-2">${soldLabel}</span>`;
           }
         }
       });
