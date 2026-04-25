@@ -3,8 +3,12 @@ from django.utils import timezone
 from datetime import timedelta
 from django.conf import settings
 from django.db import transaction
+from django.utils.translation import gettext as _
 from auction.models import Auction, Lot
 from commons.sse import broadcast_event
+import logging
+
+logger = logging.getLogger(__name__)
 
 @shared_task
 def check_lot_timeouts():
@@ -71,3 +75,46 @@ def start_scheduled_auctions():
                         'auction_cancelled',
                         {'auction_id': f'{auction.id}'}
                     )
+
+@shared_task
+def check_auction_reminders():
+    now = timezone.now()
+    auctions = Auction.objects.filter(
+        status='scheduled',
+        remind_sent=False,
+        remind_before_start__isnull=False,
+        began_at__isnull=False
+    )
+    
+    for auction in auctions:
+        reminder_time = auction.began_at - timedelta(minutes=auction.remind_before_start)
+        if now >= reminder_time:
+            send_auction_reminder.delay(auction.id)
+
+@shared_task
+def send_auction_reminder(auction_id):
+    updated_count = Auction.objects.filter(
+        id=auction_id,
+        remind_sent=False,
+        status='scheduled'
+    ).update(remind_sent=True)
+    
+    if updated_count == 1:
+        auction = Auction.objects.get(id=auction_id)
+        logger.info(f"Sending reminder for auction: {auction.title} (ID: {auction_id})")
+        
+        participants = auction.participants.all()
+        
+        for user in participants:
+            broadcast_event(
+                f'user:{user.id}',
+                'auction_reminder',
+                {
+                    'auction_id': f'{auction_id}',
+                    'title': auction.title,
+                    'began_at': auction.began_at.isoformat(),
+                    'message': _("Reminder: The auction '%(title)s' starts soon!") % {'title': auction.title}
+                }
+            )
+    else:
+        logger.info(f"Reminder already handled for auction ID: {auction_id}")

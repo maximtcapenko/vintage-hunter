@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vintage_hunter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-18 10:55+0000\n"
+"POT-Creation-Date: 2026-04-25 14:00+0000\n"
 "PO-Revision-Date: 2026-04-17 17:05+0000\n"
 "Last-Translator: OpenAI\n"
 "Language-Team: Ukrainian\n"
@@ -19,16 +19,15 @@ msgstr ""
 msgid "Participant"
 msgstr "Учасник"
 
-#: auction/forms.py:13 auction/forms.py:35
-#: auction/templates/auction_details.html:116
+#: auction/forms.py:13 auction/forms.py:39
 msgid "Status"
 msgstr "Статус"
 
-#: auction/forms.py:33
+#: auction/forms.py:37
 msgid "Title"
 msgstr "Назва"
 
-#: auction/forms.py:34 catalog/forms.py:44 catalog/forms.py:80
+#: auction/forms.py:38 catalog/forms.py:44 catalog/forms.py:85
 #: catalog/templates/catalog/category_form.html:23
 #: catalog/templates/catalog/category_list.html:20
 #: catalog/templates/instrument_form.html:205 users/forms.py:45
@@ -36,82 +35,73 @@ msgstr "Назва"
 msgid "Description"
 msgstr "Опис"
 
-#: auction/forms.py:36
+#: auction/forms.py:40
 msgid "Starts at"
 msgstr "Початок"
 
-#: auction/forms.py:37
+#: auction/forms.py:41
 msgid "Ends at"
 msgstr "Завершення"
 
-#: auction/forms.py:38
+#: auction/forms.py:42
 msgid "Registration deadline"
 msgstr "Крайній термін реєстрації"
 
-#: auction/forms.py:40
+#: auction/forms.py:43
+msgid "Advance notification (minutes)"
+msgstr "Попереднє сповіщення (хвилини)"
+
+#: auction/forms.py:44
 msgid "Min participants"
 msgstr "Мін. учасників"
 
-#: auction/forms.py:41
+#: auction/forms.py:45
 msgid "Max participants"
 msgstr "Макс. учасників"
 
-#: auction/forms.py:64
+#: auction/forms.py:72
 msgid "Minimum participants cannot be greater than maximum participants."
 msgstr "Мінімальна кількість учасників не може бути більшою за максимальну."
 
-#: auction/templates/auction_details.html:123
-msgid "This auction is full."
-msgstr "Цей аукціон переповнений."
+#: auction/forms.py:84
+msgid ""
+"Cannot schedule an auction without any lots. Please add at least one lot "
+"first."
+msgstr ""
+"Неможливо запланувати аукціон без лотів. Будь ласка, спочатку додайте хоча б "
+"один лот."
 
-#: auction/templates/auction_details.html:131
-#, python-format
-msgid "%(count)s / %(max)s spots taken."
-msgstr "%(count)s / %(max)s зайнятих місць."
-
-#: auction/views.py:117
-msgid "This auction has reached the maximum number of participants."
-msgstr "На цьому аукціоні досягнуто максимальної кількості учасників."
-
-#: auction/forms.py:82
+#: auction/forms.py:99
 msgid "Lot number"
 msgstr "Номер лота"
 
-#: auction/forms.py:83
+#: auction/forms.py:100
 msgid "Starting price"
 msgstr "Стартова ціна"
 
-#: auction/forms.py:84
+#: auction/forms.py:101
 msgid "Reserve price"
 msgstr "Резервна ціна"
 
-#: auction/forms.py:85
+#: auction/forms.py:102
 msgid "Low estimate"
 msgstr "Нижня оцінка"
 
-#: auction/forms.py:86
+#: auction/forms.py:103
 msgid "High estimate"
 msgstr "Верхня оцінка"
 
-#: auction/forms.py:97
+#: auction/forms.py:114
 msgid "Search instruments"
 msgstr "Пошук інструментів"
 
-#: auction/forms.py:98
+#: auction/forms.py:115
 msgid "Search by title, brand, or year..."
 msgstr "Шукайте за назвою, брендом або роком..."
 
-#: auction/templates/auction_details.html:176
-msgid "YOU WON!"
-msgstr "ВИ ПЕРЕМОГЛИ!"
-
-#: auction/templates/auction_details.html:181
-msgid "AUCTION CLOSED"
-msgstr "АУКЦІОН ЗАВЕРШЕНО"
-
-#: auction/templates/auction_details.html:186
-msgid "REGISTER TO BID"
-msgstr "ЗАРАЄСТРУЙТЕСЯ ЯК УЧАСНИК"
+#: auction/models.py:22 catalog/templates/instrument_form.html:83
+msgid "Draft"
+msgstr "Чернетка"
 
 #: auction/models.py:23
 msgid "Scheduled"
@@ -129,87 +119,113 @@ msgstr "Завершений"
 msgid "Cancelled"
 msgstr "Скасований"
 
-#: auction/templates/auction_details.html:79
+#: auction/models.py:39
+msgid "Minutes before auction start to send notification"
+msgstr "Хвилини до початку аукціону для відправки сповіщення"
+
+#: auction/tasks.py:116
+#, python-format
+msgid "Reminder: The auction '%(title)s' starts soon!"
+msgstr ""
+
+#: auction/templates/auction_details.html:137
 msgid "Starts"
 msgstr "Початок"
 
-#: auction/templates/auction_details.html:84
+#: auction/templates/auction_details.html:142
 msgid "Registration Ends"
 msgstr "Реєстрація завершується"
 
-#: auction/templates/auction_details.html:89
+#: auction/templates/auction_details.html:147
 msgid "Closes"
 msgstr "Завершення"
 
-#: auction/templates/auction_details.html:97
+#: auction/templates/auction_details.html:156
 #: catalog/templates/instrument_details.html:265
 msgid "MANAGE AUCTION"
 msgstr "КЕРУВАТИ АУКЦІОНОМ"
 
-#: auction/templates/auction_details.html:108
+#: auction/templates/auction_details.html:170
 #: auction/templates/auction_manage.html:147
 msgid "Total Lots"
 msgstr "Усього лотів"
 
-#: auction/templates/auction_details.html:112
+#: auction/templates/auction_details.html:174
 msgid "Registered Bidders"
 msgstr "Зареєстровані учасники торгів"
 
-#: auction/templates/auction_details.html:125
-msgid "You must register before you can place bids."
-msgstr "Ви повинні зареєструватися, перш ніж робити ставки."
+#: auction/templates/auction_details.html:183
+msgid "Auction Full"
+msgstr "Аукціон заповнений"
 
-#: auction/templates/auction_details.html:128
-msgid "REGISTER NOW"
-msgstr "ЗАРЕЄСТРУВАТИСЯ"
+#: auction/templates/auction_details.html:187
+msgid "REGISTER TO BID"
+msgstr "ЗАРАЄСТРУЙТЕСЯ ЯК УЧАСНИК"
 
-#: auction/templates/auction_details.html:133
-msgid "Registration is closed for this auction."
-msgstr "Реєстрація на цей аукціон закрита."
+#: auction/templates/auction_details.html:191
+msgid "REGISTRATION CLOSED"
+msgstr "РЕЄСТРАЦІЯ ЗАКРИТА"
 
-#: auction/templates/auction_details.html:168
-msgid "CLOSES IN: "
-msgstr "ЗАКРИТТЯ ЧЕРЕЗ: "
+#: auction/templates/auction_details.html:203
+#, python-format
+msgid "LOT %(lot_number)s"
+msgstr "ЛОТ %(lot_number)s"
 
-#: auction/templates/auction_details.html:174
-msgid "CLOSED"
-msgstr "ЗАКРИТО"
-
-
-#: auction/templates/auction_details.html:160
+#: auction/templates/auction_details.html:222
 #: catalog/templates/instrument_details.html:221
 #: catalog/templates/instruments_list.html:223
 #: users/templates/collection_details.html:135
 msgid "UNDER REVIEW"
 msgstr "НА ПЕРЕВІРЦІ"
 
-#: auction/templates/auction_details.html:165
+#: auction/templates/auction_details.html:227
 #, python-format
 msgid "EST: $%(min_price)s – $%(max_price)s"
 msgstr "ОЦІНКА: $%(min_price)s – $%(max_price)s"
 
-#: auction/templates/auction_details.html:170
+#: auction/templates/auction_details.html:233
+#: auction/templates/auction_details.html:354
+#: auction/templates/auction_details.html:375
+#: auction/templates/auction_details.html:405
+msgid "CLOSED"
+msgstr "ЗАКРИТО"
+
+#: auction/templates/auction_details.html:237
+#: auction/templates/auction_details.html:322
+#: auction/templates/auction_details.html:362
+msgid "CLOSES IN: "
+msgstr "ЗАКРИТТЯ ЧЕРЕЗ: "
+
+#: auction/templates/auction_details.html:243
 msgid "Current Bid"
 msgstr "Поточна ставка"
 
-#: auction/templates/auction_details.html:175
+#: auction/templates/auction_details.html:249
 msgid "LEADING"
 msgstr "ЛІДЕР"
 
-#: auction/templates/auction_details.html:182
-msgid "LOCKED FOR REVIEW"
-msgstr "ЗАБЛОКОВАНО НА ПЕРЕВІРКУ"
+#: auction/templates/auction_details.html:256
+#: auction/templates/auction_details.html:388
+#: payments/templates/purchase_form.html:54
+msgid "PAY NOW"
+msgstr "ОПЛАТИТИ ЗАРАЗ"
 
-#: auction/templates/auction_details.html:194
+#: auction/templates/auction_details.html:260
+#: auction/templates/auction_details.html:393
+#: auction/templates/auction_details.html:411
+msgid "AUCTION CLOSED"
+msgstr "АУКЦІОН ЗАВЕРШЕНО"
+
+#: auction/templates/auction_details.html:269
 msgid "BID"
 msgstr "СТАВКА"
 
-#: auction/templates/auction_details.html:205
+#: auction/templates/auction_details.html:280
 #: auction/templates/auction_manage.html:128
 msgid "No lots have been added to this auction yet."
 msgstr "До цього аукціону ще не додано жодного лота."
 
-#: auction/templates/auction_details.html:212
+#: auction/templates/auction_details.html:288
 #: catalog/templates/instruments_list.html:217
 #: users/templates/collection_details.html:129
 msgid "SOLD"
@@ -480,100 +496,110 @@ msgstr "Верхня оцінка ($)"
 msgid "Confirm Lot Details"
 msgstr "Підтвердити параметри лота"
 
-#: auction/views.py:43
+#: auction/views.py:45
 msgid "Auction not found."
 msgstr "Аукціон не знайдено."
 
-#: auction/views.py:59
+#: auction/views.py:61
 msgid "This instrument is under review and bidding is temporarily locked."
 msgstr ""
 "Цей інструмент перебуває на перевірці, тому ставки тимчасово заблоковані."
 
-#: auction/views.py:63
+#: auction/views.py:65
 msgid "You must register for this auction to bid."
 msgstr "Ви повинні зареєструватися на цей аукціон, щоб робити ставки."
 
-#: auction/views.py:67
+#: auction/views.py:69
 msgid "Bidding is not currently open."
 msgstr "Торги зараз недоступні."
 
-#: auction/views.py:79
+#: auction/views.py:73
+#, fuzzy
+#| msgid "Bidding is not currently open."
+msgid "Bidding is closed."
+msgstr "Торги зараз недоступні."
+
+#: auction/views.py:85
 #, python-format
 msgid "Bid too low. Minimum is $%(amount)s"
 msgstr "Ставка занадто низька. Мінімум: $%(amount)s"
 
-#: auction/views.py:89
+#: auction/views.py:109
 #, python-format
 msgid "Bid of $%(amount)s placed!"
 msgstr "Ставку на $%(amount)s розміщено!"
 
-#: auction/views.py:93
+#: auction/views.py:113
 msgid "Invalid bid amount."
 msgstr "Неприпустима сума ставки."
 
-#: auction/views.py:104
+#: auction/views.py:124
 msgid "Registration is only available for scheduled auctions."
 msgstr "Реєстрація доступна лише для запланованих аукціонів."
 
-#: auction/views.py:108
+#: auction/views.py:128
 msgid "Registration deadline has passed."
 msgstr "Термін реєстрації минув."
 
-#: auction/views.py:112
+#: auction/views.py:132
+msgid "This auction has reached the maximum number of participants."
+msgstr "На цьому аукціоні досягнуто максимальної кількості учасників."
+
+#: auction/views.py:136
 msgid "You are registered as a participant."
 msgstr "Вас зареєстровано як учасника."
 
-#: auction/views.py:126
+#: auction/views.py:150
 #, python-format
 msgid "Auction \"%(auction)s\" created successfully."
 msgstr "Аукціон \"%(auction)s\" успішно створено."
 
-#: auction/views.py:132
+#: auction/views.py:159
 msgid "Create New Auction"
 msgstr "Створити новий аукціон"
 
-#: auction/views.py:145
+#: auction/views.py:172
 #, python-format
 msgid "Auction \"%(auction)s\" updated."
 msgstr "Аукціон \"%(auction)s\" оновлено."
 
-#: auction/views.py:154
+#: auction/views.py:181
 #, python-format
 msgid "Edit Auction: %(auction)s"
 msgstr "Редагувати аукціон: %(auction)s"
 
-#: auction/views.py:178 auction/views.py:214
+#: auction/views.py:205 auction/views.py:241
 msgid "Cannot add lots after auction has begun."
 msgstr "Неможливо додавати лоти після початку аукціону."
 
-#: auction/views.py:235
+#: auction/views.py:262
 #, python-format
 msgid "Lot added: %(instrument)s"
 msgstr "Лот додано: %(instrument)s"
 
-#: auction/views.py:251
+#: auction/views.py:278
 msgid "Configure Lot Details"
 msgstr "Налаштувати параметри лота"
 
-#: auction/views.py:260
+#: auction/views.py:287
 msgid "Cannot edit lots after auction has begun."
 msgstr "Неможливо редагувати лоти після початку аукціону."
 
-#: auction/views.py:271
+#: auction/views.py:298
 #, python-format
 msgid "Lot %(lot_number)s updated."
 msgstr "Лот %(lot_number)s оновлено."
 
-#: auction/views.py:281
+#: auction/views.py:308
 #, python-format
 msgid "Edit Lot %(lot_number)s"
 msgstr "Редагувати лот %(lot_number)s"
 
-#: auction/views.py:291
+#: auction/views.py:318
 msgid "Cannot delete lots after auction has begun."
 msgstr "Неможливо видаляти лоти після початку аукціону."
 
-#: auction/views.py:297
+#: auction/views.py:324
 msgid "Lot removed from auction."
 msgstr "Лот видалено з аукціону."
 
@@ -624,19 +650,19 @@ msgstr "Ціна"
 msgid "Technical specifications"
 msgstr "Технічні характеристики"
 
-#: catalog/forms.py:79
+#: catalog/forms.py:84
 msgid "Category name"
 msgstr "Назва категорії"
 
-#: catalog/forms.py:96
+#: catalog/forms.py:101
 msgid "Brand name"
 msgstr "Назва бренду"
 
-#: catalog/forms.py:97
+#: catalog/forms.py:102
 msgid "Origin country"
 msgstr "Країна походження"
 
-#: catalog/forms.py:98 catalog/templates/catalog/brand_form.html:31
+#: catalog/forms.py:103 catalog/templates/catalog/brand_form.html:31
 #: catalog/templates/catalog/brand_list.html:21
 msgid "History"
 msgstr "Історія"
@@ -1215,11 +1241,6 @@ msgstr "Зарезервовано на %(minutes)s хвилин"
 msgid "This checkout session is reserved for you for a limited time."
 msgstr "Ця сесія оформлення покупки зарезервована для вас на обмежений час."
 
-#: payments/templates/purchase_form.html:54
-#: auction/templates/auction_details.html:177
-msgid "PAY NOW"
-msgstr "ОПЛАТИТИ ЗАРАЗ"
-
 #: payments/templates/purchase_form.html:55
 msgid "CANCEL"
 msgstr "СКАСУВАТИ"
@@ -1278,24 +1299,24 @@ msgstr ""
 "Термін резервування для покупки закінчився. Будь ласка, почніть оформлення "
 "знову."
 
-#: payments/views.py:39 payments/views.py:109
+#: payments/views.py:39 payments/views.py:114
 msgid "Sorry, this instrument has already been sold."
 msgstr "Вибачте, цей інструмент уже продано."
 
-#: payments/views.py:42 payments/views.py:112
+#: payments/views.py:43 payments/views.py:118
 msgid "This instrument is no longer available for direct purchase."
 msgstr "Цей інструмент більше недоступний для прямої покупки."
 
-#: payments/views.py:45 payments/views.py:115
+#: payments/views.py:46 payments/views.py:121
 msgid "This instrument is under review and cannot be purchased right now."
 msgstr ""
 "Цей інструмент перебуває на перевірці, тому зараз його не можна придбати."
 
-#: payments/views.py:98
+#: payments/views.py:103
 msgid "Payment failed."
 msgstr "Помилка оплати."
 
-#: payments/views.py:101 payments/views.py:137
+#: payments/views.py:106 payments/views.py:143
 msgid "An error occurred during transaction: "
 msgstr "Під час транзакції сталася помилка: "
 
@@ -1831,6 +1852,28 @@ msgstr "Англійська"
 #: vintage_hunter/settings.py:123
 msgid "Ukrainian"
 msgstr "Українська"
+
+#~ msgid "This auction is full."
+#~ msgstr "Цей аукціон переповнений."
+
+#, python-format
+#~ msgid "%(count)s / %(max)s spots taken."
+#~ msgstr "%(count)s / %(max)s зайнятих місць."
+
+#~ msgid "YOU WON!"
+#~ msgstr "ВИ ПЕРЕМОГЛИ!"
+
+#~ msgid "You must register before you can place bids."
+#~ msgstr "Ви повинні зареєструватися, перш ніж робити ставки."
+
+#~ msgid "REGISTER NOW"
+#~ msgstr "ЗАРЕЄСТРУВАТИСЯ"
+
+#~ msgid "Registration is closed for this auction."
+#~ msgstr "Реєстрація на цей аукціон закрита."
+
+#~ msgid "LOCKED FOR REVIEW"
+#~ msgstr "ЗАБЛОКОВАНО НА ПЕРЕВІРКУ"
 
 #, python-format
 #~ msgid "Instrument \"%(instrument)s\" created. Now you can add photos."

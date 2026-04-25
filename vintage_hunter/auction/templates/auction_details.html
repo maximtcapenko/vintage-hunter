@@ -245,7 +245,7 @@
                   ${{ lot.current_highest_bid.amount|default:lot.starting_price|floatformat:0 }}
                 </div>
               </div>
-              <div class="leading-badge" {% if lot.current_highest_bid.participant !=user %} style="display: none;" {% endif %}>
+              <div class="leading-badge" {% if lot.current_highest_bid.participant != user %} style="display: none;" {% endif %}>
                 <span class="badge bg-success py-2 px-3">{% trans "LEADING" %}</span>
               </div>
             </div>

@@ -33,6 +33,12 @@ class Auction(Base):
     began_at = models.DateTimeField(null=True, blank=True)
     ended_at = models.DateTimeField(null=True, blank=True)
     registration_deadline = models.DateTimeField(null=True, blank=True)
+    remind_before_start = models.PositiveIntegerField(
+        null=True, 
+        blank=True, 
+        help_text=_('Minutes before auction start to send notification')
+    )
+    remind_sent = models.BooleanField(default=False)
     
     participants = models.ManyToManyField(User, related_name='registered_auctions', blank=True)
     min_participants = models.PositiveIntegerField(default=0)

@@ -408,6 +408,23 @@
       var toastList = toastElList.map(function (toastEl) {
         return new bootstrap.Toast(toastEl, { delay: 5000 }).show()
       })
+
+      {% if user.is_authenticated %}
+      const userEventSource = new EventSource("{% url 'stream_user_events' %}");
+      
+      userEventSource.onmessage = function(event) {
+        console.log('Received user event:', event.data);
+      };
+
+      userEventSource.addEventListener('auction_reminder', function(event) {
+        const data = JSON.parse(event.data);
+        console.log('Auction reminder received:', data);
+      });
+
+      userEventSource.onerror = function(err) {
+        console.error('User EventSource failed:', err);
+      };
+      {% endif %}
     });
   </script>
 </body>

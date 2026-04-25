@@ -30,7 +30,8 @@ class AuctionForm(forms.ModelForm):
         model = Auction
         fields = [
             'title', 'description', 'status', 'began_at', 'ended_at', 
-            'registration_deadline', 'min_participants', 'max_participants'
+            'registration_deadline', 'remind_before_start',
+            'min_participants', 'max_participants'
         ]
         labels = {
             'title': _('Title'),
@@ -39,6 +40,7 @@ class AuctionForm(forms.ModelForm):
             'began_at': _('Starts at'),
             'ended_at': _('Ends at'),
             'registration_deadline': _('Registration deadline'),
+            'remind_before_start': _('Advance notification (minutes)'),
             'min_participants': _('Min participants'),
             'max_participants': _('Max participants'),
         }
