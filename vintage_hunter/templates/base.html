@@ -309,6 +309,15 @@
             </li>
             <li>
               <a class="dropdown-item d-flex justify-content-between align-items-center py-2"
+                href="{% url 'users:finder_list' %}">
+                <span><i class="bi bi-search me-2 opacity-75"></i> {% trans "My Finders" %}</span>
+                {% if user.finders_count > 0 %}
+                <span class="badge rounded-pill bg-warning text-dark">{{ user.finders_count }}</span>
+                {% endif %}
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex justify-content-between align-items-center py-2"
                 href="{% url 'users:order_list' %}">
                 <span><i class="bi bi-receipt me-2 opacity-75"></i> {% trans "My Orders" %}</span>
                 {% if user.active_orders_count > 0 %}
@@ -410,21 +419,13 @@
       })
 
       {% if user.is_authenticated %}
-      const userEventSource = new EventSource("{% url 'stream_user_events' %}");
-      
+      const userEventSource = new EventSource('{% url "stream_user_events" %}');
+
       userEventSource.onmessage = function(event) {
         console.log('Received user event:', event.data);
       };
-
-      userEventSource.addEventListener('auction_reminder', function(event) {
-        const data = JSON.parse(event.data);
-        console.log('Auction reminder received:', data);
-      });
-
-      userEventSource.onerror = function(err) {
-        console.error('User EventSource failed:', err);
-      };
       {% endif %}
+
     });
   </script>
 </body>

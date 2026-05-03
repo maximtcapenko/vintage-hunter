@@ -1853,6 +1853,190 @@ msgstr "Англійська"
 msgid "Ukrainian"
 msgstr "Українська"
 
+#: templates/base.html:313
+msgid "My Finders"
+msgstr "Мої пошукові профілі"
+
+#: users/forms.py:67 users/templates/finder_form.html:29
+msgid "Configuration Name"
+msgstr "Назва конфігурації"
+
+#: users/forms.py:70 users/templates/finder_form.html:47
+msgid "Availability"
+msgstr "Доступність"
+
+#: users/forms.py:71 users/templates/finder_form.html:61
+msgid "Text Search Prompt"
+msgstr "Текстовий пошуковий запит"
+
+#: users/forms.py:72 users/templates/finder_form.html:67
+msgid "Image Search Prompt"
+msgstr "Пошукове зображення"
+
+#: users/forms.py:73 users/templates/finder_form.html:84
+msgid "Search Frequency (minutes)"
+msgstr "Частота пошуку (у хвилинах)"
+
+#: users/forms.py:74 users/templates/finder_form.html:91
+msgid "Maximum Results"
+msgstr "Максимум результатів"
+
+#: users/forms.py:78
+msgid "e.g. Vintage Gibsons"
+msgstr "наприклад, Vintage Gibsons"
+
+#: users/forms.py:82
+msgid "Describe what you are looking for..."
+msgstr "Опишіть, що ви шукаєте..."
+
+#: users/forms.py:100
+msgid "Minimum frequency is 10 minutes."
+msgstr "Мінімальна частота становить 10 хвилин."
+
+#: users/forms.py:103
+msgid "Maximum results is 10."
+msgstr "Максимальна кількість результатів становить 10."
+
+#: users/forms.py:108
+msgid "You can only have up to 5 finder configurations."
+msgstr "Ви можете мати не більше 5 пошукових профілів."
+
+#: users/models.py:32
+msgid "All"
+msgstr "Усі"
+
+#: users/models.py:33
+msgid "Buy It Now Only"
+msgstr "Лише «Купити зараз»"
+
+#: users/models.py:34
+msgid "Auction Only"
+msgstr "Лише аукціон"
+
+#: users/views.py:215
+#, python-format
+msgid "Finder \"%(name)s\" created!"
+msgstr "Пошуковий профіль \"%(name)s\" створено!"
+
+#: users/views.py:220
+msgid "Create Finder"
+msgstr "Створити профіль"
+
+#: users/views.py:230
+#, python-format
+msgid "Finder \"%(name)s\" updated!"
+msgstr "Пошуковий профіль \"%(name)s\" оновлено!"
+
+#: users/views.py:235
+msgid "Edit Finder"
+msgstr "Редагувати профіль"
+
+#: users/views.py:244
+#, python-format
+msgid "Finder \"%(name)s\" deleted."
+msgstr "Пошуковий профіль \"%(name)s\" видалено."
+
+#: users/templates/finder_form.html:4
+msgid "Vintage Tone"
+msgstr "Vintage Tone"
+
+#: users/templates/finder_form.html:37
+msgid "Optional: filter by specific brand"
+msgstr "Необов’язково: фільтр за конкретним брендом"
+
+#: users/templates/finder_form.html:43
+msgid "Optional: filter by specific category"
+msgstr "Необов’язково: фільтр за конкретною категорією"
+
+#: users/templates/finder_form.html:53
+msgid "AI Vector Search"
+msgstr "AI-векторний пошук"
+
+#: users/templates/finder_form.html:56
+msgid "Our AI will search for instruments that conceptually match your prompt, even if the keywords don't match exactly."
+msgstr "Наш AI шукатиме інструменти, що концептуально відповідають вашому запиту, навіть якщо ключові слова не збігаються дослівно."
+
+#: users/templates/finder_form.html:63
+msgid "Describe the instrument's features, era, tone, etc."
+msgstr "Опишіть особливості інструмента, епоху, тембр тощо."
+
+#: users/templates/finder_form.html:69
+msgid "Upload an image of an instrument you like to find similar looking ones."
+msgstr "Завантажте зображення інструмента, який вам подобається, щоб знайти схожі."
+
+#: users/templates/finder_form.html:79
+msgid "Automation Settings"
+msgstr "Налаштування автоматизації"
+
+#: users/templates/finder_form.html:86
+msgid "Minimum 10 minutes."
+msgstr "Мінімум 10 хвилин."
+
+#: users/templates/finder_form.html:93
+msgid "Maximum 10 results per run."
+msgstr "Не більше 10 результатів за запуск."
+
+#: users/templates/finder_form.html:100
+msgid "Enable this finder"
+msgstr "Увімкнути цей профіль"
+
+#: users/templates/finder_form.html:107
+msgid "Save Finder"
+msgstr "Зберегти профіль"
+
+#: users/templates/finder_list.html:4
+msgid "My Finders - Vintage Tone"
+msgstr "Мої пошукові профілі - Vintage Tone"
+
+#: users/templates/finder_list.html:72
+msgid "Instrument Finders"
+msgstr "Пошукові профілі інструментів"
+
+#: users/templates/finder_list.html:73
+msgid "Automated search configurations to find your dream gear."
+msgstr "Автоматизовані пошукові профілі, щоб знаходити інструменти вашої мрії."
+
+#: users/templates/finder_list.html:76
+msgid "New Finder"
+msgstr "Новий профіль"
+
+#: users/templates/finder_list.html:99
+msgid "Inactive"
+msgstr "Неактивний"
+
+#: users/templates/finder_list.html:113
+#, python-format
+msgid "Every %(freq)s min"
+msgstr "Кожні %(freq)s хв"
+
+#: users/templates/finder_list.html:115
+msgid "Last run:"
+msgstr "Останній запуск:"
+
+#: users/templates/finder_list.html:115
+msgid "ago"
+msgstr "тому"
+
+#: users/templates/finder_list.html:121
+msgid "Are you sure you want to delete this finder?"
+msgstr "Ви впевнені, що хочете видалити цей пошуковий профіль?"
+
+#: users/templates/finder_list.html:123
+msgid "Delete Finder"
+msgstr "Видалити профіль"
+
+#: users/templates/finder_list.html:139
+msgid "No finders yet"
+msgstr "Пошукових профілів ще немає"
+
+#: users/templates/finder_list.html:140
+msgid "Create a finder to automatically track new instruments matching your criteria."
+msgstr "Створіть пошуковий профіль, щоб автоматично відстежувати нові інструменти, які відповідають вашим критеріям."
+
+#: users/templates/finder_list.html:142
+msgid "Create My First Finder"
+msgstr "Створити перший профіль"
+
 #~ msgid "This auction is full."
 #~ msgstr "Цей аукціон переповнений."
 

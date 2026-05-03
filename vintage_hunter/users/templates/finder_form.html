@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ title }} - {% trans "Vintage Tone" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+      <div class="card-body p-5">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+          <h2 class="fw-bold mb-0 text-dark">{{ title }}</h2>
+          <a href="{% url 'users:finder_list' %}" class="btn-close"></a>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" novalidate>
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger border-0 rounded-3 mb-4">
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label small fw-bold text-uppercase text-muted">{% trans "Configuration Name" %}</label>
+              {{ form.name }}
+              {% if form.name.errors %}
+                <div class="invalid-feedback d-block small mt-1">
+                  {{ form.name.errors|join:", " }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{% trans "Brand" %}</label>
+              {{ form.brand }}
+              <div class="form-text small">{% trans "Optional: filter by specific brand" %}</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{% trans "Category" %}</label>
+              {{ form.category }}
+              <div class="form-text small">{% trans "Optional: filter by specific category" %}</div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small fw-bold text-uppercase text-muted">{% trans "Availability" %}</label>
+              {{ form.availability }}
+            </div>
+
+            <div class="col-12 mt-4">
+              <h5 class="fw-bold mb-3 opacity-50 text-uppercase small" style="letter-spacing: 1px;">
+                <i class="bi bi-robot me-2"></i>{% trans "AI Vector Search" %}
+              </h5>
+              <p class="small text-muted mb-4">
+                {% trans "Our AI will search for instruments that conceptually match your prompt, even if the keywords don't match exactly." %}
+              </p>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small fw-bold text-uppercase text-muted">{% trans "Text Search Prompt" %}</label>
+              {{ form.vector_text_prompt }}
+              <div class="form-text small">{% trans "Describe the instrument's features, era, tone, etc." %}</div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small fw-bold text-uppercase text-muted">{% trans "Image Search Prompt" %}</label>
+              {{ form.vector_image_prompt }}
+              <div class="form-text small">{% trans "Upload an image of an instrument you like to find similar looking ones." %}</div>
+              {% if finder.vector_image_prompt %}
+                <div class="mt-2">
+                  <img src="{{ finder.vector_image_prompt.url }}" class="img-thumbnail" style="max-height: 100px;">
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-12 mt-4">
+              <h5 class="fw-bold mb-3 opacity-50 text-uppercase small" style="letter-spacing: 1px;">
+                <i class="bi bi-gear me-2"></i>{% trans "Automation Settings" %}
+              </h5>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{% trans "Search Frequency (minutes)" %}</label>
+              {{ form.frequency_minutes }}
+              <div class="form-text small">{% trans "Minimum 10 minutes." %}</div>
+              {% if form.frequency_minutes.errors %}
+                <div class="invalid-feedback d-block small mt-1">
+                  {{ form.frequency_minutes.errors|join:", " }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{% trans "Maximum Results" %}</label>
+              {{ form.max_results }}
+              <div class="form-text small">{% trans "Maximum 10 results per run." %}</div>
+              {% if form.max_results.errors %}
+                <div class="invalid-feedback d-block small mt-1">
+                  {{ form.max_results.errors|join:", " }}
+                </div>
+              {% endif %}
+            </div>
+
+            <div class="col-12 mt-3">
+              <div class="bg-light p-3 rounded-3">
+                <div class="form-check form-switch mb-0">
+                  {{ form.is_active }}
+                  <label class="form-check-label small fw-bold" for="{{ form.is_active.id_for_label }}">{% trans "Enable this finder" %}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 mt-5 border-top pt-4">
+            <a href="{% url 'users:finder_list' %}" class="btn btn-light px-5 text-muted">{% trans "Cancel" %}</a>
+            <button type="submit" class="btn btn-dark px-5">{% trans "Save Finder" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

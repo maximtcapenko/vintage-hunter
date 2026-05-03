@@ -7,12 +7,14 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.translation import gettext as _
 from django.views.decorators.http import require_POST
 
+from django.core.exceptions import ValidationError
+
 from catalog.models import Instrument
 from commons.functional import is_not_staff
 from payments.models import Order
 
-from .forms import CollectionForm, UserProfileForm
-from .models import Collection
+from .forms import CollectionForm, InstrumentFinderForm, UserProfileForm
+from .models import Collection, InstrumentFinder
 
 
 @login_required
@@ -196,3 +198,48 @@ def get_purchases_list(request):
 def get_purchase_details(request, id):
     order = get_object_or_404(Order, pk=id, user=request.user, status='completed')
     return render(request, 'purchase_details.html', {'order': order})
+
+@login_required
+@user_passes_test(is_not_staff)
+def finder_list(request):
+    finders = request.user.finders.all()
+    return render(request, 'finder_list.html', {'finders': finders})
+
+@login_required
+@user_passes_test(is_not_staff)
+def finder_create(request):
+    if request.method == 'POST':
+        form = InstrumentFinderForm(request.POST, request.FILES, user=request.user)
+        if form.is_valid():
+            finder = form.save()
+            messages.success(request, _('Finder "%(name)s" created!') % {'name': finder.name})
+            return redirect('users:finder_list')
+    else:
+        form = InstrumentFinderForm(user=request.user)
+    
+    return render(request, 'finder_form.html', {'form': form, 'title': _('Create Finder')})
+
+@login_required
+@user_passes_test(is_not_staff)
+def finder_update(request, id):
+    finder = get_object_or_404(InstrumentFinder, id=id, user=request.user)
+    if request.method == 'POST':
+        form = InstrumentFinderForm(request.POST, request.FILES, instance=finder, user=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, _('Finder "%(name)s" updated!') % {'name': finder.name})
+            return redirect('users:finder_list')
+    else:
+        form = InstrumentFinderForm(instance=finder, user=request.user)
+    
+    return render(request, 'finder_form.html', {'form': form, 'title': _('Edit Finder')})
+
+@login_required
+@user_passes_test(is_not_staff)
+@require_POST
+def finder_delete(request, id):
+    finder = get_object_or_404(InstrumentFinder, id=id, user=request.user)
+    name = finder.name
+    finder.delete()
+    messages.success(request, _('Finder "%(name)s" deleted.') % {'name': name})
+    return redirect('users:finder_list')

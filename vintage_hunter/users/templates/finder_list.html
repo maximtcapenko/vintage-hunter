@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "My Finders - Vintage Tone" %}{% endblock %}
+
+{% block content %}
+<style>
+  .finder-card {
+    background: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .finder-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  }
+
+  .status-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+    z-index: 2;
+  }
+
+  .status-active {
+    background: #e6fcf5;
+    color: #0ca678;
+    border: 1px solid #c3fae8;
+  }
+
+  .status-inactive {
+    background: #fff5f5;
+    color: #fa5252;
+    border: 1px solid #ffe3e3;
+  }
+
+  .finder-preview {
+    background: #f8f9fa;
+    width: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid #f0f0f0;
+    flex-shrink: 0;
+  }
+
+  .finder-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .finder-preview .placeholder-icon {
+    font-size: 2rem;
+    color: #dee2e6;
+  }
+</style>
+
+<div class="d-flex justify-content-between align-items-end mb-5">
+  <div>
+    <h2 class="fw-bold mb-1">{% trans "Instrument Finders" %}</h2>
+    <p class="text-muted mb-0">{% trans "Automated search configurations to find your dream gear." %}</p>
+  </div>
+  <a href="{% url 'users:finder_create' %}" class="btn btn-dark px-4 shadow-sm">
+    <i class="bi bi-plus-lg me-2"></i>{% trans "New Finder" %}
+  </a>
+</div>
+
+<div class="row">
+  {% for finder in finders %}
+  <div class="col-12 col-lg-6">
+    <div class="finder-card d-flex">
+      
+      <div class="finder-preview">
+        {% if finder.vector_image_prompt %}
+          <img src="{{ finder.vector_image_prompt.url }}" alt="{{ finder.name }}">
+        {% else %}
+          <div class="placeholder-icon">
+              <i class="bi bi-search"></i>
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="p-4 flex-grow-1">
+        {% if finder.is_active %}
+          <span class="status-badge status-active">{% trans "Active" %}</span>
+        {% else %}
+          <span class="status-badge status-inactive">{% trans "Inactive" %}</span>
+        {% endif %}
+
+        <h3 class="h5 fw-bold mb-1">{{ finder.name }}</h3>
+        
+        <div class="text-secondary small mb-3">
+          {% if finder.brand %}<span class="badge bg-light text-dark border me-1">{{ finder.brand.name }}</span>{% endif %}
+          {% if finder.category %}<span class="badge bg-light text-dark border me-1">{{ finder.category.name }}</span>{% endif %}
+          <span class="badge bg-light text-dark border">{{ finder.get_availability_display }}</span>
+        </div>
+
+        <div class="d-flex align-items-center justify-content-between mt-auto">
+          <div class="small text-muted">
+            <i class="bi bi-clock me-1"></i>
+            {% blocktrans with freq=finder.frequency_minutes %}Every {{ freq }} min{% endblocktrans %}
+            {% if finder.last_run_at %}
+              <span class="ms-2">• {% trans "Last run:" %} {{ finder.last_run_at|timesince }} {% trans "ago" %}</span>
+            {% endif %}
+          </div>
+
+          <div class="d-flex align-items-center gap-3">
+            <form action="{% url 'users:finder_delete' finder.id %}" method="POST" 
+                  onsubmit="return confirm('{% trans "Are you sure you want to delete this finder?" %}');">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-link text-danger p-0 m-0 border-0" title="{% trans "Delete Finder" %}">
+                    <i class="bi bi-trash"></i>
+                </button>
+            </form>
+            <a href="{% url 'users:finder_update' finder.id %}" class="btn btn-outline-dark btn-sm px-3 fw-bold">
+              {% trans "Edit" %}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12 text-center py-5">
+    <div class="p-5 bg-white rounded shadow-sm border border-dashed" style="border-style: dashed !important;">
+      <div class="display-4 mb-3 opacity-25">🔍</div>
+      <h4 class="text-muted fw-bold">{% trans "No finders yet" %}</h4>
+      <p class="small text-muted">{% trans "Create a finder to automatically track new instruments matching your criteria." %}</p>
+      <a href="{% url 'users:finder_create' %}" class="btn btn-dark mt-2">
+        {% trans "Create My First Finder" %}
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

@@ -24,4 +24,8 @@ urlpatterns = [
     path('orders/', views.get_orders_list, name='order_list'),
     path('purchases/', views.get_purchases_list, name='purchase_list'),
     path('purchases/<uuid:id>/', views.get_purchase_details, name='purchase_details'),
+    path('finders/', views.finder_list, name='finder_list'),
+    path('finders/create/', views.finder_create, name='finder_create'),
+    path('finders/<uuid:id>/edit/', views.finder_update, name='finder_update'),
+    path('finders/<uuid:id>/delete/', views.finder_delete, name='finder_delete'),
 ]
