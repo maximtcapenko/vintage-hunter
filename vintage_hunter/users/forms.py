@@ -1,4 +1,5 @@
 from django import forms
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
@@ -90,6 +91,11 @@ class InstrumentFinderForm(forms.ModelForm):
 
     def save(self, commit = ...):
         self.instance.user = self.user
+        
+        if 'vector_text_prompt' in self.changed_data and self.instance.vector_text_prompt:
+            from catalog.services import EmbeddingService
+            self.instance.query_text_embedding = EmbeddingService.encode(self.instance.vector_text_prompt)
+
         return super().save(commit)
         
     def clean(self):
@@ -97,15 +103,15 @@ class InstrumentFinderForm(forms.ModelForm):
         frequency_minutes = cleaned_data.get('frequency_minutes')
         max_results = cleaned_data.get('max_results')
 
-        if frequency_minutes is not None and frequency_minutes < 10:
-            self.add_error('frequency_minutes', _('Minimum frequency is 10 minutes.'))
+        if frequency_minutes is not None and frequency_minutes < settings.USER_PREFERENCE_SEARCH_FREQUENCY_MINUTES:
+            self.add_error('frequency_minutes', _(f'Minimum frequency is {settings.USER_PREFERENCE_SEARCH_FREQUENCY_MINUTES} minutes.'))
         
-        if max_results is not None and max_results > 10:
-            self.add_error('max_results', _('Maximum results is 10.'))
+        if max_results is not None and max_results > settings.USER_PREFERENCE_SEARCH_MAX_RESULT:
+            self.add_error('max_results', _(f'Maximum results is {settings.USER_PREFERENCE_SEARCH_MAX_RESULT}.'))
         
         if self.user and self.instance._state.adding:
             count = InstrumentFinder.objects.filter(user=self.user).count()
-            if count >= 5:
-                raise ValidationError(_('You can only have up to 5 finder configurations.'))
+            if count >= settings.USER_PREFERENCE_SEARCH_EXAMPLES_COUNT:
+                raise ValidationError(_(f'You can only have up to {settings.USER_PREFERENCE_SEARCH_EXAMPLES_COUNT} finder configurations.'))
         
         return cleaned_data

@@ -6,6 +6,8 @@ from catalog.models import Brand, Category, Instrument
 from commons.functional import add_to_class
 from commons.models import Base
 
+from pgvector.django import VectorField
+
 
 class Collection(Base):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='collections')
@@ -45,6 +47,8 @@ class InstrumentFinder(Base):
     vector_text_prompt = models.TextField(blank=True)
     vector_image_prompt = models.ImageField(upload_to='finders/%Y/%m/', null=True, blank=True)
     
+    query_text_embedding = VectorField(dimensions=768, null=True, blank=True)
+
     frequency_minutes = models.PositiveIntegerField(default=60)
     max_results = models.PositiveIntegerField(default=10)
     
