@@ -154,6 +154,10 @@ CELERY_BEAT_SCHEDULE = {
         'task': 'auction.tasks.check_auction_reminders',
         'schedule': 60.0,
     },
+    'check_finder_next_run': {
+        'task': 'users.tasks.check_finder_next_run',
+        'schedule': 60.0,
+    },
 }
 
 LOGGING = {

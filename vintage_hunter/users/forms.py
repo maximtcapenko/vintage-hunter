@@ -83,8 +83,8 @@ class InstrumentFinderForm(forms.ModelForm):
             'availability': forms.Select(attrs={'class': 'form-select'}),
             'vector_text_prompt': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Describe what you are looking for...')}),
             'vector_image_prompt': ImagePreviewWidget(attrs={'class': 'form-control'}),
-            'frequency_minutes': forms.NumberInput(attrs={'class': 'form-control', 'min': 10}),
-            'max_results': forms.NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': 10}),
+            'frequency_minutes': forms.NumberInput(attrs={'class': 'form-control', 'min': settings.USER_PREFERENCE_SEARCH_FREQUENCY_MINUTES}),
+            'max_results': forms.NumberInput(attrs={'class': 'form-control', 'min': 1, 'max': settings.USER_PREFERENCE_SEARCH_MAX_RESULT}),
             'is_active': forms.CheckboxInput(attrs={'class': 'form-check-input'}),
         }
 

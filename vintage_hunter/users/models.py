@@ -19,10 +19,6 @@ class Collection(Base):
     class Meta(Base.Meta):
         unique_together = ('user', 'name')
         verbose_name = 'Collection'
-        verbose_name_plural = 'Collections'
-
-    def __str__(self):
-        return f"{self.user.username}'s {self.name}"
 
     def save(self, *args, **kwargs):
         if self.is_default:
@@ -55,16 +51,15 @@ class InstrumentFinder(Base):
     is_active = models.BooleanField(default=True)
     last_run_at = models.DateTimeField(null=True, blank=True)
 
-
-    def __str__(self):
-        return f"{self.name} ({self.user.username})"
+class InstrumentFinderResult(Base):
+    finder = models.ForeignKey(InstrumentFinder, on_delete=models.CASCADE, related_name='results')
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
 
 def get_user_user_collections_count(self):
     if not self.is_authenticated:
         return 0
     
     return self.collections.count()
-
 
 add_to_class(User, get_user_user_collections_count, 'collections_count')
 
