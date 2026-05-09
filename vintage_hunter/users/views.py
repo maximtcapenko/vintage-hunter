@@ -236,6 +236,29 @@ def finder_update(request, id):
 
 @login_required
 @user_passes_test(is_not_staff)
+def finder_results(request, id):
+    finder = get_object_or_404(InstrumentFinder, id=id, user=request.user)
+    results = finder.results.select_related(
+        'instrument', 
+        'instrument__brand',
+        'instrument__category'
+    ).prefetch_related(
+        'instrument__images'
+    ).order_by('-created_at')
+    
+    instruments = [r.instrument for r in results]
+    user_collection_instrument_ids = Instrument.objects.filter(
+        in_collections__user=request.user
+    ).values_list('id', flat=True)
+    
+    return render(request, 'finder_results.html', {
+        'finder': finder,
+        'instruments': instruments,
+        'user_collection_instrument_ids': user_collection_instrument_ids
+    })
+
+@login_required
+@user_passes_test(is_not_staff)
 @require_POST
 def finder_delete(request, id):
     finder = get_object_or_404(InstrumentFinder, id=id, user=request.user)

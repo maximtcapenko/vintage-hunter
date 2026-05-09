@@ -28,4 +28,5 @@ urlpatterns = [
     path('finders/create/', views.finder_create, name='finder_create'),
     path('finders/<uuid:id>/edit/', views.finder_update, name='finder_update'),
     path('finders/<uuid:id>/delete/', views.finder_delete, name='finder_delete'),
+    path('finders/<uuid:id>/results/', views.finder_results, name='finder_results'),
 ]

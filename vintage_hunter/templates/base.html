@@ -420,7 +420,9 @@
 
       {% if user.is_authenticated %}
       const userEventSource = new EventSource('{% url "stream_user_events" %}');
-
+      window.addEventListener('beforeunload', () => {
+        userEventSource.close();
+      });
       userEventSource.onmessage = function(event) {
         console.log('Received user event:', event.data);
       };

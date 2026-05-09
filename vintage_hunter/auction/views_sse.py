@@ -2,15 +2,14 @@ import asyncio
 import json
 import logging
 
-from django.conf import settings
 from django.http import HttpResponseForbidden, StreamingHttpResponse
-from redis import asyncio as async_redis
+from commons.redis import get_async_redis_client
 
 logger = logging.getLogger(__name__)
 
 
 async def event_stream(auction_id, user_id):
-    redis = await async_redis.from_url(settings.REDIS_URL)
+    redis = get_async_redis_client()
     pubsub = redis.pubsub()
     
     channels = [
@@ -35,7 +34,7 @@ async def event_stream(auction_id, user_id):
         logger.info("SSE connection cancelled.")
     finally:
         await pubsub.unsubscribe(*channels)
-        await redis.aclose()
+        await pubsub.aclose()
 
 async def stream_events(request, auction_id):
     user = await request.auser()

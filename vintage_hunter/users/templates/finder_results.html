@@ -1,0 +1,295 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ finder.name }} - {% trans "Search Results" %}{% endblock %}
+
+{% block content %}
+<style>
+  .transition { transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  .hover-shadow:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08) !important;
+  }
+  .border-dashed {
+    border: 2px dashed #dee2e6 !important;
+    background-color: #fafafa;
+  }
+  .status-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    backdrop-filter: blur(1.5px);
+    z-index: 5;
+  }
+  .status-overlay-card {
+    max-width: 190px;
+    padding: 0.9rem 1rem;
+    border-radius: 14px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 8px 24px rgba(64, 41, 12, 0.08);
+  }
+  .status-overlay-title {
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+  }
+  .status-overlay-subtitle {
+    font-size: 0.72rem;
+    color: #6c757d;
+    margin-top: 0.35rem;
+  }
+  .status-overlay--sold {
+    background: linear-gradient(180deg, rgba(243, 244, 246, 0.2) 0%, rgba(248, 249, 250, 0.86) 100%);
+  }
+  .status-overlay--sold .status-overlay-card {
+    border: 1px solid rgba(108, 117, 125, 0.18);
+  }
+  .status-overlay--sold .status-overlay-title {
+    color: #495057;
+  }
+  .status-overlay--review {
+    background: linear-gradient(180deg, rgba(247, 242, 233, 0.18) 0%, rgba(255, 249, 241, 0.84) 100%);
+  }
+  .status-overlay--review .status-overlay-card {
+    border: 1px solid rgba(145, 111, 52, 0.18);
+  }
+  .status-overlay--review .status-overlay-title {
+    color: #7b5924;
+  }
+  .review-card-body .review-title,
+  .review-card-body .review-price {
+    color: #6c757d !important;
+  }
+</style>
+
+<div class="d-flex justify-content-between align-items-end mb-5">
+  <div>
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2" style="font-size: 0.85rem;">
+        <li class="breadcrumb-item"><a href="{% url 'users:finder_list' %}" class="text-muted text-decoration-none">{% trans "Finders" %}</a></li>
+        <li class="breadcrumb-item active fw-semibold text-dark">{{ finder.name }}</li>
+      </ol>
+    </nav>
+    <h2 class="fw-bold mb-0">{{ finder.name }}</h2>
+    <div class="d-flex align-items-center mt-2">
+        <span class="badge bg-light text-dark border me-3">{% blocktrans count instrument_count=instruments|length %}{{ instrument_count }} Result{% plural %}{{ instrument_count }} Results{% endblocktrans %}</span>
+        <span class="text-muted small border-start ps-3">
+          {% if finder.brand %}{{ finder.brand.name }}{% endif %}
+          {% if finder.category %} • {{ finder.category.name }}{% endif %}
+          • {{ finder.get_availability_display }}
+        </span>
+    </div>
+  </div>
+  <div class="d-flex gap-2">
+    <a href="{% url 'users:finder_update' finder.id %}" class="btn btn-outline-dark px-4 shadow-sm">
+      <i class="bi bi-pencil me-2"></i>{% trans "Edit Configuration" %}
+    </a>
+  </div>
+</div>
+
+<div class="row g-4" id="instruments-grid">
+  {% for instrument in instruments %}
+  <div class="col-md-6 col-xl-4 instrument-card">
+    <div class="card h-100 border-0 shadow-sm hover-shadow transition overflow-hidden">
+      <div class="position-relative" style="height: 240px; background: #fdfdfd;">
+        {% with img=instrument.primary_image %}
+        <img src="{{ img.image.url|default:'/static/img/no-image.jpg' }}" 
+             class="w-100 h-100" 
+             style="object-fit: cover;" 
+             alt="{{ instrument.title }}">
+        {% endwith %}
+        
+        <div class="dropdown position-absolute top-0 end-0 m-3" style="z-index: 100;">
+              <button
+                class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center dropdown-toggle collection-dropdown-btn"
+                style="width: 38px; height: 38px; border: 1px solid #eee;"
+                id="collDrop_{{ instrument.id }}" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"
+                data-instrument-id="{{ instrument.id }}">
+                <i class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %} bi-heart text-dark{% endif %}"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-3" aria-labelledby="collDrop_{{ instrument.id }}" style="min-width: 260px; border-radius: 12px;">
+                <h6 class="dropdown-header px-0 mb-2 text-dark fw-bold" style="font-size: 0.75rem;">{% trans "Select Collections" %}</h6>
+                <div class="collections-loading text-center py-2">
+                  <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
+                </div>
+                <div class="collections-list" style="max-height: 180px; overflow-y: auto;"></div>
+                <hr class="dropdown-divider my-2">
+                <div class="input-group input-group-sm">
+                  <input type="text" class="form-control border-light-subtle new-collection-name" placeholder="{% trans "New collection..." %}" style="font-size: 0.75rem;">
+                  <button class="btn btn-dark btn-sm create-collection-btn" type="button">+</button>
+                </div>
+              </div>
+            </div>
+        <div class="position-absolute bottom-0 start-0 m-3">
+          <span class="badge bg-white text-dark shadow-sm px-3 py-2 rounded-pill fw-bold" style="font-size: 0.7rem;">
+            {{ instrument.year }}
+          </span>
+        </div>
+
+        {% if instrument.is_sold %}
+        <div class="status-overlay status-overlay--sold">
+          <div class="status-overlay-card">
+            <div class="status-overlay-title">{% trans "SOLD" %}</div>
+          </div>
+        </div>
+        {% elif instrument.is_draft %}
+        <div class="status-overlay status-overlay--review">
+          <div class="status-overlay-card">
+            <div class="status-overlay-title">{% trans "UNDER REVIEW" %}</div>
+            <div class="status-overlay-subtitle">{% trans "Temporarily unavailable" %}</div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="card-body p-4 d-flex flex-column {% if instrument.is_draft and not instrument.is_sold %}review-card-body{% endif %}">
+        <div class="mb-1 text-uppercase fw-bold text-muted" style="font-size: 0.65rem; letter-spacing: 1px;">
+          {{ instrument.brand.name }}
+        </div>
+        <h5 class="h6 fw-bold mb-3 text-dark lh-base review-title">{{ instrument.title }}</h5>
+
+        <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+          <div>
+            <span class="d-block text-muted fw-semibold" style="font-size: 0.65rem; text-transform: uppercase;">{% trans "Estimated Value" %}</span>
+            <span class="h5 fw-bold mb-0 review-price">${{ instrument.price|default:"0" }}</span>
+          </div>
+          <a href="{% url 'catalog:get_details' instrument.id %}" class="btn btn-sm btn-outline-dark px-3 fw-bold">{% trans "View Details" %}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div id="empty-state" class="text-center py-5 {% if instruments %}d-none{% endif %}">
+  <div class="p-5 border-dashed rounded-4">
+    <div class="display-1 mb-3 opacity-25 text-muted"><i class="bi bi-search"></i></div>
+    <h4 class="fw-bold text-dark">{% trans "No results yet" %}</h4>
+    <p class="text-muted mx-auto mb-4" style="max-width: 400px;">{% trans "We haven't found any new instruments matching your criteria yet. The search runs automatically based on your frequency." %}</p>
+    <a href="{% url 'users:finder_update' finder.id %}" class="btn btn-dark px-5 py-2">{% trans "Edit Configuration" %}</a>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.dropdown').forEach(dropdown => {
+          const dropdownBtn = dropdown.querySelector('.collection-dropdown-btn');
+          if (!dropdownBtn) return;
+          
+          const instrumentId = dropdownBtn.dataset.instrumentId;
+          const loadingEl = dropdown.querySelector('.collections-loading');
+          const listEl = dropdown.querySelector('.collections-list');
+          const newCollInput = dropdown.querySelector('.new-collection-name');
+          const createCollBtn = dropdown.querySelector('.create-collection-btn');
+
+          dropdownBtn.addEventListener('show.bs.dropdown', function () {
+            fetchCollections(instrumentId, loadingEl, listEl);
+          });
+
+          createCollBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const name = newCollInput.value.trim();
+            if (!name) return;
+            
+            fetch('/users/collections/create-ajax/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}',
+                'X-Requested-With': 'XMLHttpRequest'
+              },
+              body: JSON.stringify({ name: name })
+            })
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                newCollInput.value = '';
+                fetchCollections(instrumentId, loadingEl, listEl);
+              }
+            });
+          });
+        });
+
+        function fetchCollections(instrumentId, loadingEl, listEl) {
+          loadingEl.classList.remove('d-none');
+          listEl.innerHTML = '';
+          
+          fetch(`/users/collections/status/${instrumentId}/`)
+            .then(response => response.json())
+            .then(data => {
+              loadingEl.classList.add('d-none');
+              if (data.status === 'success') {
+                renderCollections(instrumentId, data.collections, listEl);
+              }
+            });
+        }
+
+        function renderCollections(instrumentId, collections, listEl) {
+          listEl.innerHTML = collections.map(col => `
+            <div class="form-check py-1">
+              <input class="form-check-input collection-checkbox" type="checkbox" value="${col.id}" 
+                     id="list_col_${instrumentId}_${col.id}" ${col.is_checked ? 'checked' : ''} 
+                     style="cursor: pointer; border-color: #ddd;">
+              <label class="form-check-label w-100 small" for="list_col_${instrumentId}_${col.id}" style="cursor: pointer; color: #444; font-size: 0.8rem;">
+                ${col.name}
+              </label>
+            </div>
+          `).join('');
+
+          listEl.querySelectorAll('.collection-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+              toggleItem(instrumentId, this.value, this.checked);
+            });
+          });
+        }
+
+        function toggleItem(instrumentId, collectionId, isAdding) {
+          const formData = new FormData();
+          formData.append('collection_id', collectionId);
+
+          fetch(`/users/collections/toggle/${instrumentId}/`, {
+            method: 'POST',
+            headers: {
+              'X-CSRFToken': '{{ csrf_token }}',
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            body: formData
+          })
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'success') {
+              updateIconState(instrumentId);
+              const toastBody = document.querySelector('.toast-body');
+              if (toastBody) {
+                toastBody.innerText = data.message;
+                new bootstrap.Toast(document.getElementById('liveToast')).show();
+              }
+            }
+          });
+        }
+
+        function updateIconState(instrumentId) {
+          fetch(`/users/collections/status/${instrumentId}/`)
+            .then(response => response.json())
+            .then(data => {
+              if (data.status === 'success') {
+                const isInAny = data.collections.some(c => c.is_checked);
+                const btn = document.querySelector(`.collection-dropdown-btn[data-instrument-id="${instrumentId}"]`);
+                const icon = btn.querySelector('i');
+                if (isInAny) {
+                  icon.classList.remove('bi-heart', 'text-dark');
+                  icon.classList.add('bi-heart-fill', 'text-danger');
+                } else {
+                  icon.classList.remove('bi-heart-fill', 'text-danger');
+                  icon.classList.add('bi-heart', 'text-dark');
+                }
+              }
+            });
+        }
+      });
+</script>
+{% endblock %}

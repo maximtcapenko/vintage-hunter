@@ -292,6 +292,9 @@
     if (typeof (EventSource) !== "undefined") {
       const auctionId = '{{ auction.id }}';
       const source = new EventSource(`/auction/stream/${auctionId}/`);
+       window.addEventListener('beforeunload', () => {
+        source.close();
+      });
 
       source.addEventListener('new_bid', (event) => {
         const data = JSON.parse(event.data);

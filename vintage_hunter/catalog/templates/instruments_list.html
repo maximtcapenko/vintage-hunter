@@ -193,14 +193,14 @@
                 <i class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %} bi-heart text-dark{% endif %}"></i>
               </button>
               <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-3" aria-labelledby="collDrop_{{ instrument.id }}" style="min-width: 260px; border-radius: 12px;">
-                <h6 class="dropdown-header px-0 mb-2 text-dark fw-bold" style="font-size: 0.75rem;">{% trans "Select Curations" %}</h6>
+                <h6 class="dropdown-header px-0 mb-2 text-dark fw-bold" style="font-size: 0.75rem;">{% trans "Select Collections" %}</h6>
                 <div class="collections-loading text-center py-2">
                   <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
                 </div>
                 <div class="collections-list" style="max-height: 180px; overflow-y: auto;"></div>
                 <hr class="dropdown-divider my-2">
                 <div class="input-group input-group-sm">
-                  <input type="text" class="form-control border-light-subtle new-collection-name" placeholder="{% trans "New curation..." %}" style="font-size: 0.75rem;">
+                  <input type="text" class="form-control border-light-subtle new-collection-name" placeholder="{% trans "New collection..." %}" style="font-size: 0.75rem;">
                   <button class="btn btn-dark btn-sm create-collection-btn" type="button">+</button>
                 </div>
               </div>
