@@ -423,9 +423,34 @@
       window.addEventListener('beforeunload', () => {
         userEventSource.close();
       });
-      userEventSource.onmessage = function(event) {
-        console.log('Received user event:', event.data);
-      };
+
+      userEventSource.addEventListener('user_info', (event) => {
+        const data = JSON.parse(event.data);
+        const toastContainer = document.querySelector('.toast-container');
+        if (toastContainer) {
+          const toastHtml = `
+            <div class="toast toast-lg align-items-center text-white bg-${data.tags} border-0 shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+              <div class="d-flex p-2">
+                <div class="toast-body fs-6 py-3 ps-3">
+                  <i class="bi bi-check-circle-fill me-3 text-white"></i>
+                  ${data.message}
+                </div>
+                <button type="button" class="btn-close btn-close-white me-3 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+              </div>
+            </div>
+          `;
+          const wrapper = document.createElement('div');
+          wrapper.innerHTML = toastHtml.trim();
+          const toastElement = wrapper.firstChild;
+          toastContainer.appendChild(toastElement);
+          const toast = new bootstrap.Toast(toastElement, { delay: 5000 });
+          toast.show();
+          toastElement.addEventListener('hidden.bs.toast', () => {
+            toastElement.remove();
+          });
+        }
+      });
+
       {% endif %}
 
     });

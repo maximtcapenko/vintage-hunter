@@ -54,6 +54,7 @@ class InstrumentFinder(Base):
 class InstrumentFinderResult(Base):
     finder = models.ForeignKey(InstrumentFinder, on_delete=models.CASCADE, related_name='results')
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    is_viewed = models.BooleanField(default=False)
 
 def get_user_user_collections_count(self):
     if not self.is_authenticated:

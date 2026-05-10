@@ -8,8 +8,17 @@ from celery import shared_task
 
 from pgvector.django import CosineDistance
 
+from commons.sse import broadcast_event
 from .models import InstrumentFinder, Instrument, InstrumentFinderResult
 
+
+@shared_task
+def publish_delayed_user_message(user_id, message, tag):
+    broadcast_event(f'user:{user_id}', 'user_info', {
+        'message': message,
+        'tags': tag
+    })
+    
 @shared_task
 def run_user_search(job_id):
     finder = InstrumentFinder.objects.filter(pk=job_id, is_active=True).first()
