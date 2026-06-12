@@ -15,41 +15,69 @@ A Django application for cataloging and auctioning vintage musical instruments. 
 
 ## Stack
 
-- Python 3.x, Django 6.0
-- PostgreSQL 17 + [`pgvector`](https://github.com/pgvector/pgvector) (HNSW indexes for embeddings)
-- Redis (Celery broker and SSE pub/sub)
-- Celery + Celery Beat
-- Bootstrap 5.3.0, Bootstrap Icons, vanilla CSS/JS, Django templates
-- Azure Blob Storage for static and media files (via `django-storages`)
-- `sentence-transformers`, `transformers` (CLIP) for embeddings
-- `fastmcp`, `sse-starlette` for MCP and SSE endpoints
+- Python 3.12, Django 6.0
+- **Nginx**: Reverse proxy optimized for SSE and MCP.
+- **Supervisor**: Process manager for Django (ASGI/Uvicorn), Celery Worker, and Celery Beat.
+- **PostgreSQL 17** + [`pgvector`](https://github.com/pgvector/pgvector) (HNSW indexes for embeddings)
+- **Redis**: Celery broker and SSE pub/sub.
+- **Docker**: Containerized deployment using Docker Compose.
 
 ## Project Layout
 
 ```
-vintage_hunter/
+.
+├── nginx/               # Nginx configuration (SSE optimized)
+├── supervisor/          # Supervisor configuration for web and celery
 ├── vintage_hunter/      # Django project (settings, urls, celery, auth views)
-├── catalog/             # Instruments, brands, categories, embeddings, semantic search
-├── auction/             # Auctions, lots, bidding, SSE views
-├── payments/            # Payment providers and purchase flows
-├── users/               # Auth, profiles, saved-search finders
-├── commons/             # Base model, SSE helpers, Redis, Azure storages
-├── templates/           # Shared templates
-├── locale/              # en / uk translations
-├── ai-models/           # Local embedding model weights (gitignored)
-├── mcp_tools.py         # FastMCP server exposing catalog tools
-└── manage.py
+│   ├── catalog/         # Instruments, brands, categories, embeddings, semantic search
+│   ├── auction/         # Auctions, lots, bidding, SSE views
+│   ├── payments/        # Payment providers and purchase flows
+│   ├── users/           # Auth, profiles, saved-search finders
+│   ├── commons/         # Base model, SSE helpers, Redis, Azure storages
+│   ├── templates/       # Shared templates
+│   ├── locale/          # en / uk translations
+│   ├── ai-models/       # Local embedding model weights (gitignored)
+│   └── manage.py
+├── Dockerfile           # Application container image
+├── docker-compose.yaml  # Full stack orchestration
+└── README.md
 ```
 
-## Getting Started
+## Getting Started (Docker - Recommended)
 
-### 1. Start PostgreSQL and Redis
+The easiest way to run the entire stack (Database, Redis, Web, Celery, and Nginx) is using Docker Compose.
+
+### 1. Build and start the containers
 
 ```bash
-docker compose up -d
+docker compose up --build
 ```
 
-This starts `pgvector/pgvector:pg17` on `localhost:5432` and `redis:latest` on `localhost:6379`. Data is persisted to `./pgdata` and `./redis`.
+This will:
+1. Start **PostgreSQL** (with pgvector) and **Redis**.
+2. Build the **Web** image, which runs **Supervisor** to manage the Django ASGI server, Celery Worker, and Celery Beat.
+3. Start **Nginx** as a reverse proxy on port `80`.
+
+The application will be accessible at `http://localhost`.
+
+### 2. Run migrations and create a superuser
+
+In a separate terminal:
+
+```bash
+docker exec -it vintage-web python manage.py migrate
+docker exec -it vintage-web python manage.py createsuperuser
+```
+
+## Local Development (Manual)
+
+If you prefer to run the application components manually:
+
+### 1. Start Database and Redis only
+
+```bash
+docker compose up -d db redis
+```
 
 ### 2. Create a virtual environment and install dependencies
 
@@ -66,6 +94,8 @@ Create `vintage_hunter/.env` with at least:
 ```env
 SECRET_KEY='change-me'
 DB_URL='postgres://myuser:mypassword@127.0.0.1:5432/vintagedb'
+REDIS_URL='redis://127.0.0.1:6379/0'
+CELERY_BROKER_URL='redis://127.0.0.1:6379/0'
 
 # Azure auth (for Azure AD sign-in)
 AZURE_CLIENT_ID=...
@@ -76,41 +106,27 @@ AZURE_CLIENT_SECRET=...
 # Azure Storage (static + media)
 AZURE_STORAGE_NAME=...
 
-# Celery queues
-CELERY_BROKER_QUEUE=django-celery
-CELEREY_PERIODIC_BROKER_QUEUE=django-periodic-celery
-
 # Local embedding model paths
 EMBEDDING_MODEL_PATH='./ai-models/all-mpnet-base-v2'
 EMBEDDING_IMAGE_MODEL_PATH='./ai-models/clip-vit-base-patch32'
 ```
 
-Download the embedding models into `vintage_hunter/ai-models/` (the folder is gitignored).
-
-### 4. Run migrations and start the dev server
+### 4. Run the components
 
 ```bash
-cd vintage_hunter
-python manage.py migrate
-python manage.py createsuperuser
-python manage.py runserver
+# In terminal 1: Django server
+cd vintage_hunter && python manage.py runserver
+
+# In terminal 2: Celery Worker
+cd vintage_hunter && celery -A vintage_hunter worker -l info
+
+# In terminal 3: Celery Beat
+cd vintage_hunter && celery -A vintage_hunter beat -l info
 ```
-
-### 5. Start Celery workers and Beat
-
-In separate terminals, from `vintage_hunter/`:
-
-```bash
-celery -A vintage_hunter worker -l info -Q django-celery
-celery -A vintage_hunter worker -l info -Q django-periodic-celery
-celery -A vintage_hunter beat -l info
-```
-
-Beat schedules auction timeouts, scheduled-auction starts, reminders, and saved-search finder runs (see `vintage_hunter/settings.py`).
 
 ## MCP Server
 
-`vintage_hunter/mcp_tools.py` exposes a FastMCP server named `vintage-hunter` with tools to list categories, search instruments (semantic when a `query` is provided, otherwise category-filtered with pagination), and fetch detailed instrument information including visually similar items.
+`vintage_hunter/mcp_tools.py` exposes a FastMCP server named `vintage-hunter` with tools to list categories, search instruments, and fetch detailed instrument information.
 
 ## Internationalization
 
@@ -123,4 +139,4 @@ python manage.py compilemessages
 
 ## Development Notes
 
-Agent and contributor guidelines — Django conventions, model conventions, frontend rules, and AI/search rules — live in [`AGENTS.md`](AGENTS.md).
+Agent and contributor guidelines live in [`AGENTS.md`](AGENTS.md).

@@ -19,3 +19,25 @@ services:
     volumes:
        - ./pgdata:/var/lib/postgresql/data
 
+  web:
+    build: .
+    container_name: vintage-web
+    volumes:
+      - .:/app
+    environment:
+      - DB_URL=postgres://myuser:mypassword@db:5432/vintagedb
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/0
+    depends_on:
+      - db
+      - redis
+
+  nginx:
+    image: nginx:latest
+    container_name: vintage-nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - web

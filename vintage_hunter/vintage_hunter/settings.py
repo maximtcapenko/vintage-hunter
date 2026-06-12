@@ -136,7 +136,7 @@ LOCALE_PATHS = [
 STATICFILES_STORAGE = 'commons.storages.AzureStaticStorage'
 STATIC_URL = f'https://{STORAGE_ACCOUNT_NAME}.blob.core.windows.net/static/'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = env.get_value('CELERY_BROKER_URL', default='redis://localhost:6379/0')
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_TIMEZONE = 'UTC'
@@ -176,7 +176,7 @@ LOGGING = {
     },
 }
 
-REDIS_URL = 'redis://localhost:6379/0'
+REDIS_URL = env.get_value('REDIS_URL', default='redis://localhost:6379/0')
 EMBEDDING_MODEL_PATH = env.get_value('EMBEDDING_MODEL_PATH')
 EMBEDDING_IMAGE_MODEL_PATH = env.get_value('EMBEDDING_IMAGE_MODEL_PATH')
 
