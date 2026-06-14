@@ -1,0 +1,73 @@
+---
+- name: Ensure application directory exists
+  file:
+    path: "{{ app_dest_path }}"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: '0755'
+
+- name: Clone or update repository
+  git:
+    repo: "{{ app_repo_url }}"
+    dest: "{{ app_dest_path }}"
+    version: main
+    force: yes
+  register: repo_update
+
+- name: Template .env file
+  template:
+    src: env.j2
+    dest: "{{ app_dest_path }}/vintage_hunter/.env"
+    mode: '0600'
+
+- name: Ensure data and model directories exist
+  file:
+    path: "{{ app_dest_path }}/{{ item }}"
+    state: directory
+    mode: '0755'
+  loop:
+    - pgdata
+    - redis
+    - vintage_hunter/ai-models
+
+- name: Start infrastructure (DB and Redis)
+  shell:
+    cmd: docker compose --profile infra up -d
+    chdir: "{{ app_dest_path }}"
+
+- name: Run database migrations
+  shell:
+    cmd: docker compose run --rm web python manage.py migrate
+    chdir: "{{ app_dest_path }}"
+  when: repo_update.changed or force_migrate | default(false)
+
+- name: Download AI models from Hugging Face
+  shell:
+    cmd: |
+      docker compose run --rm --workdir /app/vintage_hunter web python -c "
+      from sentence_transformers import SentenceTransformer;
+      from transformers import CLIPModel, CLIPProcessor;
+      import os;
+      print('Downloading SentenceTransformer...');
+      os.makedirs(os.path.dirname('{{ app_embedding_model_path }}'), exist_ok=True);
+      SentenceTransformer('all-mpnet-base-v2').save('{{ app_embedding_model_path }}');
+      print('Downloading CLIP...');
+      os.makedirs(os.path.dirname('{{ app_embedding_image_model_path }}'), exist_ok=True);
+      CLIPModel.from_pretrained('openai/clip-vit-base-patch32').save_pretrained('{{ app_embedding_image_model_path }}');
+      CLIPProcessor.from_pretrained('openai/clip-vit-base-patch32').save_pretrained('{{ app_embedding_image_model_path }}');
+      "
+    chdir: "{{ app_dest_path }}"
+  when: repo_update.changed or force_model_download | default(false)
+
+- name: Start full application stack
+  shell:
+    cmd: docker compose --profile all up -d --build
+    chdir: "{{ app_dest_path }}"
+
+- name: Collect static files
+  shell:
+    cmd: docker exec vintage-web python manage.py collectstatic --noinput
+    chdir: "{{ app_dest_path }}"
+  when: repo_update.changed
+

@@ -265,6 +265,9 @@ poetry.toml
 # LSP config files
 pyrightconfig.json
 
+# Ansible
+*.retry
+
 # End of https://www.toptal.com/developers/gitignore/api/django,python
 pgdata
 redis

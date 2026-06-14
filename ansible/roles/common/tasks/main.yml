@@ -1,0 +1,37 @@
+---
+- name: Update apt cache
+  apt:
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Install base packages
+  apt:
+    name:
+      - curl
+      - git
+      - ufw
+      - fail2ban
+      - python3-pip
+      - python3-venv
+    state: present
+
+- name: Allow SSH in UFW
+  ufw:
+    rule: allow
+    name: OpenSSH
+
+- name: Allow HTTP in UFW
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- name: Allow HTTPS in UFW
+  ufw:
+    rule: allow
+    port: '443'
+    proto: tcp
+
+- name: Enable UFW
+  ufw:
+    state: enabled

@@ -1,0 +1,18 @@
+---
+app_repo_url: "https://github.com/maximtcapenko/vintage-hunter.git"
+app_dest_path: "/opt/vintage-hunter"
+app_domain: "{{ lookup('env', 'APP_DOMAIN') | default('example.com', true) }}"
+
+# App secrets (Pulled from your LOCAL environment if available)
+app_secret_key: "{{ lookup('env', 'SECRET_KEY') | default('change-me', true) }}"
+app_azure_client_id: "{{ lookup('env', 'AZURE_CLIENT_ID') | default('', true) }}"
+app_azure_client_secret: "{{ lookup('env', 'AZURE_CLIENT_SECRET') | default('', true) }}"
+app_azure_storage_name: "{{ lookup('env', 'AZURE_STORAGE_NAME') | default('', true) }}"
+
+# App infrastructure defaults
+app_db_url: "postgres://myuser:mypassword@db:5432/vintagedb"
+app_redis_url: "redis://redis:6379/0"
+app_celery_broker_url: "redis://redis:6379/0"
+# AI Model paths (relative to project root inside the container)
+app_embedding_model_path: "./ai-models/all-mpnet-base-v2"
+app_embedding_image_model_path: "./ai-models/clip-vit-base-patch32"

@@ -60,12 +60,52 @@ This will:
 
 The application will be accessible at `http://localhost`.
 
-### 2. Run migrations and create a superuser
+## Automation (Ansible)
 
-In a separate terminal:
+The `ansible/` directory contains playbooks to provision a clean Ubuntu VM and deploy the application.
 
+### 1. Prerequisites
+- Ansible installed on your local machine.
+- A target VM with SSH access.
+- Local environment variables set for secrets (or loaded from your local `.env`).
+
+### 2. Configure Inventory & Secrets
+Update `ansible/inventory/production.ini` with your server's IP and SSH user:
+```ini
+[webservers]
+my_server ansible_host=1.2.3.4 ansible_user=ubuntu
+```
+
+The playbook pulls secrets from your **local shell**. You can export them or load them from your local `.env`:
 ```bash
-docker exec -it vintage-web python manage.py migrate
+# Load local .env into shell
+export $(grep -v '^#' vintage_hunter/.env | xargs)
+```
+
+**Required Environment Variables:**
+- `SECRET_KEY`: Django secret key.
+- `APP_DOMAIN`: Your site domain (e.g., `vintage.example.com`).
+- `AZURE_CLIENT_ID`: (Optional) Azure AD client ID.
+- `AZURE_CLIENT_SECRET`: (Optional) Azure AD client secret.
+- `AZURE_STORAGE_NAME`: (Optional) Azure Storage account name.
+
+### 3. Run the Playbook
+```bash
+cd ansible
+ansible-playbook -i inventory/production.ini site.yml
+```
+
+This will:
+- Harden the OS (UFW, Fail2Ban).
+- Install Docker and Docker Compose.
+- Clone the repository and template the `.env` file using your local environment variables.
+- Start infrastructure (DB/Redis) and run **database migrations**.
+- **Download AI models** from Hugging Face directly to the remote host.
+- Start the full application stack (`--profile all`).
+
+### 4. Create a superuser
+After the first successful deployment, run:
+```bash
 docker exec -it vintage-web python manage.py createsuperuser
 ```
 

@@ -1,0 +1,8 @@
+---
+- name: Configure VM and Deploy Vintage Hunter
+  hosts: webservers
+  become: true
+  roles:
+    - common
+    - docker
+    - app
