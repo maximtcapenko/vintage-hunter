@@ -38,17 +38,13 @@
 
   .collection-toggle i.bi-heart {
     color: #1a1a1a;
-    /* Dark charcoal instead of default grey */
     stroke-width: 1.5px;
-    /* Slight bolding of the outline */
   }
 
-  /* Add a subtle border to the button itself so it's not white-on-white */
   .collection-toggle {
     border: 1px solid rgba(0, 0, 0, 0.08) !important;
     background-color: rgba(255, 255, 255, 0.9) !important;
     backdrop-filter: blur(4px);
-    /* Premium touch */
   }
 
   .collection-toggle:hover {
@@ -125,12 +121,15 @@
       <h5 class="fw-bold mb-3">{% trans "AI Search" %}</h5>
       <p class="text-muted small mb-3">{% trans "Describe the tone, era, or feel you're looking for." %}</p>
 
-      <form method="GET" action="{% url 'catalog:get_list' %}">
-        <div class="mb-3">
-          <input type="text" name="q" class="form-control search-input" placeholder="{% trans "e.g. 'Warm 60s blues tone'" %}"
+      <form id="ai-search-form" onsubmit="event.preventDefault(); startAiSearch();">
+        <div class="mb-3 position-relative">
+          <input type="text" id="ai-search-input" name="q" class="form-control search-input" placeholder="{% trans "e.g. 'Warm 60s blues tone'" %}"
             value="{{ request.GET.q }}">
+          <div id="ai-search-spinner" class="position-absolute top-50 end-0 translate-middle-y me-3 d-none">
+            <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
+          </div>
         </div>
-        <button type="submit" class="btn btn-ai w-100 py-2">{% trans "Find via LLM" %}</button>
+        <button type="submit" class="btn btn-ai w-100 py-2">{% trans "Find via AI" %}</button>
       </form>
 
       <hr class="my-4 text-secondary opacity-25">
@@ -152,6 +151,15 @@
   </aside>
 
   <section class="col-lg-9">
+    <div id="ai-results-container" class="mb-5 d-none">
+      <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+        <h2 class="h4 fw-bold mb-0">{% trans "AI Search Results" %}</h2>
+        <button onclick="document.getElementById('ai-results-container').classList.add('d-none')" class="btn btn-sm btn-link text-muted p-0">{% trans "Clear results" %}</button>
+      </div>
+      <div id="ai-results-grid" class="row g-4"></div>
+      <hr class="my-5 text-secondary opacity-25">
+    </div>
+
     <div class="d-flex justify-content-between align-items-center mb-4 px-2">
       <h2 class="h4 fw-bold mb-0">{% trans "Vintage Collection" %}</h2>
       <div class="d-flex align-items-center gap-3">
@@ -172,88 +180,7 @@
 
     <div class="row g-4">
       {% for instrument in page %}
-      <div class="col-md-6 col-xl-4">
-        <div class="card h-100 border-0 shadow-sm hover-shadow transition overflow-hidden">
-          <div class="position-relative bg-light" style="height: 220px;">
-            {% with img=instrument.primary_image %}
-            {% if img %}
-            <img src="{{ img.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ instrument.title }}">
-            {% else %}
-            <div class="d-flex align-items-center justify-content-center h-100 text-muted italic">{% trans "No Image" %}</div>
-            {% endif %}
-            {% endwith %}
-
-            {% if user.is_authenticated and not user.is_staff %}
-            <div class="dropdown position-absolute top-0 end-0 m-3" style="z-index: 100;">
-              <button
-                class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center dropdown-toggle collection-dropdown-btn"
-                style="width: 38px; height: 38px; border: 1px solid #eee;"
-                id="collDrop_{{ instrument.id }}" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"
-                data-instrument-id="{{ instrument.id }}">
-                <i class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %} bi-heart text-dark{% endif %}"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-3" aria-labelledby="collDrop_{{ instrument.id }}" style="min-width: 260px; border-radius: 12px;">
-                <h6 class="dropdown-header px-0 mb-2 text-dark fw-bold" style="font-size: 0.75rem;">{% trans "Select Collections" %}</h6>
-                <div class="collections-loading text-center py-2">
-                  <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
-                </div>
-                <div class="collections-list" style="max-height: 180px; overflow-y: auto;"></div>
-                <hr class="dropdown-divider my-2">
-                <div class="input-group input-group-sm">
-                  <input type="text" class="form-control border-light-subtle new-collection-name" placeholder="{% trans "New collection..." %}" style="font-size: 0.75rem;">
-                  <button class="btn btn-dark btn-sm create-collection-btn" type="button">+</button>
-                </div>
-              </div>
-            </div>
-            {% endif %}
-
-            <span class="position-absolute top-0 start-0 m-3 badge bg-dark px-3 py-2 rounded-pill">
-              {{ instrument.year }}
-            </span>
-
-            {% if instrument.is_sold %}
-            <div class="status-overlay status-overlay--sold">
-              <div class="status-overlay-card">
-                <div class="status-overlay-title">{% trans "SOLD" %}</div>
-              </div>
-            </div>
-            {% elif instrument.is_draft %}
-            <div class="status-overlay status-overlay--review">
-              <div class="status-overlay-card">
-                <div class="status-overlay-title">{% trans "UNDER REVIEW" %}</div>
-                <div class="status-overlay-subtitle">{% trans "Temporarily unavailable" %}</div>
-              </div>
-            </div>
-            {% elif instrument.is_auction %}
-              {% if instrument.prefetched_lot.auction.is_registration_available %}
-              <span class="position-absolute bottom-0 start-0 m-3 badge bg-success text-white px-2 py-1 rounded-1 fw-bold small shadow-sm" style="font-size: 0.65rem; letter-spacing: 0.5px;">
-                <i class="bi bi-gavel me-1"></i> {% trans "REGISTRATION OPEN" %}
-              </span>
-              {% else %}
-              <span class="position-absolute bottom-0 start-0 m-3 badge bg-warning text-dark px-2 py-1 rounded-1 fw-bold small shadow-sm" style="font-size: 0.65rem; letter-spacing: 0.5px;">
-                <i class="bi bi-gavel me-1"></i> {% trans "IN AUCTION" %}
-              </span>
-              {% endif %}
-            {% endif %}
-          </div>
-
-          <div class="card-body p-4 d-flex flex-column {% if instrument.is_draft and not instrument.is_sold %}review-card-body{% endif %}">
-            <div class="mb-1 text-uppercase fw-semibold text-muted small" style="letter-spacing: 0.5px;">
-              {{ instrument.brand.name }}
-            </div>
-            <h5 class="card-title h6 fw-bold mb-3 review-title">{{ instrument.title }}</h5>
-
-            <div class="mt-auto d-flex justify-content-between align-items-end">
-              <div>
-                <span class="d-block text-muted small mb-0">{% if instrument.is_auction %}{% trans "Starting Price" %}{% else %}{% trans "Price" %}{% endif %}</span>
-                <span class="h5 fw-bold text-dark mb-0 review-price">${% if instrument.is_auction %}{{ instrument.prefetched_lot.starting_price }}{% else %}{{ instrument.price }}{% endif %}</span>
-              </div>
-              <a href="{% url 'catalog:get_details' instrument.id %}"
-                class="btn btn-sm btn-outline-dark px-3">{% trans "Details" %}</a>
-            </div>
-          </div>
-        </div>
-      </div>
+        {% include 'catalog/includes/instrument_card.html' %}
       {% empty %}
       <div class="col-12">
         <div class="text-center py-5 px-4 bg-white rounded-4 shadow-sm border border-light mt-2">
@@ -303,7 +230,45 @@
 
     {% if user.is_authenticated %}
     <script>
+      function startAiSearch() {
+        const query = document.getElementById('ai-search-input').value;
+        if (!query) return;
+
+        const spinner = document.getElementById('ai-search-spinner');
+        spinner.classList.remove('d-none');
+
+        fetch(`{% url 'catalog:async_search' %}?q=${encodeURIComponent(query)}`)
+          .then(response => response.json())
+          .then(data => {
+            if (data.status === 'error') {
+              spinner.classList.add('d-none');
+              alert(data.message);
+            }
+          });
+      }
+
       document.addEventListener('DOMContentLoaded', function () {
+        if (window.userEventSource) {
+          window.userEventSource.addEventListener('search_results', function(event) {
+            const data = JSON.parse(event.data);
+            const spinner = document.getElementById('ai-search-spinner');
+            const container = document.getElementById('ai-results-container');
+            const grid = document.getElementById('ai-results-grid');
+
+            spinner.classList.add('d-none');
+            grid.innerHTML = '';
+            
+            if (data.count === 0) {
+                grid.innerHTML = '<div class="col-12 text-center py-4 text-muted">No items found matching your description.</div>';
+            } else {
+                grid.innerHTML = data.html;
+            }
+            
+            container.classList.remove('d-none');
+            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          });
+        }
+
         document.querySelectorAll('.dropdown').forEach(dropdown => {
           const dropdownBtn = dropdown.querySelector('.collection-dropdown-btn');
           if (!dropdownBtn) return;

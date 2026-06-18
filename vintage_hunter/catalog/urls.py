@@ -6,6 +6,7 @@ app_name = 'catalog'
 
 urlpatterns = [
     path('', views.get_list, name='get_list'),
+    path('search/async/', views.async_search, name='async_search'),
     path('create/', views.create_instrument, name='create_instrument'),
     path('<uuid:id>/', views.get_details, name='get_details'),
     path('<uuid:id>/edit/', views.edit_instrument, name='edit_instrument'),

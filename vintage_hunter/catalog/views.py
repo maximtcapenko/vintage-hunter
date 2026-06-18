@@ -26,15 +26,24 @@ def is_instrument_edit_locked(instrument):
     return instrument.is_edit_locked_in_auction or instrument.has_active_purchase_lock
 
 
+@login_required
+@require_GET
+def async_search(request):
+    query = request.GET.get('q')
+    if not query:
+        return JsonResponse({'status': 'error', 'message': _('Query is required')}, status=400)
+    
+    from .tasks import perform_vector_search
+    perform_vector_search.delay(request.user.id, query, request.LANGUAGE_CODE)
+    
+    return JsonResponse({'status': 'searching', 'message': _('Search started...')})
+
+
 @require_GET
 def get_list(request):
     form = SearchCatalogForm(request.GET)
     
     def build_query_set():
-        query = request.GET.get('q')
-        if query:
-            return Instrument.objects.search_by_text(query)
-
         return form.get_search_queryset(Instrument.objects.query_without_embeddings().all())
     
     images_prefetch = Prefetch(

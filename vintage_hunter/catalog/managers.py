@@ -5,7 +5,7 @@ from commons.functional import SEARCH_RESULTS_LIMITS
 
 
 class InstrumentManager(models.Manager):
-    def search_by_text(self, query_text, limit=SEARCH_RESULTS_LIMITS):
+    def search_by_text(self, query_text):
         if not query_text or not query_text.strip():
             return self.get_queryset().none()
         
@@ -13,7 +13,7 @@ class InstrumentManager(models.Manager):
         query_vector = EmbeddingService.encode(query_text)
         
         return self.get_queryset().order_by(
-            CosineDistance('text_embedding', query_vector))[:limit]
+            CosineDistance('text_embedding', query_vector))
 
 
     def find_visually_similar(self, instrument, limit=SEARCH_RESULTS_LIMITS):

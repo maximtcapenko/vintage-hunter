@@ -1,0 +1,85 @@
+{% load i18n %}
+<div class="col-md-6 col-xl-4">
+  <div class="card h-100 border-0 shadow-sm hover-shadow transition overflow-hidden">
+    <div class="position-relative bg-light" style="height: 220px;">
+      {% with img=instrument.primary_image %}
+      {% if img %}
+      <img src="{{ img.image.url }}" class="w-100 h-100" style="object-fit: cover;" alt="{{ instrument.title }}">
+      {% else %}
+      <div class="d-flex align-items-center justify-content-center h-100 text-muted italic">{% trans "No Image" %}</div>
+      {% endif %}
+      {% endwith %}
+
+      {% if user.is_authenticated and not user.is_staff %}
+      <div class="dropdown position-absolute top-0 end-0 m-3" style="z-index: 100;">
+        <button
+          class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center dropdown-toggle collection-dropdown-btn"
+          style="width: 38px; height: 38px; border: 1px solid #eee;"
+          id="collDrop_{{ instrument.id }}" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="outside"
+          data-instrument-id="{{ instrument.id }}">
+          <i class="bi {% if instrument.id in user_collection_instrument_ids %}bi-heart-fill text-danger{% else %} bi-heart text-dark{% endif %}"></i>
+        </button>
+        <div class="dropdown-menu dropdown-menu-end shadow-lg border-0 p-3" aria-labelledby="collDrop_{{ instrument.id }}" style="min-width: 260px; border-radius: 12px;">
+          <h6 class="dropdown-header px-0 mb-2 text-dark fw-bold" style="font-size: 0.75rem;">{% trans "Select Collections" %}</h6>
+          <div class="collections-loading text-center py-2">
+            <div class="spinner-border spinner-border-sm text-warning" role="status"></div>
+          </div>
+          <div class="collections-list" style="max-height: 180px; overflow-y: auto;"></div>
+          <hr class="dropdown-divider my-2">
+          <div class="input-group input-group-sm">
+            <input type="text" class="form-control border-light-subtle new-collection-name" placeholder="{% trans "New collection..." %}" style="font-size: 0.75rem;">
+            <button class="btn btn-dark btn-sm create-collection-btn" type="button">+</button>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+
+      <span class="position-absolute top-0 start-0 m-3 badge bg-dark px-3 py-2 rounded-pill">
+        {{ instrument.year }}
+      </span>
+
+      {% if instrument.is_sold %}
+      <div class="status-overlay status-overlay--sold">
+        <div class="status-overlay-card">
+          <div class="status-overlay-title">{% trans "SOLD" %}</div>
+        </div>
+      </div>
+      {% elif instrument.is_draft %}
+      <div class="status-overlay status-overlay--review">
+        <div class="status-overlay-card">
+          <div class="status-overlay-title">{% trans "UNDER REVIEW" %}</div>
+          <div class="status-overlay-subtitle">{% trans "Temporarily unavailable" %}</div>
+        </div>
+      </div>
+      {% elif instrument.is_auction %}
+        {% with lot=instrument.prefetched_lot %}
+        {% if lot.auction.is_registration_available %}
+        <span class="position-absolute bottom-0 start-0 m-3 badge bg-success text-white px-2 py-1 rounded-1 fw-bold small shadow-sm" style="font-size: 0.65rem; letter-spacing: 0.5px;">
+          <i class="bi bi-gavel me-1"></i> {% trans "REGISTRATION OPEN" %}
+        </span>
+        {% else %}
+        <span class="position-absolute bottom-0 start-0 m-3 badge bg-warning text-dark px-2 py-1 rounded-1 fw-bold small shadow-sm" style="font-size: 0.65rem; letter-spacing: 0.5px;">
+          <i class="bi bi-gavel me-1"></i> {% trans "IN AUCTION" %}
+        </span>
+        {% endif %}
+        {% endwith %}
+      {% endif %}
+    </div>
+
+    <div class="card-body p-4 d-flex flex-column {% if instrument.is_draft and not instrument.is_sold %}review-card-body{% endif %}">
+      <div class="mb-1 text-uppercase fw-semibold text-muted small" style="letter-spacing: 0.5px;">
+        {{ instrument.brand.name }}
+      </div>
+      <h5 class="card-title h6 fw-bold mb-3 review-title">{{ instrument.title }}</h5>
+
+      <div class="mt-auto d-flex justify-content-between align-items-end">
+        <div>
+          <span class="d-block text-muted small mb-0">{% if instrument.is_auction %}{% trans "Starting Price" %}{% else %}{% trans "Price" %}{% endif %}</span>
+          <span class="h5 fw-bold text-dark mb-0 review-price">${% if instrument.is_auction %}{{ instrument.prefetched_lot.starting_price }}{% else %}{{ instrument.price }}{% endif %}</span>
+        </div>
+        <a href="{% url 'catalog:get_details' instrument.id %}"
+          class="btn btn-sm btn-outline-dark px-3">{% trans "Details" %}</a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@ services:
   redis:
     image: redis:latest
     container_name: vintage-redis
-    profiles: ["infra", "all"]
+    profiles: ["infra", "all", "db"]
     ports:
       - "6379:6379"
     volumes:
@@ -11,7 +11,7 @@ services:
     image: pgvector/pgvector:pg17
     restart: always
     container_name: vintagedb
-    profiles: ["infra", "all"]
+    profiles: ["infra", "all", "db"]
     environment:
       POSTGRES_USER: myuser
       POSTGRES_PASSWORD: mypassword
