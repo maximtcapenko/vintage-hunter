@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vintage_hunter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-10 12:30+0000\n"
+"POT-Creation-Date: 2026-06-27 11:17+0000\n"
 "PO-Revision-Date: 2026-04-17 17:05+0000\n"
 "Last-Translator: OpenAI\n"
 "Language-Team: Ukrainian\n"
@@ -15,55 +15,57 @@ msgstr ""
 "100 > 14) ? 1 : n % 1 == 0 && (n % 10 == 0 || (n % 10 >= 5 && n % 10 <= 9) "
 "|| (n % 100 >= 11 && n % 100 <= 14)) ? 2 : 3);\n"
 
-#: auction/forms.py:12
+#: vintage_hunter/auction/forms.py:12
 msgid "Participant"
 msgstr "Учасник"
 
-#: auction/forms.py:13 auction/forms.py:39
+#: vintage_hunter/auction/forms.py:13 vintage_hunter/auction/forms.py:39
 msgid "Status"
 msgstr "Статус"
 
-#: auction/forms.py:37
+#: vintage_hunter/auction/forms.py:37
 msgid "Title"
 msgstr "Назва"
 
-#: auction/forms.py:38 catalog/forms.py:44 catalog/forms.py:85
-#: catalog/templates/catalog/category_form.html:23
-#: catalog/templates/catalog/category_list.html:20
-#: catalog/templates/instrument_form.html:205 users/forms.py:47
-#: users/templates/collection_list.html:154
+#: vintage_hunter/auction/forms.py:38 vintage_hunter/catalog/forms.py:44
+#: vintage_hunter/catalog/forms.py:85
+#: vintage_hunter/catalog/templates/catalog/category_form.html:23
+#: vintage_hunter/catalog/templates/catalog/category_list.html:20
+#: vintage_hunter/catalog/templates/instrument_form.html:205
+#: vintage_hunter/users/forms.py:47
+#: vintage_hunter/users/templates/collection_list.html:154
 msgid "Description"
 msgstr "Опис"
 
-#: auction/forms.py:40
+#: vintage_hunter/auction/forms.py:40
 msgid "Starts at"
 msgstr "Початок"
 
-#: auction/forms.py:41
+#: vintage_hunter/auction/forms.py:41
 msgid "Ends at"
 msgstr "Завершення"
 
-#: auction/forms.py:42
+#: vintage_hunter/auction/forms.py:42
 msgid "Registration deadline"
 msgstr "Крайній термін реєстрації"
 
-#: auction/forms.py:43
+#: vintage_hunter/auction/forms.py:43
 msgid "Advance notification (minutes)"
 msgstr "Попереднє сповіщення (хвилини)"
 
-#: auction/forms.py:44
+#: vintage_hunter/auction/forms.py:44
 msgid "Min participants"
 msgstr "Мін. учасників"
 
-#: auction/forms.py:45
+#: vintage_hunter/auction/forms.py:45
 msgid "Max participants"
 msgstr "Макс. учасників"
 
-#: auction/forms.py:72
+#: vintage_hunter/auction/forms.py:72
 msgid "Minimum participants cannot be greater than maximum participants."
 msgstr "Мінімальна кількість учасників не може бути більшою за максимальну."
 
-#: auction/forms.py:84
+#: vintage_hunter/auction/forms.py:84
 msgid ""
 "Cannot schedule an auction without any lots. Please add at least one lot "
 "first."
@@ -71,296 +73,301 @@ msgstr ""
 "Неможливо запланувати аукціон без лотів. Будь ласка, спочатку додайте хоча б "
 "один лот."
 
-#: auction/forms.py:99
+#: vintage_hunter/auction/forms.py:99
 msgid "Lot number"
 msgstr "Номер лота"
 
-#: auction/forms.py:100
+#: vintage_hunter/auction/forms.py:100
 msgid "Starting price"
 msgstr "Стартова ціна"
 
-#: auction/forms.py:101
+#: vintage_hunter/auction/forms.py:101
 msgid "Reserve price"
 msgstr "Резервна ціна"
 
-#: auction/forms.py:102
+#: vintage_hunter/auction/forms.py:102
 msgid "Low estimate"
 msgstr "Нижня оцінка"
 
-#: auction/forms.py:103
+#: vintage_hunter/auction/forms.py:103
 msgid "High estimate"
 msgstr "Верхня оцінка"
 
-#: auction/forms.py:114
+#: vintage_hunter/auction/forms.py:114
 msgid "Search instruments"
 msgstr "Пошук інструментів"
 
-#: auction/forms.py:115
+#: vintage_hunter/auction/forms.py:115
 msgid "Search by title, brand, or year..."
 msgstr "Шукайте за назвою, брендом або роком..."
 
-#: auction/models.py:22 catalog/templates/instrument_form.html:83
+#: vintage_hunter/auction/models.py:22
+#: vintage_hunter/catalog/templates/instrument_form.html:83
 msgid "Draft"
 msgstr "Чернетка"
 
-#: auction/models.py:23
+#: vintage_hunter/auction/models.py:23
 msgid "Scheduled"
 msgstr "Заплановано"
 
-#: auction/models.py:24 users/forms.py:77 users/templates/finder_list.html:97
+#: vintage_hunter/auction/models.py:24 vintage_hunter/users/forms.py:77
+#: vintage_hunter/users/templates/finder_list.html:97
 msgid "Active"
 msgstr "Активний"
 
-#: auction/models.py:25
+#: vintage_hunter/auction/models.py:25
 msgid "Ended"
 msgstr "Завершений"
 
-#: auction/models.py:26
+#: vintage_hunter/auction/models.py:26
 msgid "Cancelled"
 msgstr "Скасований"
 
-#: auction/models.py:39
+#: vintage_hunter/auction/models.py:39
 msgid "Minutes before auction start to send notification"
 msgstr "Хвилини до початку аукціону для відправки сповіщення"
 
-#: auction/tasks.py:116
+#: vintage_hunter/auction/tasks.py:116
 #, python-format
 msgid "Reminder: The auction '%(title)s' starts soon!"
 msgstr ""
 
-#: auction/templates/auction_details.html:137
+#: vintage_hunter/auction/templates/auction_details.html:137
 msgid "Starts"
 msgstr "Початок"
 
-#: auction/templates/auction_details.html:142
+#: vintage_hunter/auction/templates/auction_details.html:142
 msgid "Registration Ends"
 msgstr "Реєстрація завершується"
 
-#: auction/templates/auction_details.html:147
+#: vintage_hunter/auction/templates/auction_details.html:147
 msgid "Closes"
 msgstr "Завершення"
 
-#: auction/templates/auction_details.html:156
-#: catalog/templates/instrument_details.html:265
+#: vintage_hunter/auction/templates/auction_details.html:156
+#: vintage_hunter/catalog/templates/instrument_details.html:265
 msgid "MANAGE AUCTION"
 msgstr "КЕРУВАТИ АУКЦІОНОМ"
 
-#: auction/templates/auction_details.html:170
-#: auction/templates/auction_manage.html:147
+#: vintage_hunter/auction/templates/auction_details.html:170
+#: vintage_hunter/auction/templates/auction_manage.html:147
 msgid "Total Lots"
 msgstr "Усього лотів"
 
-#: auction/templates/auction_details.html:174
+#: vintage_hunter/auction/templates/auction_details.html:174
 msgid "Registered Bidders"
 msgstr "Зареєстровані учасники торгів"
 
-#: auction/templates/auction_details.html:183
+#: vintage_hunter/auction/templates/auction_details.html:183
 msgid "Auction Full"
 msgstr "Аукціон заповнений"
 
-#: auction/templates/auction_details.html:187
+#: vintage_hunter/auction/templates/auction_details.html:187
 msgid "REGISTER TO BID"
 msgstr "ЗАРАЄСТРУЙТЕСЯ ЯК УЧАСНИК"
 
-#: auction/templates/auction_details.html:191
+#: vintage_hunter/auction/templates/auction_details.html:191
 msgid "REGISTRATION CLOSED"
 msgstr "РЕЄСТРАЦІЯ ЗАКРИТА"
 
-#: auction/templates/auction_details.html:203
+#: vintage_hunter/auction/templates/auction_details.html:203
 #, python-format
 msgid "LOT %(lot_number)s"
 msgstr "ЛОТ %(lot_number)s"
 
-#: auction/templates/auction_details.html:222
-#: catalog/templates/instrument_details.html:221
-#: catalog/templates/instruments_list.html:223
-#: users/templates/collection_details.html:135
-#: users/templates/finder_results.html:142
+#: vintage_hunter/auction/templates/auction_details.html:222
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:50
+#: vintage_hunter/catalog/templates/instrument_details.html:221
+#: vintage_hunter/users/templates/collection_details.html:135
+#: vintage_hunter/users/templates/finder_results.html:142
 msgid "UNDER REVIEW"
 msgstr "НА ПЕРЕВІРЦІ"
 
-#: auction/templates/auction_details.html:227
+#: vintage_hunter/auction/templates/auction_details.html:227
 #, python-format
 msgid "EST: $%(min_price)s – $%(max_price)s"
 msgstr "ОЦІНКА: $%(min_price)s – $%(max_price)s"
 
-#: auction/templates/auction_details.html:233
-#: auction/templates/auction_details.html:357
-#: auction/templates/auction_details.html:378
-#: auction/templates/auction_details.html:408
+#: vintage_hunter/auction/templates/auction_details.html:233
+#: vintage_hunter/auction/templates/auction_details.html:357
+#: vintage_hunter/auction/templates/auction_details.html:378
+#: vintage_hunter/auction/templates/auction_details.html:408
 msgid "CLOSED"
 msgstr "ЗАКРИТО"
 
-#: auction/templates/auction_details.html:237
-#: auction/templates/auction_details.html:325
-#: auction/templates/auction_details.html:365
+#: vintage_hunter/auction/templates/auction_details.html:237
+#: vintage_hunter/auction/templates/auction_details.html:325
+#: vintage_hunter/auction/templates/auction_details.html:365
 msgid "CLOSES IN: "
 msgstr "ЗАКРИТТЯ ЧЕРЕЗ: "
 
-#: auction/templates/auction_details.html:243
+#: vintage_hunter/auction/templates/auction_details.html:243
 msgid "Current Bid"
 msgstr "Поточна ставка"
 
-#: auction/templates/auction_details.html:249
+#: vintage_hunter/auction/templates/auction_details.html:249
 msgid "LEADING"
 msgstr "ЛІДЕР"
 
-#: auction/templates/auction_details.html:256
-#: auction/templates/auction_details.html:391
-#: payments/templates/purchase_form.html:54
+#: vintage_hunter/auction/templates/auction_details.html:256
+#: vintage_hunter/auction/templates/auction_details.html:391
+#: vintage_hunter/payments/templates/purchase_form.html:54
 msgid "PAY NOW"
 msgstr "ОПЛАТИТИ ЗАРАЗ"
 
-#: auction/templates/auction_details.html:260
-#: auction/templates/auction_details.html:396
-#: auction/templates/auction_details.html:414
+#: vintage_hunter/auction/templates/auction_details.html:260
+#: vintage_hunter/auction/templates/auction_details.html:396
+#: vintage_hunter/auction/templates/auction_details.html:414
 msgid "AUCTION CLOSED"
 msgstr "АУКЦІОН ЗАВЕРШЕНО"
 
-#: auction/templates/auction_details.html:269
+#: vintage_hunter/auction/templates/auction_details.html:269
 msgid "BID"
 msgstr "СТАВКА"
 
-#: auction/templates/auction_details.html:280
-#: auction/templates/auction_manage.html:128
+#: vintage_hunter/auction/templates/auction_details.html:280
+#: vintage_hunter/auction/templates/auction_manage.html:128
 msgid "No lots have been added to this auction yet."
 msgstr "До цього аукціону ще не додано жодного лота."
 
-#: auction/templates/auction_details.html:288
-#: catalog/templates/instruments_list.html:217
-#: users/templates/collection_details.html:129
-#: users/templates/finder_results.html:136
+#: vintage_hunter/auction/templates/auction_details.html:288
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:44
+#: vintage_hunter/users/templates/collection_details.html:129
+#: vintage_hunter/users/templates/finder_results.html:136
 msgid "SOLD"
 msgstr "ПРОДАНО"
 
-#: auction/templates/auction_form.html:46
-#: auction/templates/auction_manage.html:112 auction/templates/lot_form.html:86
-#: catalog/templates/catalog/brand_form.html:40
-#: catalog/templates/catalog/category_form.html:31
-#: users/templates/collection_list.html:163
-#: users/templates/finder_form.html:120
+#: vintage_hunter/auction/templates/auction_form.html:46
+#: vintage_hunter/auction/templates/auction_manage.html:112
+#: vintage_hunter/auction/templates/lot_form.html:86
+#: vintage_hunter/catalog/templates/catalog/brand_form.html:40
+#: vintage_hunter/catalog/templates/catalog/category_form.html:31
+#: vintage_hunter/users/templates/collection_list.html:163
+#: vintage_hunter/users/templates/finder_form.html:120
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: auction/templates/auction_form.html:47
+#: vintage_hunter/auction/templates/auction_form.html:47
 msgid "Save Auction"
 msgstr "Зберегти аукціон"
 
-#: auction/templates/auction_list.html:66
+#: vintage_hunter/auction/templates/auction_list.html:66
 msgid "Boutique Auctions"
 msgstr "Бутикові аукціони"
 
-#: auction/templates/auction_list.html:67
+#: vintage_hunter/auction/templates/auction_list.html:67
 msgid "Curated events featuring the world's finest vintage instruments."
 msgstr "Кураторські події з найкращими вінтажними інструментами світу."
 
-#: auction/templates/auction_list.html:72
+#: vintage_hunter/auction/templates/auction_list.html:72
 msgid "CREATE NEW AUCTION"
 msgstr "СТВОРИТИ НОВИЙ АУКЦІОН"
 
-#: auction/templates/auction_list.html:92
+#: vintage_hunter/auction/templates/auction_list.html:92
 msgid "Live Now"
 msgstr "Триває зараз"
 
-#: auction/templates/auction_list.html:94
+#: vintage_hunter/auction/templates/auction_list.html:94
 msgid "Upcoming Event"
 msgstr "Майбутня подія"
 
-#: auction/templates/auction_list.html:97
+#: vintage_hunter/auction/templates/auction_list.html:97
 #, python-format
 msgid "%(total)s LOTS TOTAL"
 msgstr "УСЬОГО ЛОТІВ: %(total)s"
 
-#: auction/templates/auction_list.html:109
+#: vintage_hunter/auction/templates/auction_list.html:109
 #, python-format
 msgid "Closes in: %(remaining)s"
 msgstr "Завершиться через: %(remaining)s"
 
-#: auction/templates/auction_list.html:111
+#: vintage_hunter/auction/templates/auction_list.html:111
 #, python-format
 msgid "Starts: %(start_time)s"
 msgstr "Початок: %(start_time)s"
 
-#: auction/templates/auction_list.html:116
+#: vintage_hunter/auction/templates/auction_list.html:116
 msgid "ENTER AUCTION"
 msgstr "ПЕРЕЙТИ ДО АУКЦІОНУ"
 
-#: auction/templates/auction_list.html:116
+#: vintage_hunter/auction/templates/auction_list.html:116
 msgid "VIEW CATALOG"
 msgstr "ПЕРЕГЛЯНУТИ КАТАЛОГ"
 
-#: auction/templates/auction_list.html:125
+#: vintage_hunter/auction/templates/auction_list.html:125
 msgid "No auctions currently scheduled."
 msgstr "Зараз немає запланованих аукціонів."
 
-#: auction/templates/auction_list.html:126
+#: vintage_hunter/auction/templates/auction_list.html:126
 msgid "Check back soon for our next curated collection."
 msgstr "Завітайте пізніше, щоб переглянути нашу наступну кураторську колекцію."
 
-#: auction/templates/auction_manage.html:10
-#: auction/templates/lot_add_select.html:10 templates/base.html:253
+#: vintage_hunter/auction/templates/auction_manage.html:10
+#: vintage_hunter/auction/templates/lot_add_select.html:10
+#: vintage_hunter/templates/base.html:246
 msgid "Auctions"
 msgstr "Аукціони"
 
-#: auction/templates/auction_manage.html:29
+#: vintage_hunter/auction/templates/auction_manage.html:29
 msgid "Edit Details"
 msgstr "Редагувати деталі"
 
-#: auction/templates/auction_manage.html:32
+#: vintage_hunter/auction/templates/auction_manage.html:32
 msgid "Public View"
 msgstr "Публічний вигляд"
 
-#: auction/templates/auction_manage.html:42
+#: vintage_hunter/auction/templates/auction_manage.html:42
 msgid "Auction Lots"
 msgstr "Лоти аукціону"
 
-#: auction/templates/auction_manage.html:45
-#: auction/templates/lot_add_select.html:13
+#: vintage_hunter/auction/templates/auction_manage.html:45
+#: vintage_hunter/auction/templates/lot_add_select.html:13
 msgid "Add Lot"
 msgstr "Додати лот"
 
-#: auction/templates/auction_manage.html:53
+#: vintage_hunter/auction/templates/auction_manage.html:53
 msgid "Lot"
 msgstr "Лот"
 
-#: auction/templates/auction_manage.html:54 payments/templates/success.html:20
+#: vintage_hunter/auction/templates/auction_manage.html:54
+#: vintage_hunter/payments/templates/success.html:20
 msgid "Instrument"
 msgstr "Інструмент"
 
-#: auction/templates/auction_manage.html:55
-#: catalog/templates/instruments_list.html:248
+#: vintage_hunter/auction/templates/auction_manage.html:55
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:77
 msgid "Starting Price"
 msgstr "Стартова ціна"
 
-#: auction/templates/auction_manage.html:56
+#: vintage_hunter/auction/templates/auction_manage.html:56
 msgid "Estimates"
 msgstr "Оцінки"
 
-#: auction/templates/auction_manage.html:57
-#: catalog/templates/catalog/brand_list.html:22
-#: catalog/templates/catalog/category_list.html:21
+#: vintage_hunter/auction/templates/auction_manage.html:57
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:22
+#: vintage_hunter/catalog/templates/catalog/category_list.html:21
 msgid "Actions"
 msgstr "Дії"
 
-#: auction/templates/auction_manage.html:89
+#: vintage_hunter/auction/templates/auction_manage.html:89
 msgid "Edit Lot"
 msgstr "Редагувати лот"
 
-#: auction/templates/auction_manage.html:93
-#: auction/templates/auction_manage.html:115
+#: vintage_hunter/auction/templates/auction_manage.html:93
+#: vintage_hunter/auction/templates/auction_manage.html:115
 msgid "Remove Lot"
 msgstr "Видалити лот"
 
-#: auction/templates/auction_manage.html:98
+#: vintage_hunter/auction/templates/auction_manage.html:98
 msgid "Locked"
 msgstr "Заблоковано"
 
-#: auction/templates/auction_manage.html:109
+#: vintage_hunter/auction/templates/auction_manage.html:109
 #, python-format
 msgid "Remove Lot #%(lot_number)s?"
 msgstr "Видалити лот #%(lot_number)s?"
 
-#: auction/templates/auction_manage.html:110
+#: vintage_hunter/auction/templates/auction_manage.html:110
 msgid ""
 "This will remove the instrument from the auction. The instrument will become "
 "available for other auctions or direct sale."
@@ -368,27 +375,27 @@ msgstr ""
 "Це видалить інструмент з аукціону. Інструмент знову стане доступним для "
 "інших аукціонів або прямого продажу."
 
-#: auction/templates/auction_manage.html:131
+#: vintage_hunter/auction/templates/auction_manage.html:131
 msgid "Add your first lot"
 msgstr "Додайте перший лот"
 
-#: auction/templates/auction_manage.html:145
+#: vintage_hunter/auction/templates/auction_manage.html:145
 msgid "Auction Summary"
 msgstr "Підсумок аукціону"
 
-#: auction/templates/auction_manage.html:151
+#: vintage_hunter/auction/templates/auction_manage.html:151
 msgid "Total Value (Low Est.)"
 msgstr "Загальна вартість (нижня оцінка)"
 
-#: auction/templates/auction_manage.html:155
+#: vintage_hunter/auction/templates/auction_manage.html:155
 msgid "Participants"
 msgstr "Учасники"
 
-#: auction/templates/auction_manage.html:159
+#: vintage_hunter/auction/templates/auction_manage.html:159
 msgid "Quick Help"
 msgstr "Швидка підказка"
 
-#: auction/templates/auction_manage.html:160
+#: vintage_hunter/auction/templates/auction_manage.html:160
 msgid ""
 "Draft auctions are only visible to staff. Set status to Scheduled to make it "
 "visible to users, or Active to begin bidding."
@@ -397,11 +404,11 @@ msgstr ""
 "«Заплановано», щоб зробити аукціон видимим для користувачів, або «Активний», "
 "щоб розпочати торги."
 
-#: auction/templates/auction_manage.html:166
+#: vintage_hunter/auction/templates/auction_manage.html:166
 msgid "Quick Status Action"
 msgstr "Швидка зміна статусу"
 
-#: auction/templates/auction_manage.html:170
+#: vintage_hunter/auction/templates/auction_manage.html:170
 msgid ""
 "Need to change status quickly? Use the edit page for full control over "
 "timing and status."
@@ -409,32 +416,32 @@ msgstr ""
 "Потрібно швидко змінити статус? Скористайтеся сторінкою редагування для "
 "повного керування часом і статусом."
 
-#: auction/templates/auction_manage.html:171
+#: vintage_hunter/auction/templates/auction_manage.html:171
 msgid "Update Auction Settings"
 msgstr "Оновити налаштування аукціону"
 
-#: auction/templates/lot_add_select.html:16
+#: vintage_hunter/auction/templates/lot_add_select.html:16
 msgid "Select Instrument"
 msgstr "Виберіть інструмент"
 
-#: auction/templates/lot_add_select.html:17
+#: vintage_hunter/auction/templates/lot_add_select.html:17
 msgid "Choose an instrument from the catalog to add as a lot in this auction."
 msgstr ""
 "Оберіть інструмент із каталогу, щоб додати його як лот до цього аукціону."
 
-#: auction/templates/lot_add_select.html:22
+#: vintage_hunter/auction/templates/lot_add_select.html:22
 msgid "Search"
 msgstr "Пошук"
 
-#: auction/templates/lot_add_select.html:47
+#: vintage_hunter/auction/templates/lot_add_select.html:47
 msgid "Select & Configure"
 msgstr "Вибрати та налаштувати"
 
-#: auction/templates/lot_add_select.html:54
+#: vintage_hunter/auction/templates/lot_add_select.html:54
 msgid "No available instruments found."
 msgstr "Доступних інструментів не знайдено."
 
-#: auction/templates/lot_add_select.html:55
+#: vintage_hunter/auction/templates/lot_add_select.html:55
 msgid ""
 "Ensure instruments are not already marked as 'in auction' or assigned to "
 "other lots."
@@ -442,354 +449,410 @@ msgstr ""
 "Переконайтеся, що інструменти ще не позначені як «на аукціоні» і не "
 "призначені до інших лотів."
 
-#: auction/templates/lot_add_select.html:56
-#: catalog/templates/catalog/brand_list.html:51
-#: catalog/templates/catalog/category_list.html:49
-#: users/templates/profile.html:95
+#: vintage_hunter/auction/templates/lot_add_select.html:56
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:51
+#: vintage_hunter/catalog/templates/catalog/category_list.html:49
+#: vintage_hunter/users/templates/profile.html:95
 msgid "Back to Catalog"
 msgstr "Назад до каталогу"
 
-#: auction/templates/lot_add_select.html:67
+#: vintage_hunter/auction/templates/lot_add_select.html:67
 msgid "Previous"
 msgstr "Попередня"
 
-#: auction/templates/lot_add_select.html:73
+#: vintage_hunter/auction/templates/lot_add_select.html:73
 msgid "Next"
 msgstr "Наступна"
 
-#: auction/templates/lot_form.html:11
+#: vintage_hunter/auction/templates/lot_form.html:11
 msgid "Selected Instrument"
 msgstr "Вибраний інструмент"
 
-#: auction/templates/lot_form.html:27
+#: vintage_hunter/auction/templates/lot_form.html:27
 msgid "Original Catalog Price"
 msgstr "Початкова ціна в каталозі"
 
-#: auction/templates/lot_form.html:33
+#: vintage_hunter/auction/templates/lot_form.html:33
 msgid "Change Instrument"
 msgstr "Змінити інструмент"
 
-#: auction/templates/lot_form.html:45
+#: vintage_hunter/auction/templates/lot_form.html:45
 msgid "Lot Number"
 msgstr "Номер лота"
 
-#: auction/templates/lot_form.html:53
+#: vintage_hunter/auction/templates/lot_form.html:53
 msgid "Starting Price ($)"
 msgstr "Стартова ціна ($)"
 
-#: auction/templates/lot_form.html:61
+#: vintage_hunter/auction/templates/lot_form.html:61
 msgid "Reserve Price ($)"
 msgstr "Резервна ціна ($)"
 
-#: auction/templates/lot_form.html:63
+#: vintage_hunter/auction/templates/lot_form.html:63
 msgid "Minimum price the item can be sold for. Leave blank for no reserve."
 msgstr ""
 "Мінімальна ціна, за яку може бути продано предмет. Залиште порожнім, якщо "
 "резервної ціни немає."
 
-#: auction/templates/lot_form.html:70
+#: vintage_hunter/auction/templates/lot_form.html:70
 msgid "Low Estimate ($)"
 msgstr "Нижня оцінка ($)"
 
-#: auction/templates/lot_form.html:78
+#: vintage_hunter/auction/templates/lot_form.html:78
 msgid "High Estimate ($)"
 msgstr "Верхня оцінка ($)"
 
-#: auction/templates/lot_form.html:87
+#: vintage_hunter/auction/templates/lot_form.html:87
 msgid "Confirm Lot Details"
 msgstr "Підтвердити параметри лота"
 
-#: auction/views.py:45
+#: vintage_hunter/auction/views.py:45
 msgid "Auction not found."
 msgstr "Аукціон не знайдено."
 
-#: auction/views.py:61
+#: vintage_hunter/auction/views.py:61
 msgid "This instrument is under review and bidding is temporarily locked."
 msgstr ""
 "Цей інструмент перебуває на перевірці, тому ставки тимчасово заблоковані."
 
-#: auction/views.py:65
+#: vintage_hunter/auction/views.py:65
 msgid "You must register for this auction to bid."
 msgstr "Ви повинні зареєструватися на цей аукціон, щоб робити ставки."
 
-#: auction/views.py:69
+#: vintage_hunter/auction/views.py:69
 msgid "Bidding is not currently open."
 msgstr "Торги зараз недоступні."
 
-#: auction/views.py:73
+#: vintage_hunter/auction/views.py:73
 #, fuzzy
 #| msgid "Bidding is not currently open."
 msgid "Bidding is closed."
 msgstr "Торги зараз недоступні."
 
-#: auction/views.py:85
+#: vintage_hunter/auction/views.py:85
 #, python-format
 msgid "Bid too low. Minimum is $%(amount)s"
 msgstr "Ставка занадто низька. Мінімум: $%(amount)s"
 
-#: auction/views.py:109
+#: vintage_hunter/auction/views.py:109
 #, python-format
 msgid "Bid of $%(amount)s placed!"
 msgstr "Ставку на $%(amount)s розміщено!"
 
-#: auction/views.py:113
+#: vintage_hunter/auction/views.py:113
 msgid "Invalid bid amount."
 msgstr "Неприпустима сума ставки."
 
-#: auction/views.py:124
+#: vintage_hunter/auction/views.py:124
 msgid "Registration is only available for scheduled auctions."
 msgstr "Реєстрація доступна лише для запланованих аукціонів."
 
-#: auction/views.py:128
+#: vintage_hunter/auction/views.py:128
 msgid "Registration deadline has passed."
 msgstr "Термін реєстрації минув."
 
-#: auction/views.py:132
+#: vintage_hunter/auction/views.py:132
 msgid "This auction has reached the maximum number of participants."
 msgstr "На цьому аукціоні досягнуто максимальної кількості учасників."
 
-#: auction/views.py:136
+#: vintage_hunter/auction/views.py:136
 msgid "You are registered as a participant."
 msgstr "Вас зареєстровано як учасника."
 
-#: auction/views.py:150
+#: vintage_hunter/auction/views.py:150
 #, python-format
 msgid "Auction \"%(auction)s\" created successfully."
 msgstr "Аукціон \"%(auction)s\" успішно створено."
 
-#: auction/views.py:159
+#: vintage_hunter/auction/views.py:159
 msgid "Create New Auction"
 msgstr "Створити новий аукціон"
 
-#: auction/views.py:172
+#: vintage_hunter/auction/views.py:172
 #, python-format
 msgid "Auction \"%(auction)s\" updated."
 msgstr "Аукціон \"%(auction)s\" оновлено."
 
-#: auction/views.py:181
+#: vintage_hunter/auction/views.py:181
 #, python-format
 msgid "Edit Auction: %(auction)s"
 msgstr "Редагувати аукціон: %(auction)s"
 
-#: auction/views.py:205 auction/views.py:241
+#: vintage_hunter/auction/views.py:205 vintage_hunter/auction/views.py:241
 msgid "Cannot add lots after auction has begun."
 msgstr "Неможливо додавати лоти після початку аукціону."
 
-#: auction/views.py:262
+#: vintage_hunter/auction/views.py:262
 #, python-format
 msgid "Lot added: %(instrument)s"
 msgstr "Лот додано: %(instrument)s"
 
-#: auction/views.py:278
+#: vintage_hunter/auction/views.py:278
 msgid "Configure Lot Details"
 msgstr "Налаштувати параметри лота"
 
-#: auction/views.py:287
+#: vintage_hunter/auction/views.py:287
 msgid "Cannot edit lots after auction has begun."
 msgstr "Неможливо редагувати лоти після початку аукціону."
 
-#: auction/views.py:298
+#: vintage_hunter/auction/views.py:298
 #, python-format
 msgid "Lot %(lot_number)s updated."
 msgstr "Лот %(lot_number)s оновлено."
 
-#: auction/views.py:308
+#: vintage_hunter/auction/views.py:308
 #, python-format
 msgid "Edit Lot %(lot_number)s"
 msgstr "Редагувати лот %(lot_number)s"
 
-#: auction/views.py:318
+#: vintage_hunter/auction/views.py:318
 msgid "Cannot delete lots after auction has begun."
 msgstr "Неможливо видаляти лоти після початку аукціону."
 
-#: auction/views.py:324
+#: vintage_hunter/auction/views.py:324
 msgid "Lot removed from auction."
 msgstr "Лот видалено з аукціону."
 
-#: catalog/forms.py:14 catalog/forms.py:35
-#: catalog/templates/instrument_form.html:116 users/forms.py:71
-#: users/templates/finder_form.html:45 users/templates/purchase_details.html:44
+#: vintage_hunter/catalog/forms.py:14 vintage_hunter/catalog/forms.py:35
+#: vintage_hunter/catalog/templates/instrument_form.html:116
+#: vintage_hunter/users/forms.py:71
+#: vintage_hunter/users/templates/finder_form.html:45
+#: vintage_hunter/users/templates/purchase_details.html:44
 msgid "Category"
 msgstr "Категорія"
 
-#: catalog/forms.py:34
+#: vintage_hunter/catalog/forms.py:34
 msgid "Instrument title"
 msgstr "Назва інструмента"
 
-#: catalog/forms.py:36 catalog/templates/instrument_details.html:318
-#: catalog/templates/instrument_form.html:126 users/forms.py:70
-#: users/templates/finder_form.html:39
+#: vintage_hunter/catalog/forms.py:36
+#: vintage_hunter/catalog/templates/instrument_details.html:318
+#: vintage_hunter/catalog/templates/instrument_form.html:126
+#: vintage_hunter/users/forms.py:70
+#: vintage_hunter/users/templates/finder_form.html:39
 msgid "Brand"
 msgstr "Бренд"
 
-#: catalog/forms.py:37 catalog/templates/instrument_form.html:136
+#: vintage_hunter/catalog/forms.py:37
+#: vintage_hunter/catalog/templates/instrument_form.html:136
 msgid "Year"
 msgstr "Рік"
 
-#: catalog/forms.py:38
+#: vintage_hunter/catalog/forms.py:38
 msgid "Serial number"
 msgstr "Серійний номер"
 
-#: catalog/forms.py:39 catalog/templates/instrument_form.html:166
+#: vintage_hunter/catalog/forms.py:39
+#: vintage_hunter/catalog/templates/instrument_form.html:166
 msgid "Condition"
 msgstr "Стан"
 
-#: catalog/forms.py:40
+#: vintage_hunter/catalog/forms.py:40
 msgid "All original"
 msgstr "Усе оригінальне"
 
-#: catalog/forms.py:41
+#: vintage_hunter/catalog/forms.py:41
 msgid "Has repairs"
 msgstr "Має ремонти"
 
-#: catalog/forms.py:42
+#: vintage_hunter/catalog/forms.py:42
 msgid "Concert ready"
 msgstr "Готовий до виступів"
 
-#: catalog/forms.py:43 catalog/templates/instruments_list.html:248
+#: vintage_hunter/catalog/forms.py:43
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:77
 msgid "Price"
 msgstr "Ціна"
 
-#: catalog/forms.py:45
+#: vintage_hunter/catalog/forms.py:45
 msgid "Technical specifications"
 msgstr "Технічні характеристики"
 
-#: catalog/forms.py:84
+#: vintage_hunter/catalog/forms.py:84
 msgid "Category name"
 msgstr "Назва категорії"
 
-#: catalog/forms.py:101
+#: vintage_hunter/catalog/forms.py:101
 msgid "Brand name"
 msgstr "Назва бренду"
 
-#: catalog/forms.py:102
+#: vintage_hunter/catalog/forms.py:102
 msgid "Origin country"
 msgstr "Країна походження"
 
-#: catalog/forms.py:103 catalog/templates/catalog/brand_form.html:31
-#: catalog/templates/catalog/brand_list.html:21
+#: vintage_hunter/catalog/forms.py:103
+#: vintage_hunter/catalog/templates/catalog/brand_form.html:31
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:21
 msgid "History"
 msgstr "Історія"
 
-#: catalog/models.py:44
+#: vintage_hunter/catalog/models.py:44
 msgid "Mint (Like New)"
 msgstr "Ідеальний (як новий)"
 
-#: catalog/models.py:45
+#: vintage_hunter/catalog/models.py:45
 msgid "Excellent"
 msgstr "Відмінний"
 
-#: catalog/models.py:46
+#: vintage_hunter/catalog/models.py:46
 msgid "Very Good"
 msgstr "Дуже добрий"
 
-#: catalog/models.py:47
+#: vintage_hunter/catalog/models.py:47
 msgid "Good (Player Grade)"
 msgstr "Добрий (придатний для гри)"
 
-#: catalog/models.py:48
+#: vintage_hunter/catalog/models.py:48
 msgid "Fair (Project)"
 msgstr "Задовільний (проєкт)"
 
-#: catalog/templates/catalog/brand_form.html:15
+#: vintage_hunter/catalog/tasks.py:65
+#, python-format
+msgid "Found %(count)d item"
+msgid_plural "Found %(count)d items"
+msgstr[0] "Знайдено %(count)d інструмент"
+msgstr[1] "Знайдено %(count)d інструменти"
+msgstr[2] "Знайдено %(count)d інструментів"
+msgstr[3] "Знайдено %(count)d інструменти"
+
+#: vintage_hunter/catalog/templates/catalog/brand_form.html:15
 msgid "Brand Name"
 msgstr "Назва бренду"
 
-#: catalog/templates/catalog/brand_form.html:23
+#: vintage_hunter/catalog/templates/catalog/brand_form.html:23
 msgid "Origin Country"
 msgstr "Країна походження"
 
-#: catalog/templates/catalog/brand_form.html:36
+#: vintage_hunter/catalog/templates/catalog/brand_form.html:36
 msgid "Brief history for context."
 msgstr "Коротка історія для контексту."
 
-#: catalog/templates/catalog/brand_form.html:41
+#: vintage_hunter/catalog/templates/catalog/brand_form.html:41
 msgid "Save Brand"
 msgstr "Зберегти бренд"
 
-#: catalog/templates/catalog/brand_list.html:8 templates/base.html:359
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:8
+#: vintage_hunter/templates/base.html:352
 msgid "Manage Brands"
 msgstr "Керування брендами"
 
-#: catalog/templates/catalog/brand_list.html:10
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:10
 msgid "Add Brand"
 msgstr "Додати бренд"
 
-#: catalog/templates/catalog/brand_list.html:19
-#: catalog/templates/catalog/category_list.html:19 users/forms.py:46
-#: users/templates/collection_list.html:149
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:19
+#: vintage_hunter/catalog/templates/catalog/category_list.html:19
+#: vintage_hunter/users/forms.py:46
+#: vintage_hunter/users/templates/collection_list.html:149
 msgid "Name"
 msgstr "Назва"
 
-#: catalog/templates/catalog/brand_list.html:20
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:20
 msgid "Origin"
 msgstr "Походження"
 
-#: catalog/templates/catalog/brand_list.html:33
-#: catalog/templates/catalog/category_list.html:31
-#: users/templates/finder_list.html:139
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:33
+#: vintage_hunter/catalog/templates/catalog/category_list.html:31
+#: vintage_hunter/users/templates/finder_list.html:139
 msgid "Edit"
 msgstr "Редагувати"
 
-#: catalog/templates/catalog/brand_list.html:40
+#: vintage_hunter/catalog/templates/catalog/brand_list.html:40
 msgid "No brands found. Create one to get started."
 msgstr "Брендів не знайдено. Створіть перший, щоб почати."
 
-#: catalog/templates/catalog/category_form.html:15
+#: vintage_hunter/catalog/templates/catalog/category_form.html:15
 msgid "Category Name"
 msgstr "Назва категорії"
 
-#: catalog/templates/catalog/category_form.html:32
+#: vintage_hunter/catalog/templates/catalog/category_form.html:32
 msgid "Save Category"
 msgstr "Зберегти категорію"
 
-#: catalog/templates/catalog/category_list.html:8 templates/base.html:354
+#: vintage_hunter/catalog/templates/catalog/category_list.html:8
+#: vintage_hunter/templates/base.html:347
 msgid "Manage Categories"
 msgstr "Керування категоріями"
 
-#: catalog/templates/catalog/category_list.html:10
+#: vintage_hunter/catalog/templates/catalog/category_list.html:10
 msgid "Add Category"
 msgstr "Додати категорію"
 
-#: catalog/templates/catalog/category_list.html:38
+#: vintage_hunter/catalog/templates/catalog/category_list.html:38
 msgid "No categories found. Create one to get started."
 msgstr "Категорій не знайдено. Створіть першу, щоб почати."
 
-#: catalog/templates/catalog/widgets/specifications_table.html:9
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:9
+msgid "No Image"
+msgstr "Немає зображення"
+
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:23
+#: vintage_hunter/users/templates/finder_results.html:115
+msgid "Select Collections"
+msgstr "Виберіть добірки"
+
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:30
+#: vintage_hunter/users/templates/finder_results.html:122
+#, fuzzy
+#| msgid "New Collection"
+msgid "New collection..."
+msgstr "Нова колекція"
+
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:51
+#: vintage_hunter/users/templates/collection_details.html:136
+#: vintage_hunter/users/templates/finder_results.html:143
+msgid "Temporarily unavailable"
+msgstr "Тимчасово недоступно"
+
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:58
+#: vintage_hunter/catalog/templates/instrument_details.html:239
+msgid "REGISTRATION OPEN"
+msgstr "РЕЄСТРАЦІЯ ВІДКРИТА"
+
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:62
+msgid "IN AUCTION"
+msgstr "НА АУКЦІОНІ"
+
+#: vintage_hunter/catalog/templates/catalog/includes/instrument_card.html:81
+msgid "Details"
+msgstr "Деталі"
+
+#: vintage_hunter/catalog/templates/catalog/widgets/specifications_table.html:9
 msgid "Key (for example, \"Weight\")"
 msgstr "Ключ (наприклад, \"Вага\")"
 
-#: catalog/templates/catalog/widgets/specifications_table.html:10
+#: vintage_hunter/catalog/templates/catalog/widgets/specifications_table.html:10
 msgid "Value (for example, \"3.5kg\")"
 msgstr "Значення (наприклад, \"3,5 кг\")"
 
-#: catalog/templates/catalog/widgets/specifications_table.html:30
+#: vintage_hunter/catalog/templates/catalog/widgets/specifications_table.html:30
 msgid "Add Specification"
 msgstr "Додати характеристику"
 
-#: catalog/templates/instrument_details.html:184 templates/base.html:251
+#: vintage_hunter/catalog/templates/instrument_details.html:184
+#: vintage_hunter/templates/base.html:244
 msgid "Catalog"
 msgstr "Каталог"
 
-#: catalog/templates/instrument_details.html:205
+#: vintage_hunter/catalog/templates/instrument_details.html:205
 #, python-format
 msgid "Detail View %(counter)s"
 msgstr "Вид %(counter)s"
 
-#: catalog/templates/instrument_details.html:211
+#: vintage_hunter/catalog/templates/instrument_details.html:211
 msgid "Historical Context & Description"
 msgstr "Історичний контекст і опис"
 
-#: catalog/templates/instrument_details.html:223
+#: vintage_hunter/catalog/templates/instrument_details.html:223
 #, python-format
 msgid "ID: #%(instrument_id)s"
 msgstr "ID: #%(instrument_id)s"
 
-#: catalog/templates/instrument_details.html:227
+#: vintage_hunter/catalog/templates/instrument_details.html:227
 msgid "Authored by Vintage Tone Curators"
 msgstr "Підготовлено кураторами Vintage Tone"
 
-#: catalog/templates/instrument_details.html:231
+#: vintage_hunter/catalog/templates/instrument_details.html:231
 msgid ""
 "This instrument remains visible while the latest edits are under review. "
 "Purchasing and bidding stay locked until it is published again."
@@ -797,101 +860,96 @@ msgstr ""
 "Цей інструмент залишається видимим, поки останні зміни проходять перевірку. "
 "Купівля та ставки заблоковані, доки його не буде опубліковано знову."
 
-#: catalog/templates/instrument_details.html:239
-#: catalog/templates/instruments_list.html:230
-msgid "REGISTRATION OPEN"
-msgstr "РЕЄСТРАЦІЯ ВІДКРИТА"
-
-#: catalog/templates/instrument_details.html:241
+#: vintage_hunter/catalog/templates/instrument_details.html:241
 msgid "AUCTION"
 msgstr "АУКЦІОН"
 
-#: catalog/templates/instrument_details.html:250
+#: vintage_hunter/catalog/templates/instrument_details.html:250
 msgid "INSTRUMENT SOLD"
 msgstr "ІНСТРУМЕНТ ПРОДАНО"
 
-#: catalog/templates/instrument_details.html:252
+#: vintage_hunter/catalog/templates/instrument_details.html:252
 msgid "TEMPORARILY UNAVAILABLE"
 msgstr "ТИМЧАСОВО НЕДОСТУПНО"
 
-#: catalog/templates/instrument_details.html:255
+#: vintage_hunter/catalog/templates/instrument_details.html:255
 msgid "REGISTER FOR AUCTION"
 msgstr "ЗАРЕЄСТРУВАТИСЯ НА АУКЦІОН"
 
-#: catalog/templates/instrument_details.html:257
+#: vintage_hunter/catalog/templates/instrument_details.html:257
 msgid "VIEW IN AUCTION"
 msgstr "ПЕРЕГЛЯНУТИ НА АУКЦІОНІ"
 
-#: catalog/templates/instrument_details.html:260
+#: vintage_hunter/catalog/templates/instrument_details.html:260
 msgid "PURCHASE INSTRUMENT"
 msgstr "ПРИДБАТИ ІНСТРУМЕНТ"
 
-#: catalog/templates/instrument_details.html:266
+#: vintage_hunter/catalog/templates/instrument_details.html:266
 msgid "EDIT LOCKED IN AUCTION"
 msgstr "РЕДАГУВАННЯ ЗАБЛОКОВАНЕ НА АУКЦІОНІ"
 
-#: catalog/templates/instrument_details.html:268
+#: vintage_hunter/catalog/templates/instrument_details.html:268
 msgid "CHECKOUT IN PROGRESS"
 msgstr "ОФОРМЛЕННЯ ПОКУПКИ ТРИВАЄ"
 
-#: catalog/templates/instrument_details.html:269
+#: vintage_hunter/catalog/templates/instrument_details.html:269
 msgid "EDIT LOCKED DURING CHECKOUT"
 msgstr "РЕДАГУВАННЯ ЗАБЛОКОВАНЕ ПІД ЧАС ОФОРМЛЕННЯ"
 
-#: catalog/templates/instrument_details.html:271
+#: vintage_hunter/catalog/templates/instrument_details.html:271
 msgid "EDIT CATALOG ENTRY"
 msgstr "РЕДАГУВАТИ ЗАПИС У КАТАЛОЗІ"
 
-#: catalog/templates/instrument_details.html:282
-#: catalog/templates/instrument_details.html:354
+#: vintage_hunter/catalog/templates/instrument_details.html:282
+#: vintage_hunter/catalog/templates/instrument_details.html:354
 msgid "CURATED FAVORITE"
 msgstr "У ДОБІРЦІ"
 
-#: catalog/templates/instrument_details.html:282
-#: catalog/templates/instrument_details.html:355
+#: vintage_hunter/catalog/templates/instrument_details.html:282
+#: vintage_hunter/catalog/templates/instrument_details.html:355
 msgid "ADD TO COLLECTION"
 msgstr "ДОДАТИ ДО КОЛЕКЦІЇ"
 
-#: catalog/templates/instrument_details.html:286
+#: vintage_hunter/catalog/templates/instrument_details.html:286
 #, fuzzy
 #| msgid "Select Collections"
 msgid "Select Curations"
 msgstr "Виберіть добірки"
 
-#: catalog/templates/instrument_details.html:300
+#: vintage_hunter/catalog/templates/instrument_details.html:300
 #, fuzzy
 #| msgid "Create new collection..."
 msgid "Create new curation..."
 msgstr "Створити нову добірку..."
 
-#: catalog/templates/instrument_details.html:311
+#: vintage_hunter/catalog/templates/instrument_details.html:311
 msgid "INQUIRE FOR DETAILS"
 msgstr "ЗАПИТАТИ ДЕТАЛІ"
 
-#: catalog/templates/instrument_details.html:315
-#: catalog/templates/instrument_form.html:194
+#: vintage_hunter/catalog/templates/instrument_details.html:315
+#: vintage_hunter/catalog/templates/instrument_form.html:194
 msgid "Technical Specifications"
 msgstr "Технічні характеристики"
 
-#: catalog/templates/instrument_details.html:322
-#: catalog/templates/instrument_form.html:146
-#: users/templates/purchase_details.html:48
+#: vintage_hunter/catalog/templates/instrument_details.html:322
+#: vintage_hunter/catalog/templates/instrument_form.html:146
+#: vintage_hunter/users/templates/purchase_details.html:48
 msgid "Serial Number"
 msgstr "Серійний номер"
 
-#: catalog/templates/instrument_details.html:334
+#: vintage_hunter/catalog/templates/instrument_details.html:334
 msgid "AI Curated: Visually Similar"
 msgstr "Добірка AI: візуально схожі"
 
-#: catalog/templates/instrument_details.html:353
+#: vintage_hunter/catalog/templates/instrument_details.html:353
 msgid "Default"
 msgstr "За замовчуванням"
 
-#: catalog/templates/instrument_form.html:80
+#: vintage_hunter/catalog/templates/instrument_form.html:80
 msgid "New"
 msgstr "Нове"
 
-#: catalog/templates/instrument_form.html:90
+#: vintage_hunter/catalog/templates/instrument_form.html:90
 msgid ""
 "This entry stays visible to visitors as under review. Save changes first if "
 "needed, then publish the latest saved version."
@@ -900,72 +958,72 @@ msgstr ""
 "За потреби спочатку збережіть зміни, а потім опублікуйте останню збережену "
 "версію."
 
-#: catalog/templates/instrument_form.html:101
+#: vintage_hunter/catalog/templates/instrument_form.html:101
 msgid "Instrument Details"
 msgstr "Дані інструмента"
 
-#: catalog/templates/instrument_form.html:106
+#: vintage_hunter/catalog/templates/instrument_form.html:106
 msgid "Instrument Title"
 msgstr "Назва інструмента"
 
-#: catalog/templates/instrument_form.html:156
+#: vintage_hunter/catalog/templates/instrument_form.html:156
 msgid "Price ($)"
 msgstr "Ціна ($)"
 
-#: catalog/templates/instrument_form.html:179
+#: vintage_hunter/catalog/templates/instrument_form.html:179
 msgid "All Original"
 msgstr "Усе оригінальне"
 
-#: catalog/templates/instrument_form.html:183
+#: vintage_hunter/catalog/templates/instrument_form.html:183
 msgid "Has Repairs"
 msgstr "Має ремонти"
 
-#: catalog/templates/instrument_form.html:187
+#: vintage_hunter/catalog/templates/instrument_form.html:187
 msgid "Concert Ready"
 msgstr "Готовий до виступів"
 
-#: catalog/templates/instrument_form.html:220
+#: vintage_hunter/catalog/templates/instrument_form.html:220
 msgid "Gallery Manager"
 msgstr "Керування галереєю"
 
-#: catalog/templates/instrument_form.html:228
+#: vintage_hunter/catalog/templates/instrument_form.html:228
 msgid "Add Photo"
 msgstr "Додати фото"
 
-#: catalog/templates/instrument_form.html:236
+#: vintage_hunter/catalog/templates/instrument_form.html:236
 msgid "Uploading images..."
 msgstr "Завантаження зображень..."
 
-#: catalog/templates/instrument_form.html:246
-#: catalog/templates/instrument_form.html:318
-#: users/templates/collection_list.html:93
+#: vintage_hunter/catalog/templates/instrument_form.html:246
+#: vintage_hunter/catalog/templates/instrument_form.html:318
+#: vintage_hunter/users/templates/collection_list.html:93
 msgid "Primary"
 msgstr "Основне"
 
-#: catalog/templates/instrument_form.html:250
+#: vintage_hunter/catalog/templates/instrument_form.html:250
 msgid "Instrument View"
 msgstr "Зображення інструмента"
 
-#: catalog/templates/instrument_form.html:257
-#: catalog/templates/instrument_form.html:316
+#: vintage_hunter/catalog/templates/instrument_form.html:257
+#: vintage_hunter/catalog/templates/instrument_form.html:316
 msgid "ACTIVE"
 msgstr "АКТИВНЕ"
 
-#: catalog/templates/instrument_form.html:257
-#: catalog/templates/instrument_form.html:317
+#: vintage_hunter/catalog/templates/instrument_form.html:257
+#: vintage_hunter/catalog/templates/instrument_form.html:317
 msgid "SET PRIMARY"
 msgstr "ЗРОБИТИ ОСНОВНИМ"
 
-#: catalog/templates/instrument_form.html:272
+#: vintage_hunter/catalog/templates/instrument_form.html:272
 msgid "Set the Primary image to determine the main catalog thumbnail."
 msgstr ""
 "Встановіть основне зображення, щоб визначити головну мініатюру в каталозі."
 
-#: catalog/templates/instrument_form.html:279
+#: vintage_hunter/catalog/templates/instrument_form.html:279
 msgid "Image Gallery"
 msgstr "Галерея зображень"
 
-#: catalog/templates/instrument_form.html:280
+#: vintage_hunter/catalog/templates/instrument_form.html:280
 msgid ""
 "You'll be able to upload and manage the instrument's gallery after the "
 "initial details are saved."
@@ -973,108 +1031,92 @@ msgstr ""
 "Ви зможете завантажувати зображення та керувати галереєю інструмента після "
 "збереження основних даних."
 
-#: catalog/templates/instrument_form.html:289
+#: vintage_hunter/catalog/templates/instrument_form.html:289
 msgid ""
 "Publishing clears the draft flag without submitting any unsaved form changes."
 msgstr ""
 "Публікація знімає позначку чернетки без надсилання незбережених змін форми."
 
-#: catalog/templates/instrument_form.html:294
+#: vintage_hunter/catalog/templates/instrument_form.html:294
 msgid "Discard"
 msgstr "Відкинути"
 
-#: catalog/templates/instrument_form.html:297
+#: vintage_hunter/catalog/templates/instrument_form.html:297
 msgid "Publish to Catalog"
 msgstr "Опублікувати в каталозі"
 
-#: catalog/templates/instrument_form.html:300
+#: vintage_hunter/catalog/templates/instrument_form.html:300
 msgid "Save Instrument"
 msgstr "Зберегти інструмент"
 
-#: catalog/templates/instrument_form.html:319
+#: vintage_hunter/catalog/templates/instrument_form.html:319
 msgid "Are you sure you want to delete this image?"
 msgstr "Ви впевнені, що хочете видалити це зображення?"
 
-#: catalog/templates/instrument_form.html:320
+#: vintage_hunter/catalog/templates/instrument_form.html:320
 msgid "Delete failed."
 msgstr "Не вдалося видалити."
 
-#: catalog/templates/instruments_list.html:125
+#: vintage_hunter/catalog/templates/instruments_list.html:121
 msgid "AI Search"
 msgstr "AI-пошук"
 
-#: catalog/templates/instruments_list.html:126
+#: vintage_hunter/catalog/templates/instruments_list.html:122
 msgid "Describe the tone, era, or feel you're looking for."
 msgstr "Опишіть тон, епоху або характер звучання, які ви шукаєте."
 
-#: catalog/templates/instruments_list.html:130
+#: vintage_hunter/catalog/templates/instruments_list.html:126
 msgid "e.g. 'Warm 60s blues tone'"
 msgstr "напр. «Теплий блюзовий тон 60-х»"
 
-#: catalog/templates/instruments_list.html:133
-msgid "Find via LLM"
+#: vintage_hunter/catalog/templates/instruments_list.html:132
+#, fuzzy
+#| msgid "Find via LLM"
+msgid "Find via AI"
 msgstr "Знайти через LLM"
 
-#: catalog/templates/instruments_list.html:138
+#: vintage_hunter/catalog/templates/instruments_list.html:137
 msgid "Categories"
 msgstr "Категорії"
 
-#: catalog/templates/instruments_list.html:142
+#: vintage_hunter/catalog/templates/instruments_list.html:141
 msgid "All Instruments"
 msgstr "Усі інструменти"
 
-#: catalog/templates/instruments_list.html:156
+#: vintage_hunter/catalog/templates/instruments_list.html:156
+#, fuzzy
+#| msgid "Search Results"
+msgid "AI Search Results"
+msgstr "Результати пошуку"
+
+#: vintage_hunter/catalog/templates/instruments_list.html:160
+#, fuzzy
+#| msgid "Search Results"
+msgid "Clear results"
+msgstr "Результати пошуку"
+
+#: vintage_hunter/catalog/templates/instruments_list.html:169
 msgid "Vintage Collection"
 msgstr "Вінтажна колекція"
 
-#: catalog/templates/instruments_list.html:160
+#: vintage_hunter/catalog/templates/instruments_list.html:173
 msgid "ADD INSTRUMENT"
 msgstr "ДОДАТИ ІНСТРУМЕНТ"
 
-#: catalog/templates/instruments_list.html:165
+#: vintage_hunter/catalog/templates/instruments_list.html:178
 #, python-format
 msgid "Showing %(start)s–%(end)s of %(total)s"
 msgstr "Показано %(start)s–%(end)s з %(total)s"
 
-#: catalog/templates/instruments_list.html:167
+#: vintage_hunter/catalog/templates/instruments_list.html:180
 msgid "Showing 0 items"
 msgstr "Показано 0 елементів"
 
-#: catalog/templates/instruments_list.html:182
-msgid "No Image"
-msgstr "Немає зображення"
-
-#: catalog/templates/instruments_list.html:196
-#: users/templates/finder_results.html:115
-msgid "Select Collections"
-msgstr "Виберіть добірки"
-
-#: catalog/templates/instruments_list.html:203
-#: users/templates/finder_results.html:122
-#, fuzzy
-#| msgid "New Collection"
-msgid "New collection..."
-msgstr "Нова колекція"
-
-#: catalog/templates/instruments_list.html:224
-#: users/templates/collection_details.html:136
-#: users/templates/finder_results.html:143
-msgid "Temporarily unavailable"
-msgstr "Тимчасово недоступно"
-
-#: catalog/templates/instruments_list.html:234
-msgid "IN AUCTION"
-msgstr "НА АУКЦІОНІ"
-
-#: catalog/templates/instruments_list.html:252
-msgid "Details"
-msgstr "Деталі"
-
-#: catalog/templates/instruments_list.html:261
+#: vintage_hunter/catalog/templates/instruments_list.html:193
 msgid "The Vault is Currently Empty"
 msgstr "Сховище наразі порожнє"
 
-#: catalog/templates/instruments_list.html:263
+#: vintage_hunter/catalog/templates/instruments_list.html:195
 msgid ""
 "Our AI agents are currently scouting global markets for rare vintage finds. "
 "Try adjusting your filters or place a custom request."
@@ -1082,146 +1124,161 @@ msgstr ""
 "Наші AI-агенти зараз відстежують світові ринки в пошуках рідкісних вінтажних "
 "знахідок. Спробуйте змінити фільтри або залишити індивідуальний запит."
 
-#: catalog/templates/instruments_list.html:266
+#: vintage_hunter/catalog/templates/instruments_list.html:198
 msgid "Clear All Filters"
 msgstr "Очистити всі фільтри"
 
-#: catalog/templates/instruments_list.html:268
+#: vintage_hunter/catalog/templates/instruments_list.html:200
 msgid "Custom Hunt Request"
 msgstr "Індивідуальний запит на пошук"
 
-#: catalog/views.py:19
+#: vintage_hunter/catalog/views.py:19
 msgid ""
 "This instrument cannot be edited because it is already included in an "
 "auction."
 msgstr ""
 "Цей інструмент не можна редагувати, оскільки його вже включено до аукціону."
 
-#: catalog/views.py:21
+#: vintage_hunter/catalog/views.py:21
 msgid ""
 "This instrument cannot be edited because checkout is currently in progress."
 msgstr ""
 "Цей інструмент не можна редагувати, оскільки зараз триває оформлення покупки."
 
-#: catalog/views.py:22
+#: vintage_hunter/catalog/views.py:22
 msgid "This instrument cannot be edited right now."
 msgstr "Цей інструмент зараз не можна редагувати."
 
-#: catalog/views.py:101
+#: vintage_hunter/catalog/views.py:34
+#, fuzzy
+#| msgid "Name is required."
+msgid "Query is required"
+msgstr "Назва обов’язкова."
+
+#: vintage_hunter/catalog/views.py:39
+#, fuzzy
+#| msgid "Search instruments"
+msgid "Search started..."
+msgstr "Пошук інструментів"
+
+#: vintage_hunter/catalog/views.py:110
 #, python-format
 msgid "Instrument \"%(instrument)s\" created as draft. Now you can add photos."
 msgstr ""
 "Інструмент \"%(instrument)s\" створено як чернетку. Тепер ви можете додати "
 "фотографії."
 
-#: catalog/views.py:109
+#: vintage_hunter/catalog/views.py:118
 msgid "Add New Instrument"
 msgstr "Додати новий інструмент"
 
-#: catalog/views.py:129
+#: vintage_hunter/catalog/views.py:138
 #, python-format
 msgid "Category \"%(category)s\" created."
 msgstr "Категорію \"%(category)s\" створено."
 
-#: catalog/views.py:137
+#: vintage_hunter/catalog/views.py:146
 msgid "Create New Category"
 msgstr "Створити нову категорію"
 
-#: catalog/views.py:151
+#: vintage_hunter/catalog/views.py:160
 #, python-format
 msgid "Category \"%(category)s\" updated."
 msgstr "Категорію \"%(category)s\" оновлено."
 
-#: catalog/views.py:160
+#: vintage_hunter/catalog/views.py:169
 #, python-format
 msgid "Edit Category: %(category)s"
 msgstr "Редагувати категорію: %(category)s"
 
-#: catalog/views.py:180
+#: vintage_hunter/catalog/views.py:189
 #, python-format
 msgid "Brand \"%(brand)s\" created."
 msgstr "Бренд \"%(brand)s\" створено."
 
-#: catalog/views.py:188
+#: vintage_hunter/catalog/views.py:197
 msgid "Create New Brand"
 msgstr "Створити новий бренд"
 
-#: catalog/views.py:202
+#: vintage_hunter/catalog/views.py:211
 #, python-format
 msgid "Brand \"%(brand)s\" updated."
 msgstr "Бренд \"%(brand)s\" оновлено."
 
-#: catalog/views.py:211
+#: vintage_hunter/catalog/views.py:220
 #, python-format
 msgid "Edit Brand: %(brand)s"
 msgstr "Редагувати бренд: %(brand)s"
 
-#: catalog/views.py:235
+#: vintage_hunter/catalog/views.py:244
 msgid "No images uploaded."
 msgstr "Зображення не завантажено."
 
-#: catalog/views.py:255
+#: vintage_hunter/catalog/views.py:264
 msgid "Image set as primary."
 msgstr "Зображення встановлено як основне."
 
-#: catalog/views.py:274
+#: vintage_hunter/catalog/views.py:283
 msgid ""
 "Cannot delete the last image. An instrument must have at least one photo."
 msgstr ""
 "Не можна видалити останнє зображення. Інструмент повинен мати щонайменше "
 "одне фото."
 
-#: catalog/views.py:304
+#: vintage_hunter/catalog/views.py:313
 #, python-format
 msgid "Instrument \"%(instrument)s\" updated and moved to draft review."
 msgstr ""
 "Інструмент \"%(instrument)s\" оновлено та переведено в чернетку для "
 "перевірки."
 
-#: catalog/views.py:314
+#: vintage_hunter/catalog/views.py:323
 #, python-format
 msgid "Edit %(instrument)s"
 msgstr "Редагувати %(instrument)s"
 
-#: catalog/views.py:331
+#: vintage_hunter/catalog/views.py:340
 #, python-format
 msgid "Instrument \"%(instrument)s\" is now published."
 msgstr "Інструмент \"%(instrument)s\" опубліковано."
 
-#: payments/forms.py:7
+#: vintage_hunter/payments/forms.py:7
 msgid "Card Number"
 msgstr "Номер картки"
 
-#: payments/forms.py:12
+#: vintage_hunter/payments/forms.py:12
 msgid "Expiry Date"
 msgstr "Термін дії"
 
-#: payments/forms.py:17
+#: vintage_hunter/payments/forms.py:17
 msgid "CVV"
 msgstr "CVV"
 
-#: payments/forms.py:22
+#: vintage_hunter/payments/forms.py:22
 msgid "Cardholder Name"
 msgstr "Ім'я власника картки"
 
-#: payments/models.py:16 users/templates/orders_list.html:45
+#: vintage_hunter/payments/models.py:16
+#: vintage_hunter/users/templates/orders_list.html:45
 msgid "Pending"
 msgstr "Очікується"
 
-#: payments/models.py:17 users/templates/orders_list.html:42
-#: users/templates/purchases_list.html:40
+#: vintage_hunter/payments/models.py:17
+#: vintage_hunter/users/templates/orders_list.html:42
+#: vintage_hunter/users/templates/purchases_list.html:40
 msgid "Completed"
 msgstr "Завершено"
 
-#: payments/models.py:18 users/templates/orders_list.html:51
+#: vintage_hunter/payments/models.py:18
+#: vintage_hunter/users/templates/orders_list.html:51
 msgid "Failed"
 msgstr "Помилка"
 
-#: payments/templates/failed.html:11
+#: vintage_hunter/payments/templates/failed.html:11
 msgid "Payment Failed"
 msgstr "Помилка оплати"
 
-#: payments/templates/failed.html:16
+#: vintage_hunter/payments/templates/failed.html:16
 msgid ""
 "We could not process your payment at this time. Please try again or contact "
 "support."
@@ -1229,52 +1286,54 @@ msgstr ""
 "Ми не змогли обробити ваш платіж у цей час. Будь ласка, спробуйте ще раз або "
 "зверніться до служби підтримки."
 
-#: payments/templates/failed.html:22
+#: vintage_hunter/payments/templates/failed.html:22
 msgid "TRY AGAIN"
 msgstr "СПРОБУВАТИ ЩЕ РАЗ"
 
-#: payments/templates/failed.html:23
+#: vintage_hunter/payments/templates/failed.html:23
 msgid "BACK TO INSTRUMENT"
 msgstr "НАЗАД ДО ІНСТРУМЕНТА"
 
-#: payments/templates/failed.html:25
+#: vintage_hunter/payments/templates/failed.html:25
 msgid "BACK TO CATALOG"
 msgstr "НАЗАД ДО КАТАЛОГУ"
 
-#: payments/templates/purchase_form.html:9
+#: vintage_hunter/payments/templates/purchase_form.html:9
 msgid "Complete Your Purchase"
 msgstr "Завершіть покупку"
 
-#: payments/templates/purchase_form.html:14 users/templates/orders_list.html:47
+#: vintage_hunter/payments/templates/purchase_form.html:14
+#: vintage_hunter/users/templates/orders_list.html:47
 msgid "Reservation expires in"
 msgstr "Резервування закінчиться через"
 
-#: payments/templates/purchase_form.html:18
+#: vintage_hunter/payments/templates/purchase_form.html:18
 #, python-format
 msgid "Reserved for %(minutes)s minutes"
 msgstr "Зарезервовано на %(minutes)s хвилин"
 
-#: payments/templates/purchase_form.html:22
+#: vintage_hunter/payments/templates/purchase_form.html:22
 msgid "This checkout session is reserved for you for a limited time."
 msgstr "Ця сесія оформлення покупки зарезервована для вас на обмежений час."
 
-#: payments/templates/purchase_form.html:55
+#: vintage_hunter/payments/templates/purchase_form.html:55
 msgid "CANCEL"
 msgstr "СКАСУВАТИ"
 
-#: payments/templates/purchase_form.html:64
+#: vintage_hunter/payments/templates/purchase_form.html:64
 msgid "Secure Encrypted Payment"
 msgstr "Безпечний зашифрований платіж"
 
-#: payments/templates/purchase_form.html:71 users/templates/orders_list.html:83
+#: vintage_hunter/payments/templates/purchase_form.html:71
+#: vintage_hunter/users/templates/orders_list.html:83
 msgid "Expired"
 msgstr "Час вийшов"
 
-#: payments/templates/success.html:11
+#: vintage_hunter/payments/templates/success.html:11
 msgid "Purchase Successful!"
 msgstr "Покупка успішна!"
 
-#: payments/templates/success.html:13
+#: vintage_hunter/payments/templates/success.html:13
 msgid ""
 "Thank you for your purchase. Your new instrument is now part of your "
 "collection history."
@@ -1282,27 +1341,28 @@ msgstr ""
 "Дякуємо за покупку. Ваш новий інструмент тепер є частиною історії вашої "
 "колекції."
 
-#: payments/templates/success.html:18
+#: vintage_hunter/payments/templates/success.html:18
 msgid "Order Details"
 msgstr "Деталі замовлення"
 
-#: payments/templates/success.html:24
+#: vintage_hunter/payments/templates/success.html:24
 msgid "Amount"
 msgstr "Сума"
 
-#: payments/templates/success.html:28 users/templates/purchase_details.html:23
+#: vintage_hunter/payments/templates/success.html:28
+#: vintage_hunter/users/templates/purchase_details.html:23
 msgid "Transaction ID"
 msgstr "ID транзакції"
 
-#: payments/templates/success.html:32
+#: vintage_hunter/payments/templates/success.html:32
 msgid "Date"
 msgstr "Дата"
 
-#: payments/templates/success.html:39
+#: vintage_hunter/payments/templates/success.html:39
 msgid "CONTINUE BROWSING"
 msgstr "ПРОДОВЖИТИ ПЕРЕГЛЯД"
 
-#: payments/views.py:17
+#: vintage_hunter/payments/views.py:17
 msgid ""
 "This instrument is temporarily reserved by another buyer. Please try again "
 "shortly."
@@ -1310,106 +1370,110 @@ msgstr ""
 "Цей інструмент тимчасово зарезервований іншим покупцем. Спробуйте ще раз "
 "трохи пізніше."
 
-#: payments/views.py:21
+#: vintage_hunter/payments/views.py:21
 msgid "Your purchase reservation expired. Please start checkout again."
 msgstr ""
 "Термін резервування для покупки закінчився. Будь ласка, почніть оформлення "
 "знову."
 
-#: payments/views.py:39 payments/views.py:114
+#: vintage_hunter/payments/views.py:39 vintage_hunter/payments/views.py:114
 msgid "Sorry, this instrument has already been sold."
 msgstr "Вибачте, цей інструмент уже продано."
 
-#: payments/views.py:43 payments/views.py:118
+#: vintage_hunter/payments/views.py:43 vintage_hunter/payments/views.py:118
 msgid "This instrument is no longer available for direct purchase."
 msgstr "Цей інструмент більше недоступний для прямої покупки."
 
-#: payments/views.py:46 payments/views.py:121
+#: vintage_hunter/payments/views.py:46 vintage_hunter/payments/views.py:121
 msgid "This instrument is under review and cannot be purchased right now."
 msgstr ""
 "Цей інструмент перебуває на перевірці, тому зараз його не можна придбати."
 
-#: payments/views.py:103
+#: vintage_hunter/payments/views.py:103
 msgid "Payment failed."
 msgstr "Помилка оплати."
 
-#: payments/views.py:106 payments/views.py:143
+#: vintage_hunter/payments/views.py:106 vintage_hunter/payments/views.py:143
 msgid "An error occurred during transaction: "
 msgstr "Під час транзакції сталася помилка: "
 
-#: templates/base.html:9
+#: vintage_hunter/templates/base.html:9
 msgid "Vintage Tone | Premium Vintage Gear"
 msgstr "Vintage Tone | Преміальний вінтажний інструментарій"
 
-#: templates/base.html:228
+#: vintage_hunter/templates/base.html:221
 msgid "Vintage Tone Logo"
 msgstr "Логотип Vintage Tone"
 
-#: templates/base.html:273
+#: vintage_hunter/templates/base.html:266
 msgid "Account"
 msgstr "Обліковий запис"
 
-#: templates/base.html:276
+#: vintage_hunter/templates/base.html:269
 #, python-format
 msgid "Member since %(joined_year)s"
 msgstr "З нами з %(joined_year)s року"
 
-#: templates/base.html:286
+#: vintage_hunter/templates/base.html:279
 msgid "My Profile"
 msgstr "Мій профіль"
 
-#: templates/base.html:293
+#: vintage_hunter/templates/base.html:286
 msgid "My Collection"
 msgstr "Моя колекція"
 
-#: templates/base.html:304
+#: vintage_hunter/templates/base.html:297
 msgid "My Auctions"
 msgstr "Мої аукціони"
 
-#: templates/base.html:313
+#: vintage_hunter/templates/base.html:306
 msgid "My Finders"
 msgstr "Мої пошукові профілі"
 
-#: templates/base.html:322 users/templates/orders_list.html:9
+#: vintage_hunter/templates/base.html:315
+#: vintage_hunter/users/templates/orders_list.html:9
 msgid "My Orders"
 msgstr "Мої замовлення"
 
-#: templates/base.html:331 users/templates/purchase_details.html:9
-#: users/templates/purchases_list.html:9
+#: vintage_hunter/templates/base.html:324
+#: vintage_hunter/users/templates/purchase_details.html:9
+#: vintage_hunter/users/templates/purchases_list.html:9
 msgid "My Purchases"
 msgstr "Мої покупки"
 
-#: templates/base.html:344
+#: vintage_hunter/templates/base.html:337
 msgid "Staff Tools"
 msgstr "Інструменти співробітника"
 
-#: templates/base.html:349
+#: vintage_hunter/templates/base.html:342
 msgid "Manage Auctions"
 msgstr "Керування аукціонами"
 
-#: templates/base.html:370
+#: vintage_hunter/templates/base.html:363
 msgid "Sign Out"
 msgstr "Вийти"
 
-#: templates/base.html:377 templates/signup.html:180
+#: vintage_hunter/templates/base.html:370
+#: vintage_hunter/templates/signup.html:180
 msgid "Sign In"
 msgstr "Увійти"
 
-#: templates/base.html:401 users/templates/collection_list.html:145
-#: users/templates/profile.html:24
+#: vintage_hunter/templates/base.html:394
+#: vintage_hunter/users/templates/collection_list.html:145
+#: vintage_hunter/users/templates/profile.html:24
 msgid "Close"
 msgstr "Закрити"
 
-#: templates/base.html:409
+#: vintage_hunter/templates/base.html:402
 msgid "© 2026 Vintage Tone Marketplace. Expertly Curated Vintage Gear."
 msgstr ""
 "© 2026 Vintage Tone Marketplace. Експертно відібрані вінтажні інструменти."
 
-#: templates/password_reset.html:113
+#: vintage_hunter/templates/password_reset.html:113
 msgid "Reset Password"
 msgstr "Скинути пароль"
 
-#: templates/password_reset.html:114
+#: vintage_hunter/templates/password_reset.html:114
 msgid ""
 "Enter the email associated with your account and we'll send you instructions "
 "to reset your password."
@@ -1417,11 +1481,11 @@ msgstr ""
 "Введіть адресу електронної пошти, пов’язану з вашим обліковим записом, і ми "
 "надішлемо інструкції для скидання пароля."
 
-#: templates/password_reset.html:119
+#: vintage_hunter/templates/password_reset.html:119
 msgid "Note:"
 msgstr "Примітка:"
 
-#: templates/password_reset.html:119
+#: vintage_hunter/templates/password_reset.html:119
 msgid ""
 "For security reasons, we cannot confirm if an account exists for the email "
 "entered."
@@ -1429,198 +1493,214 @@ msgstr ""
 "З міркувань безпеки ми не можемо підтвердити, чи існує обліковий запис для "
 "введеної адреси електронної пошти."
 
-#: templates/password_reset.html:126 templates/signup.html:143
-#: users/templates/profile.html:62
+#: vintage_hunter/templates/password_reset.html:126
+#: vintage_hunter/templates/signup.html:143
+#: vintage_hunter/users/templates/profile.html:62
 msgid "Email Address"
 msgstr "Адреса електронної пошти"
 
-#: templates/password_reset.html:130
+#: vintage_hunter/templates/password_reset.html:130
 msgid "SEND RESET LINK"
 msgstr "НАДІСЛАТИ ПОСИЛАННЯ ДЛЯ СКИДАННЯ"
 
-#: templates/password_reset.html:134
+#: vintage_hunter/templates/password_reset.html:134
 msgid "Back to Sign In"
 msgstr "Назад до входу"
 
-#: templates/signin.html:126
+#: vintage_hunter/templates/signin.html:126
 msgid "Welcome Back"
 msgstr "З поверненням"
 
-#: templates/signin.html:127
+#: vintage_hunter/templates/signin.html:127
 msgid "Access your curated gear collection"
 msgstr "Отримайте доступ до своєї добірки інструментів"
 
-#: templates/signin.html:141
+#: vintage_hunter/templates/signin.html:141
 msgid "Username or Email"
 msgstr "Ім’я користувача або email"
 
-#: templates/signin.html:148 templates/signup.html:156
-#: vintage_hunter/forms.py:11 vintage_hunter/forms.py:73
+#: vintage_hunter/templates/signin.html:148
+#: vintage_hunter/templates/signup.html:156
+#: vintage_hunter/vintage_hunter/forms.py:11
+#: vintage_hunter/vintage_hunter/forms.py:73
 msgid "Password"
 msgstr "Пароль"
 
-#: templates/signin.html:149
+#: vintage_hunter/templates/signin.html:149
 msgid "Forgot?"
 msgstr "Забули?"
 
-#: templates/signin.html:158 vintage_hunter/forms.py:78
+#: vintage_hunter/templates/signin.html:158
+#: vintage_hunter/vintage_hunter/forms.py:78
 msgid "Keep me signed in"
 msgstr "Не виходити з акаунта"
 
-#: templates/signin.html:162
+#: vintage_hunter/templates/signin.html:162
 msgid "SIGN IN"
 msgstr "УВІЙТИ"
 
-#: templates/signin.html:164
+#: vintage_hunter/templates/signin.html:164
 msgid "OR CONTINUE WITH"
 msgstr "АБО ПРОДОВЖИТИ ЧЕРЕЗ"
 
-#: templates/signin.html:175
+#: vintage_hunter/templates/signin.html:175
 msgid "New to Vintage Tone?"
 msgstr "У Vintage Tone вперше?"
 
-#: templates/signin.html:175
+#: vintage_hunter/templates/signin.html:175
 msgid "Create Account"
 msgstr "Створити акаунт"
 
-#: templates/signup.html:114
+#: vintage_hunter/templates/signup.html:114
 msgid "JOIN THE COMMUNITY"
 msgstr "ПРИЄДНУЙТЕСЯ ДО СПІЛЬНОТИ"
 
-#: templates/signup.html:115
+#: vintage_hunter/templates/signup.html:115
 msgid "Curate, Trade, and Discover Premium Gear"
 msgstr "Добирайте, продавайте та відкривайте преміальні інструменти"
 
-#: templates/signup.html:131 users/templates/profile.html:35
+#: vintage_hunter/templates/signup.html:131
+#: vintage_hunter/users/templates/profile.html:35
 msgid "First Name"
 msgstr "Ім’я"
 
-#: templates/signup.html:136 users/templates/profile.html:43
+#: vintage_hunter/templates/signup.html:136
+#: vintage_hunter/users/templates/profile.html:43
 msgid "Last Name"
 msgstr "Прізвище"
 
-#: templates/signup.html:149 users/forms.py:18 users/forms.py:24
-#: users/templates/profile.html:53 vintage_hunter/forms.py:25
+#: vintage_hunter/templates/signup.html:149 vintage_hunter/users/forms.py:18
+#: vintage_hunter/users/forms.py:24
+#: vintage_hunter/users/templates/profile.html:53
+#: vintage_hunter/vintage_hunter/forms.py:25
 msgid "Username"
 msgstr "Ім’я користувача"
 
-#: templates/signup.html:161
+#: vintage_hunter/templates/signup.html:161
 msgid "Confirm Password"
 msgstr "Підтвердьте пароль"
 
-#: templates/signup.html:167
+#: vintage_hunter/templates/signup.html:167
 msgid "CREATE ACCOUNT"
 msgstr "СТВОРИТИ АКАУНТ"
 
-#: templates/signup.html:170
+#: vintage_hunter/templates/signup.html:170
 msgid "By creating an account, you agree to our"
 msgstr "Створюючи обліковий запис, ви погоджуєтеся з нашими"
 
-#: templates/signup.html:171
+#: vintage_hunter/templates/signup.html:171
 msgid "Terms of Service"
 msgstr "Умовами користування"
 
-#: templates/signup.html:172
+#: vintage_hunter/templates/signup.html:172
 msgid "and"
 msgstr "та"
 
-#: templates/signup.html:173
+#: vintage_hunter/templates/signup.html:173
 msgid "Privacy Policy"
 msgstr "Політикою конфіденційності"
 
-#: templates/signup.html:180
+#: vintage_hunter/templates/signup.html:180
 msgid "Already a member?"
 msgstr "Уже з нами?"
 
-#: users/forms.py:15 users/forms.py:21 vintage_hunter/forms.py:22
+#: vintage_hunter/users/forms.py:15 vintage_hunter/users/forms.py:21
+#: vintage_hunter/vintage_hunter/forms.py:22
 msgid "First name"
 msgstr "Ім’я"
 
-#: users/forms.py:16 users/forms.py:22 vintage_hunter/forms.py:23
+#: vintage_hunter/users/forms.py:16 vintage_hunter/users/forms.py:22
+#: vintage_hunter/vintage_hunter/forms.py:23
 msgid "Last name"
 msgstr "Прізвище"
 
-#: users/forms.py:17 vintage_hunter/forms.py:24
+#: vintage_hunter/users/forms.py:17 vintage_hunter/vintage_hunter/forms.py:24
 msgid "Email address"
 msgstr "Адреса електронної пошти"
 
-#: users/forms.py:23
+#: vintage_hunter/users/forms.py:23
 msgid "Email"
 msgstr "Email"
 
-#: users/forms.py:31
+#: vintage_hunter/users/forms.py:31
 msgid "This email is already in use."
 msgstr "Цю адресу електронної пошти вже використано."
 
-#: users/forms.py:38
+#: vintage_hunter/users/forms.py:38
 msgid "This username is already taken."
 msgstr "Це ім’я користувача вже зайняте."
 
-#: users/forms.py:48
+#: vintage_hunter/users/forms.py:48
 msgid "Set as primary collection"
 msgstr "Встановити як основну колекцію"
 
-#: users/forms.py:51
+#: vintage_hunter/users/forms.py:51
 msgid "Collection name (for example, My Favorites)"
 msgstr "Назва колекції (наприклад, Мої улюблені)"
 
-#: users/forms.py:52
+#: vintage_hunter/users/forms.py:52
 msgid "Optional description..."
 msgstr "Необов’язковий опис..."
 
-#: users/forms.py:69 users/templates/finder_form.html:29
+#: vintage_hunter/users/forms.py:69
+#: vintage_hunter/users/templates/finder_form.html:29
 msgid "Configuration Name"
 msgstr "Назва конфігурації"
 
-#: users/forms.py:72 users/templates/finder_form.html:51
+#: vintage_hunter/users/forms.py:72
+#: vintage_hunter/users/templates/finder_form.html:51
 msgid "Availability"
 msgstr "Доступність"
 
-#: users/forms.py:73 users/templates/finder_form.html:65
+#: vintage_hunter/users/forms.py:73
+#: vintage_hunter/users/templates/finder_form.html:65
 msgid "Text Search Prompt"
 msgstr "Текстовий пошуковий запит"
 
-#: users/forms.py:74 users/templates/finder_form.html:71
+#: vintage_hunter/users/forms.py:74
+#: vintage_hunter/users/templates/finder_form.html:71
 msgid "Image Search Prompt"
 msgstr "Пошукове зображення"
 
-#: users/forms.py:75 users/templates/finder_form.html:88
+#: vintage_hunter/users/forms.py:75
+#: vintage_hunter/users/templates/finder_form.html:88
 msgid "Search Frequency (minutes)"
 msgstr "Частота пошуку (у хвилинах)"
 
-#: users/forms.py:76 users/templates/finder_form.html:99
+#: vintage_hunter/users/forms.py:76
+#: vintage_hunter/users/templates/finder_form.html:99
 msgid "Maximum Results"
 msgstr "Максимум результатів"
 
-#: users/forms.py:80
+#: vintage_hunter/users/forms.py:80
 msgid "e.g. Vintage Gibsons"
 msgstr "наприклад, Vintage Gibsons"
 
-#: users/forms.py:84
+#: vintage_hunter/users/forms.py:84
 msgid "Describe what you are looking for..."
 msgstr "Опишіть, що ви шукаєте..."
 
-#: users/models.py:30
+#: vintage_hunter/users/models.py:30
 msgid "All"
 msgstr "Усі"
 
-#: users/models.py:31
+#: vintage_hunter/users/models.py:31
 msgid "Buy It Now Only"
 msgstr "Лише «Купити зараз»"
 
-#: users/models.py:32
+#: vintage_hunter/users/models.py:32
 msgid "Auction Only"
 msgstr "Лише аукціон"
 
-#: users/signals.py:13
+#: vintage_hunter/users/signals.py:13
 msgid "You have new, unviewed instruments search results."
 msgstr "У вас є нові, непереглянуті результати пошуку інструментів."
 
-#: users/templates/collection_details.html:81
+#: vintage_hunter/users/templates/collection_details.html:81
 msgid "Collections"
 msgstr "Колекції"
 
-#: users/templates/collection_details.html:87
+#: vintage_hunter/users/templates/collection_details.html:87
 #, python-format
 msgid "%(instrument_count)s Instrument"
 msgid_plural "%(instrument_count)s Instruments"
@@ -1629,60 +1709,60 @@ msgstr[1] "%(instrument_count)s інструменти"
 msgstr[2] "%(instrument_count)s інструментів"
 msgstr[3] "%(instrument_count)s інструмента"
 
-#: users/templates/collection_details.html:95
+#: vintage_hunter/users/templates/collection_details.html:95
 msgid "Add More"
 msgstr "Додати ще"
 
-#: users/templates/collection_details.html:150
-#: users/templates/finder_results.html:157
+#: vintage_hunter/users/templates/collection_details.html:150
+#: vintage_hunter/users/templates/finder_results.html:157
 msgid "Estimated Value"
 msgstr "Орієнтовна вартість"
 
-#: users/templates/collection_details.html:153
-#: users/templates/finder_results.html:160
-#: users/templates/purchases_list.html:43
+#: vintage_hunter/users/templates/collection_details.html:153
+#: vintage_hunter/users/templates/finder_results.html:160
+#: vintage_hunter/users/templates/purchases_list.html:43
 msgid "View Details"
 msgstr "Переглянути деталі"
 
-#: users/templates/collection_details.html:164
+#: vintage_hunter/users/templates/collection_details.html:164
 msgid "This collection is empty"
 msgstr "Ця колекція порожня"
 
-#: users/templates/collection_details.html:165
+#: vintage_hunter/users/templates/collection_details.html:165
 msgid "Your curated collections are best when filled with legendary gear."
 msgstr "Ваші добірки найкращі, коли в них є легендарні інструменти."
 
-#: users/templates/collection_details.html:166
+#: vintage_hunter/users/templates/collection_details.html:166
 msgid "Open Catalog"
 msgstr "Відкрити каталог"
 
-#: users/templates/collection_list.html:4
+#: vintage_hunter/users/templates/collection_list.html:4
 msgid "My Collections - Vintage Tone"
 msgstr "Мої колекції - Vintage Tone"
 
-#: users/templates/collection_list.html:7
+#: vintage_hunter/users/templates/collection_list.html:7
 msgid "No description provided."
 msgstr "Опис відсутній."
 
-#: users/templates/collection_list.html:8
+#: vintage_hunter/users/templates/collection_list.html:8
 msgid ""
 "Are you sure? This will not delete the instruments, only the collection."
 msgstr "Ви впевнені? Це не видалить інструменти, лише колекцію."
 
-#: users/templates/collection_list.html:66
+#: vintage_hunter/users/templates/collection_list.html:66
 msgid "My Collections"
 msgstr "Мої колекції"
 
-#: users/templates/collection_list.html:67
+#: vintage_hunter/users/templates/collection_list.html:67
 msgid "Organize your favorite vintage finds into curated sets."
 msgstr "Організовуйте свої улюблені вінтажні знахідки в тематичні добірки."
 
-#: users/templates/collection_list.html:70
-#: users/templates/collection_list.html:144
+#: vintage_hunter/users/templates/collection_list.html:70
+#: vintage_hunter/users/templates/collection_list.html:144
 msgid "New Collection"
 msgstr "Нова колекція"
 
-#: users/templates/collection_list.html:105
+#: vintage_hunter/users/templates/collection_list.html:105
 #, python-format
 msgid "<strong>%(instrument_count)s</strong> instrument"
 msgid_plural "<strong>%(instrument_count)s</strong> instruments"
@@ -1691,51 +1771,51 @@ msgstr[1] "<strong>%(instrument_count)s</strong> інструменти"
 msgstr[2] "<strong>%(instrument_count)s</strong> інструментів"
 msgstr[3] "<strong>%(instrument_count)s</strong> інструмента"
 
-#: users/templates/collection_list.html:112
+#: vintage_hunter/users/templates/collection_list.html:112
 msgid "Delete Collection"
 msgstr "Видалити колекцію"
 
-#: users/templates/collection_list.html:117
+#: vintage_hunter/users/templates/collection_list.html:117
 msgid "View"
 msgstr "Переглянути"
 
-#: users/templates/collection_list.html:128
+#: vintage_hunter/users/templates/collection_list.html:128
 msgid "No collections yet"
 msgstr "Колекцій ще немає"
 
-#: users/templates/collection_list.html:129
+#: vintage_hunter/users/templates/collection_list.html:129
 msgid "Create your first collection to start organizing your gear."
 msgstr "Створіть першу колекцію, щоб почати впорядковувати інструменти."
 
-#: users/templates/collection_list.html:131
+#: vintage_hunter/users/templates/collection_list.html:131
 msgid "Create My First Collection"
 msgstr "Створити мою першу колекцію"
 
-#: users/templates/collection_list.html:159
+#: vintage_hunter/users/templates/collection_list.html:159
 msgid "Set as primary (default) collection"
 msgstr "Встановити як основну колекцію (за замовчуванням)"
 
-#: users/templates/collection_list.html:164
+#: vintage_hunter/users/templates/collection_list.html:164
 msgid "Create Collection"
 msgstr "Створити колекцію"
 
-#: users/templates/finder_form.html:4
+#: vintage_hunter/users/templates/finder_form.html:4
 msgid "Vintage Tone"
 msgstr "Vintage Tone"
 
-#: users/templates/finder_form.html:41
+#: vintage_hunter/users/templates/finder_form.html:41
 msgid "Optional: filter by specific brand"
 msgstr "Необов’язково: фільтр за конкретним брендом"
 
-#: users/templates/finder_form.html:47
+#: vintage_hunter/users/templates/finder_form.html:47
 msgid "Optional: filter by specific category"
 msgstr "Необов’язково: фільтр за конкретною категорією"
 
-#: users/templates/finder_form.html:57
+#: vintage_hunter/users/templates/finder_form.html:57
 msgid "AI Vector Search"
 msgstr "AI-векторний пошук"
 
-#: users/templates/finder_form.html:60
+#: vintage_hunter/users/templates/finder_form.html:60
 msgid ""
 "Our AI will search for instruments that conceptually match your prompt, even "
 "if the keywords don't match exactly."
@@ -1743,94 +1823,94 @@ msgstr ""
 "Наш AI шукатиме інструменти, що концептуально відповідають вашому запиту, "
 "навіть якщо ключові слова не збігаються дослівно."
 
-#: users/templates/finder_form.html:67
+#: vintage_hunter/users/templates/finder_form.html:67
 msgid "Describe the instrument's features, era, tone, etc."
 msgstr "Опишіть особливості інструмента, епоху, тембр тощо."
 
-#: users/templates/finder_form.html:73
+#: vintage_hunter/users/templates/finder_form.html:73
 msgid "Upload an image of an instrument you like to find similar looking ones."
 msgstr ""
 "Завантажте зображення інструмента, який вам подобається, щоб знайти схожі."
 
-#: users/templates/finder_form.html:83
+#: vintage_hunter/users/templates/finder_form.html:83
 msgid "Automation Settings"
 msgstr "Налаштування автоматизації"
 
-#: users/templates/finder_form.html:90
+#: vintage_hunter/users/templates/finder_form.html:90
 msgid "Minimum 10 minutes."
 msgstr "Мінімум 10 хвилин."
 
-#: users/templates/finder_form.html:101
+#: vintage_hunter/users/templates/finder_form.html:101
 msgid "Maximum 10 results per run."
 msgstr "Не більше 10 результатів за запуск."
 
-#: users/templates/finder_form.html:113
+#: vintage_hunter/users/templates/finder_form.html:113
 msgid "Enable this finder"
 msgstr "Увімкнути цей профіль"
 
-#: users/templates/finder_form.html:121
+#: vintage_hunter/users/templates/finder_form.html:121
 msgid "Save Finder"
 msgstr "Зберегти профіль"
 
-#: users/templates/finder_list.html:4
+#: vintage_hunter/users/templates/finder_list.html:4
 msgid "My Finders - Vintage Tone"
 msgstr "Мої пошукові профілі - Vintage Tone"
 
-#: users/templates/finder_list.html:72
+#: vintage_hunter/users/templates/finder_list.html:72
 msgid "Instrument Finders"
 msgstr "Пошукові профілі інструментів"
 
-#: users/templates/finder_list.html:73
+#: vintage_hunter/users/templates/finder_list.html:73
 msgid "Automated search configurations to find your dream gear."
 msgstr "Автоматизовані пошукові профілі, щоб знаходити інструменти вашої мрії."
 
-#: users/templates/finder_list.html:76
+#: vintage_hunter/users/templates/finder_list.html:76
 msgid "New Finder"
 msgstr "Новий профіль"
 
-#: users/templates/finder_list.html:99
+#: vintage_hunter/users/templates/finder_list.html:99
 msgid "Inactive"
 msgstr "Неактивний"
 
-#: users/templates/finder_list.html:114
+#: vintage_hunter/users/templates/finder_list.html:114
 #, python-format
 msgid "Every %(freq)s min"
 msgstr "Кожні %(freq)s хв"
 
-#: users/templates/finder_list.html:115
+#: vintage_hunter/users/templates/finder_list.html:115
 #, python-format
 msgid "Max %(max)s results"
 msgstr "Макс. %(max)s результатів"
 
-#: users/templates/finder_list.html:120
+#: vintage_hunter/users/templates/finder_list.html:120
 msgid "Last run:"
 msgstr "Останній запуск:"
 
-#: users/templates/finder_list.html:120
+#: vintage_hunter/users/templates/finder_list.html:120
 msgid "ago"
 msgstr "тому"
 
-#: users/templates/finder_list.html:125
+#: vintage_hunter/users/templates/finder_list.html:125
 msgid "Never run yet"
 msgstr "Ще не запускався"
 
-#: users/templates/finder_list.html:132
+#: vintage_hunter/users/templates/finder_list.html:132
 msgid "Are you sure you want to delete this finder?"
 msgstr "Ви впевнені, що хочете видалити цей пошуковий профіль?"
 
-#: users/templates/finder_list.html:134
+#: vintage_hunter/users/templates/finder_list.html:134
 msgid "Delete Finder"
 msgstr "Видалити профіль"
 
-#: users/templates/finder_list.html:142
+#: vintage_hunter/users/templates/finder_list.html:142
 msgid "View Results"
 msgstr "Переглянути результати"
 
-#: users/templates/finder_list.html:153
+#: vintage_hunter/users/templates/finder_list.html:153
 msgid "No finders yet"
 msgstr "Пошукових профілів ще немає"
 
-#: users/templates/finder_list.html:154
+#: vintage_hunter/users/templates/finder_list.html:154
 msgid ""
 "Create a finder to automatically track new instruments matching your "
 "criteria."
@@ -1838,19 +1918,19 @@ msgstr ""
 "Створіть пошуковий профіль, щоб автоматично відстежувати нові інструменти, "
 "які відповідають вашим критеріям."
 
-#: users/templates/finder_list.html:156
+#: vintage_hunter/users/templates/finder_list.html:156
 msgid "Create My First Finder"
 msgstr "Створити перший профіль"
 
-#: users/templates/finder_results.html:4
+#: vintage_hunter/users/templates/finder_results.html:4
 msgid "Search Results"
 msgstr "Результати пошуку"
 
-#: users/templates/finder_results.html:73
+#: vintage_hunter/users/templates/finder_results.html:73
 msgid "Finders"
 msgstr "Пошукові профілі"
 
-#: users/templates/finder_results.html:79
+#: vintage_hunter/users/templates/finder_results.html:79
 #, python-format
 msgid "%(instrument_count)s Result"
 msgid_plural "%(instrument_count)s Results"
@@ -1859,16 +1939,16 @@ msgstr[1] "%(instrument_count)s результати"
 msgstr[2] "%(instrument_count)s результатів"
 msgstr[3] "%(instrument_count)s результати"
 
-#: users/templates/finder_results.html:89
-#: users/templates/finder_results.html:173
+#: vintage_hunter/users/templates/finder_results.html:89
+#: vintage_hunter/users/templates/finder_results.html:173
 msgid "Edit Configuration"
 msgstr "Редагувати конфігурацію"
 
-#: users/templates/finder_results.html:171
+#: vintage_hunter/users/templates/finder_results.html:171
 msgid "No results yet"
 msgstr "Результатів ще немає"
 
-#: users/templates/finder_results.html:172
+#: vintage_hunter/users/templates/finder_results.html:172
 msgid ""
 "We haven't found any new instruments matching your criteria yet. The search "
 "runs automatically based on your frequency."
@@ -1876,39 +1956,40 @@ msgstr ""
 "Ми ще не знайшли нових інструментів, що відповідають вашим критеріям. Пошук "
 "виконується автоматично відповідно до налаштованої частоти."
 
-#: users/templates/orders_list.html:10
+#: vintage_hunter/users/templates/orders_list.html:10
 msgid "Checkout attempts, active reservations, and completed purchases."
 msgstr "Спроби оформлення, активні резервування та завершені покупки."
 
-#: users/templates/orders_list.html:35 users/templates/purchases_list.html:34
+#: vintage_hunter/users/templates/orders_list.html:35
+#: vintage_hunter/users/templates/purchases_list.html:34
 msgid "Order #"
 msgstr "Замовлення №"
 
-#: users/templates/orders_list.html:43
+#: vintage_hunter/users/templates/orders_list.html:43
 msgid "Purchase finished successfully."
 msgstr "Покупку успішно завершено."
 
-#: users/templates/orders_list.html:52
+#: vintage_hunter/users/templates/orders_list.html:52
 msgid "Checkout was not completed."
 msgstr "Оформлення замовлення не було завершене."
 
-#: users/templates/orders_list.html:58
+#: vintage_hunter/users/templates/orders_list.html:58
 msgid "View Receipt"
 msgstr "Переглянути квитанцію"
 
-#: users/templates/orders_list.html:60
+#: vintage_hunter/users/templates/orders_list.html:60
 msgid "Resume Checkout"
 msgstr "Продовжити оформлення"
 
-#: users/templates/orders_list.html:62
+#: vintage_hunter/users/templates/orders_list.html:62
 msgid "Try Again"
 msgstr "Спробувати ще раз"
 
-#: users/templates/orders_list.html:73
+#: vintage_hunter/users/templates/orders_list.html:73
 msgid "No orders yet"
 msgstr "Замовлень ще немає"
 
-#: users/templates/orders_list.html:74
+#: vintage_hunter/users/templates/orders_list.html:74
 msgid ""
 "Your checkout activity will appear here once you start reserving or "
 "purchasing instruments."
@@ -1916,84 +1997,85 @@ msgstr ""
 "Тут з’явиться ваша активність з оформлення замовлень, щойно ви почнете "
 "резервувати або купувати інструменти."
 
-#: users/templates/orders_list.html:75 users/templates/purchases_list.html:55
+#: vintage_hunter/users/templates/orders_list.html:75
+#: vintage_hunter/users/templates/purchases_list.html:55
 msgid "Browse Catalog"
 msgstr "Переглянути каталог"
 
-#: users/templates/profile.html:4
+#: vintage_hunter/users/templates/profile.html:4
 msgid "My Profile - Vintage Tone"
 msgstr "Мій профіль - Vintage Tone"
 
-#: users/templates/profile.html:16
+#: vintage_hunter/users/templates/profile.html:16
 #, python-format
 msgid "Member since %(joined_since)s"
 msgstr "З нами з %(joined_since)s"
 
-#: users/templates/profile.html:72
+#: vintage_hunter/users/templates/profile.html:72
 msgid "Update Profile"
 msgstr "Оновити профіль"
 
-#: users/templates/profile.html:82
+#: vintage_hunter/users/templates/profile.html:82
 msgid "Active Auctions"
 msgstr "Активні аукціони"
 
-#: users/templates/profile.html:87
+#: vintage_hunter/users/templates/profile.html:87
 msgid "Won Lots"
 msgstr "Виграні лоти"
 
-#: users/templates/purchase_details.html:10
+#: vintage_hunter/users/templates/purchase_details.html:10
 msgid "Order"
 msgstr "Замовлення"
 
-#: users/templates/purchase_details.html:18
+#: vintage_hunter/users/templates/purchase_details.html:18
 msgid "Payment Completed"
 msgstr "Оплата завершена"
 
-#: users/templates/purchase_details.html:19
+#: vintage_hunter/users/templates/purchase_details.html:19
 msgid "Purchase Receipt"
 msgstr "Квитанція про покупку"
 
-#: users/templates/purchase_details.html:20
+#: vintage_hunter/users/templates/purchase_details.html:20
 msgid "Purchased on"
 msgstr "Придбано"
 
-#: users/templates/purchase_details.html:20
+#: vintage_hunter/users/templates/purchase_details.html:20
 msgid "at"
 msgstr "о"
 
-#: users/templates/purchase_details.html:54
+#: vintage_hunter/users/templates/purchase_details.html:54
 msgid "Price Paid"
 msgstr "Сплачена ціна"
 
-#: users/templates/purchase_details.html:61
+#: vintage_hunter/users/templates/purchase_details.html:61
 msgid "Seller Details"
 msgstr "Дані продавця"
 
-#: users/templates/purchase_details.html:63
+#: vintage_hunter/users/templates/purchase_details.html:63
 msgid "Curated Selection Division"
 msgstr "Відділ кураторського відбору"
 
-#: users/templates/purchase_details.html:67
+#: vintage_hunter/users/templates/purchase_details.html:67
 msgid "Buyer"
 msgstr "Покупець"
 
-#: users/templates/purchase_details.html:77
+#: vintage_hunter/users/templates/purchase_details.html:77
 msgid "Back to History"
 msgstr "Назад до історії"
 
-#: users/templates/purchase_details.html:80
+#: vintage_hunter/users/templates/purchase_details.html:80
 msgid "View in Catalog"
 msgstr "Переглянути в каталозі"
 
-#: users/templates/purchases_list.html:10
+#: vintage_hunter/users/templates/purchases_list.html:10
 msgid "History of your acquired vintage instruments."
 msgstr "Історія ваших придбаних вінтажних інструментів."
 
-#: users/templates/purchases_list.html:53
+#: vintage_hunter/users/templates/purchases_list.html:53
 msgid "No purchases yet"
 msgstr "Покупок ще немає"
 
-#: users/templates/purchases_list.html:54
+#: vintage_hunter/users/templates/purchases_list.html:54
 msgid ""
 "Your acquisition history will appear here once you purchase instruments from "
 "the catalog."
@@ -2001,106 +2083,106 @@ msgstr ""
 "Ваша історія придбань з'явиться тут, як тільки ви купите інструменти з "
 "каталогу."
 
-#: users/views.py:26
+#: vintage_hunter/users/views.py:26
 msgid "Your profile has been updated successfully!"
 msgstr "Ваш профіль успішно оновлено!"
 
-#: users/views.py:48
+#: vintage_hunter/users/views.py:48
 #, python-format
 msgid "Collection \"%(collection)s\" created!"
 msgstr "Колекцію \"%(collection)s\" створено!"
 
-#: users/views.py:76
+#: vintage_hunter/users/views.py:76
 #, python-format
 msgid "Collection \"%(collection)s\" deleted."
 msgstr "Колекцію \"%(collection)s\" видалено."
 
-#: users/views.py:87
+#: vintage_hunter/users/views.py:87
 msgid "Invalid data."
 msgstr "Некоректні дані."
 
-#: users/views.py:90
+#: vintage_hunter/users/views.py:90
 msgid "Name is required."
 msgstr "Назва обов’язкова."
 
-#: users/views.py:94
+#: vintage_hunter/users/views.py:94
 msgid "A collection with this name already exists."
 msgstr "Колекція з такою назвою вже існує."
 
-#: users/views.py:147
+#: vintage_hunter/users/views.py:147
 msgid "My Favorites"
 msgstr "Мої улюблені"
 
-#: users/views.py:154
+#: vintage_hunter/users/views.py:154
 #, python-format
 msgid "Removed %(instrument)s from %(collection)s."
 msgstr "%(instrument)s видалено з колекції %(collection)s."
 
-#: users/views.py:161
+#: vintage_hunter/users/views.py:161
 #, python-format
 msgid "Added %(instrument)s to %(collection)s."
 msgstr "%(instrument)s додано до колекції %(collection)s."
 
-#: users/views.py:215
+#: vintage_hunter/users/views.py:215
 #, python-format
 msgid "Finder \"%(name)s\" created!"
 msgstr "Пошуковий профіль \"%(name)s\" створено!"
 
-#: users/views.py:220
+#: vintage_hunter/users/views.py:220
 msgid "Create Finder"
 msgstr "Створити профіль"
 
-#: users/views.py:230
+#: vintage_hunter/users/views.py:230
 #, python-format
 msgid "Finder \"%(name)s\" updated!"
 msgstr "Пошуковий профіль \"%(name)s\" оновлено!"
 
-#: users/views.py:235
+#: vintage_hunter/users/views.py:235
 msgid "Edit Finder"
 msgstr "Редагувати профіль"
 
-#: users/views.py:267
+#: vintage_hunter/users/views.py:267
 #, python-format
 msgid "Finder \"%(name)s\" deleted."
 msgstr "Пошуковий профіль \"%(name)s\" видалено."
 
-#: vintage_hunter/forms.py:15
+#: vintage_hunter/vintage_hunter/forms.py:15
 msgid "Confirm password"
 msgstr "Підтвердьте пароль"
 
-#: vintage_hunter/forms.py:28
+#: vintage_hunter/vintage_hunter/forms.py:28
 msgid "Leo"
 msgstr "Leo"
 
-#: vintage_hunter/forms.py:29
+#: vintage_hunter/vintage_hunter/forms.py:29
 msgid "Fender"
 msgstr "Fender"
 
-#: vintage_hunter/forms.py:31
+#: vintage_hunter/vintage_hunter/forms.py:31
 msgid "vintage_enthusiast"
 msgstr "vintage_enthusiast"
 
-#: vintage_hunter/forms.py:37
+#: vintage_hunter/vintage_hunter/forms.py:37
 msgid "A user with this email already exists."
 msgstr "Користувач із цією адресою електронної пошти вже існує."
 
-#: vintage_hunter/forms.py:46
+#: vintage_hunter/vintage_hunter/forms.py:46
 msgid "Passwords do not match."
 msgstr "Паролі не збігаються."
 
-#: vintage_hunter/forms.py:62
+#: vintage_hunter/vintage_hunter/forms.py:62
 msgid "Enter your credentials"
 msgstr "Введіть свої облікові дані"
 
-#: vintage_hunter/forms.py:65
+#: vintage_hunter/vintage_hunter/forms.py:65
 msgid "Username or email"
 msgstr "Ім’я користувача або email"
 
-#: vintage_hunter/settings.py:122
+#: vintage_hunter/vintage_hunter/settings.py:122
 msgid "English"
 msgstr "Англійська"
 
-#: vintage_hunter/settings.py:123
+#: vintage_hunter/vintage_hunter/settings.py:123
 msgid "Ukrainian"
 msgstr "Українська"
 

@@ -151,82 +151,88 @@
   </aside>
 
   <section class="col-lg-9">
-    <div id="ai-results-container" class="mb-5 d-none">
+    <div id="ai-results-container" class="d-none">
       <div class="d-flex justify-content-between align-items-center mb-4 px-2">
         <h2 class="h4 fw-bold mb-0">{% trans "AI Search Results" %}</h2>
-        <button onclick="document.getElementById('ai-results-container').classList.add('d-none')" class="btn btn-sm btn-link text-muted p-0">{% trans "Clear results" %}</button>
-      </div>
-      <div id="ai-results-grid" class="row g-4"></div>
-      <hr class="my-5 text-secondary opacity-25">
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center mb-4 px-2">
-      <h2 class="h4 fw-bold mb-0">{% trans "Vintage Collection" %}</h2>
-      <div class="d-flex align-items-center gap-3">
-        {% if user.is_staff %}
-        <a href="{% url 'catalog:create_instrument' %}" class="btn btn-warning btn-sm fw-bold px-3 rounded-pill shadow-sm">
-          <i class="bi bi-plus-lg me-1"></i> {% trans "ADD INSTRUMENT" %}
-        </a>
-        {% endif %}
-        <div class="text-muted small">
-          {% if total_count > 0 %}
-          {% blocktrans with start=page.start_index end=page.end_index total=total_count %}Showing {{ start }}–{{ end }} of {{ total }}{% endblocktrans %}
-          {% else %}
-          {% trans "Showing 0 items" %}
-          {% endif %}
+        <div class="d-flex align-items-center gap-3">
+          <div id="ai-results-count" class="text-muted small"></div>
+          <button onclick="clearAiSearch()" class="btn btn-sm btn-link text-muted p-0 text-decoration-none fw-bold">
+            <i class="bi bi-x-lg me-1"></i>{% trans "Clear results" %}
+          </button>
         </div>
       </div>
+      <div id="ai-results-grid" class="row g-4"></div>
     </div>
 
-    <div class="row g-4">
-      {% for instrument in page %}
-        {% include 'catalog/includes/instrument_card.html' %}
-      {% empty %}
-      <div class="col-12">
-        <div class="text-center py-5 px-4 bg-white rounded-4 shadow-sm border border-light mt-2">
-          <div class="display-1 mb-4 opacity-25">🎸</div>
-          <h3 class="fw-bold">{% trans "The Vault is Currently Empty" %}</h3>
-          <p class="text-muted mx-auto mb-4" style="max-width: 450px;">
-            {% trans "Our AI agents are currently scouting global markets for rare vintage finds. Try adjusting your filters or place a custom request." %}
-          </p>
-          <div class="d-flex justify-content-center gap-2">
-            <a href="{% url 'catalog:get_list' %}" class="btn btn-dark px-4">{% trans "Clear All Filters" %}</a>
-            <button class="btn btn-outline-dark px-4" data-bs-toggle="modal" data-bs-target="#requestModal">
-              {% trans "Custom Hunt Request" %}
-            </button>
+    <div id="standard-results-container">
+      <div class="d-flex justify-content-between align-items-center mb-4 px-2">
+        <h2 class="h4 fw-bold mb-0">{% trans "Vintage Collection" %}</h2>
+        <div class="d-flex align-items-center gap-3">
+          {% if user.is_staff %}
+          <a href="{% url 'catalog:create_instrument' %}" class="btn btn-warning btn-sm fw-bold px-3 rounded-pill shadow-sm">
+            <i class="bi bi-plus-lg me-1"></i> {% trans "ADD INSTRUMENT" %}
+          </a>
+          {% endif %}
+          <div class="text-muted small">
+            {% if total_count > 0 %}
+            {% blocktrans with start=page.start_index end=page.end_index total=total_count %}Showing {{ start }}–{{ end }} of {{ total }}{% endblocktrans %}
+            {% else %}
+            {% trans "Showing 0 items" %}
+            {% endif %}
           </div>
         </div>
       </div>
-      {% endfor %}
+
+      <div class="row g-4">
+        {% for instrument in page %}
+          {% include 'catalog/includes/instrument_card.html' %}
+        {% empty %}
+        <div class="col-12">
+          <div class="text-center py-5 px-4 bg-white rounded-4 shadow-sm border border-light mt-2">
+            <div class="display-1 mb-4 opacity-25">🎸</div>
+            <h3 class="fw-bold">{% trans "The Vault is Currently Empty" %}</h3>
+            <p class="text-muted mx-auto mb-4" style="max-width: 450px;">
+              {% trans "Our AI agents are currently scouting global markets for rare vintage finds. Try adjusting your filters or place a custom request." %}
+            </p>
+            <div class="d-flex justify-content-center gap-2">
+              <a href="{% url 'catalog:get_list' %}" class="btn btn-dark px-4">{% trans "Clear All Filters" %}</a>
+              <button class="btn btn-outline-dark px-4" data-bs-toggle="modal" data-bs-target="#requestModal">
+                {% trans "Custom Hunt Request" %}
+              </button>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      {% if page.has_other_pages %}
+      <nav class="mt-5">
+        <ul class="pagination justify-content-center">
+          {% if page.has_previous %}
+          <li class="page-item">
+            <a class="page-link border-0 text-dark"
+              href="?page={{ page.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+              &laquo;
+            </a>
+          </li>
+          {% endif %}
+
+          <li class="page-item active">
+            <span class="page-link bg-dark border-0 rounded-3 px-3 mx-1">{{ page.number }}</span>
+          </li>
+
+          {% if page.has_next %}
+          <li class="page-item">
+            <a class="page-link border-0 text-dark"
+              href="?page={{ page.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+              &raquo;
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
     </div>
-
-    {% if page.has_other_pages %}
-    <nav class="mt-5">
-      <ul class="pagination justify-content-center">
-        {% if page.has_previous %}
-        <li class="page-item">
-          <a class="page-link border-0 text-dark"
-            href="?page={{ page.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
-            &laquo;
-          </a>
-        </li>
-        {% endif %}
-
-        <li class="page-item active">
-          <span class="page-link bg-dark border-0 rounded-3 px-3 mx-1">{{ page.number }}</span>
-        </li>
-
-        {% if page.has_next %}
-        <li class="page-item">
-          <a class="page-link border-0 text-dark"
-            href="?page={{ page.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
-            &raquo;
-          </a>
-        </li>
-        {% endif %}
-      </ul>
-    </nav>
-    {% endif %}
 
     {% if user.is_authenticated %}
     <script>
@@ -247,13 +253,25 @@
           });
       }
 
+      function clearAiSearch() {
+        const aiContainer = document.getElementById('ai-results-container');
+        const standardContainer = document.getElementById('standard-results-container');
+        const aiInput = document.getElementById('ai-search-input');
+        
+        if (aiContainer) aiContainer.classList.add('d-none');
+        if (standardContainer) standardContainer.classList.remove('d-none');
+        if (aiInput) aiInput.value = '';
+      }
+
       document.addEventListener('DOMContentLoaded', function () {
         if (window.userEventSource) {
           window.userEventSource.addEventListener('search_results', function(event) {
             const data = JSON.parse(event.data);
             const spinner = document.getElementById('ai-search-spinner');
-            const container = document.getElementById('ai-results-container');
+            const aiContainer = document.getElementById('ai-results-container');
+            const standardContainer = document.getElementById('standard-results-container');
             const grid = document.getElementById('ai-results-grid');
+            const countEl = document.getElementById('ai-results-count');
 
             spinner.classList.add('d-none');
             grid.innerHTML = '';
@@ -263,9 +281,14 @@
             } else {
                 grid.innerHTML = data.html;
             }
+
+            if (countEl && data.count_text) {
+                countEl.textContent = data.count_text;
+            }
             
-            container.classList.remove('d-none');
-            container.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (standardContainer) standardContainer.classList.add('d-none');
+            aiContainer.classList.remove('d-none');
+            aiContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
           });
         }
 

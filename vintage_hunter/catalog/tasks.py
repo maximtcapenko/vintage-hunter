@@ -60,12 +60,20 @@ def perform_vector_search(user_id, query_text, language_code):
             }
         )
     
+    from django.utils.translation import ngettext
+    count_text = ngettext(
+        "Found %(count)d item",
+        "Found %(count)d items",
+        len(results)
+    ) % {'count': len(results)}
+
     broadcast_event(
         f'user:{user_id}', 
         'search_results', 
         {
             'query': query_text,
             'html': html_results,
-            'count': len(results)
+            'count': len(results),
+            'count_text': count_text
         }
     )
