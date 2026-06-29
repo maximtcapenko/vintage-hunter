@@ -77,3 +77,63 @@ def perform_vector_search(user_id, query_text, language_code):
             'count_text': count_text
         }
     )
+
+
+@shared_task
+def perform_mcp_vector_search(query_text: str, page_size: int) -> list[dict]:
+    from auction.models import Lot
+    from catalog.models import Instrument, InstrumentImage
+
+    results = Instrument.objects.search_by_text(query_text)
+
+    images_prefetch = Prefetch(
+        'images',
+        queryset=InstrumentImage.objects.all()
+    )
+    auction_lot_prefetch = Prefetch(
+        'auction_lot',
+        queryset=Lot.objects.select_related('auction'),
+        to_attr='prefetched_lot'
+    )
+
+    results = (
+        results
+        .exclude(is_new=True)
+        .prefetch_related(images_prefetch, auction_lot_prefetch)
+        .select_related('brand', 'category')
+        [:page_size]
+    )
+
+    serialized_results = []
+    for i in results:
+        primary_image = next((img for img in i.images.all() if img.is_primary), None)
+        lot = getattr(i, 'prefetched_lot', None)
+        auction_data = None
+        if lot:
+            auction_data = {
+                'lot_number': lot.lot_number,
+                'status': lot.status,
+                'starting_price': float(lot.starting_price),
+                'estimated_price_min': float(lot.estimated_price_min),
+                'estimated_price_max': float(lot.estimated_price_max),
+                'expires_at': lot.expires_at.isoformat() if lot.expires_at else None,
+                'auction_title': lot.auction.title,
+                'auction_status': lot.auction.status,
+            }
+
+        serialized_results.append({
+            'id': str(i.pk),
+            'title': str(i),
+            'category': i.category.name,
+            'brand': i.brand.name,
+            'year': i.year,
+            'condition': str(i.condition_label),
+            'price': float(i.price),
+            'is_auction': i.is_auction,
+            'is_sold': i.is_sold,
+            'primary_image_url': primary_image.image.url if primary_image else None,
+            'auction': auction_data,
+        })
+
+    return serialized_results
+

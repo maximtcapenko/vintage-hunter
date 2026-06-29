@@ -22,61 +22,75 @@ def list_categories() -> list[dict]:
 
 
 @mcp.tool
-def list_instruments(
+async def list_instruments(
     query: Annotated[Optional[str], Field(description='Natural language search using semantic similarity')] = None,
     category_id: Annotated[Optional[str], Field(description='Filter by category ID, ignored when query is set')] = None,
     page: Annotated[int, Field(ge=1, description='Page number')] = 1,
     page_size: Annotated[int, Field(ge=1, le=50, description='Results per page')] = DEFAULT_PAGE_SIZE,
 ) -> dict:
     """List instruments. Semantic search when query is set, category filter otherwise."""
-
-    images_prefetch = Prefetch('images', queryset=InstrumentImage.objects.all())
-    auction_lot_prefetch = Prefetch(
-        'auction_lot',
-        queryset=Lot.objects.select_related('auction'),
-        to_attr='prefetched_lot',
-    )
+    import asyncio
+    from asgiref.sync import sync_to_async
 
     if query:
-        from pgvector.django import CosineDistance
-        from catalog.services import EmbeddingService
+        from catalog.tasks import perform_mcp_vector_search
 
-        query_vector = EmbeddingService.encode(query)
+        task_result = perform_mcp_vector_search.delay(query, page_size)
+        timeout = 15.0
+        elapsed = 0.0
+        poll_interval = 0.2
+
+        while not task_result.ready():
+            await asyncio.sleep(poll_interval)
+            elapsed += poll_interval
+            if elapsed >= timeout:
+                return {
+                    'error': 'Search task timed out',
+                    'results': []
+                }
+
+        try:
+            results = task_result.result
+        except Exception as e:
+            return {
+                'error': f'Search task failed: {str(e)}',
+                'results': []
+            }
+
+        return {
+            'total': len(results),
+            'page': 1,
+            'total_pages': 1,
+            'results': results,
+        }
+
+    def _fetch_instruments():
+        images_prefetch = Prefetch('images', queryset=InstrumentImage.objects.all())
+        auction_lot_prefetch = Prefetch(
+            'auction_lot',
+            queryset=Lot.objects.select_related('auction'),
+            to_attr='prefetched_lot',
+        )
         queryset = (
             Instrument.objects
             .query_without_embeddings()
             .exclude(is_new=True)
             .prefetch_related(auction_lot_prefetch, images_prefetch)
             .select_related('brand', 'category')
-            .order_by(CosineDistance('text_embedding', query_vector))
-            [:page_size]
         )
-        results = list(queryset)
+        if category_id:
+            queryset = queryset.filter(category_id=category_id)
+
+        paginator = Paginator(queryset, page_size)
+        current_page = paginator.get_page(page)
         return {
-            'total': len(results),
-            'page': 1,
-            'total_pages': 1,
-            'results': [_serialize_instrument(i) for i in results],
+            'total': paginator.count,
+            'page': current_page.number,
+            'total_pages': paginator.num_pages,
+            'results': [_serialize_instrument(i) for i in current_page],
         }
 
-    queryset = (
-        Instrument.objects
-        .query_without_embeddings()
-        .exclude(is_new=True)
-        .prefetch_related(auction_lot_prefetch, images_prefetch)
-        .select_related('brand', 'category')
-    )
-    if category_id:
-        queryset = queryset.filter(category_id=category_id)
-
-    paginator = Paginator(queryset, page_size)
-    current_page = paginator.get_page(page)
-    return {
-        'total': paginator.count,
-        'page': current_page.number,
-        'total_pages': paginator.num_pages,
-        'results': [_serialize_instrument(i) for i in current_page],
-    }
+    return await sync_to_async(_fetch_instruments)()
 
 
 @mcp.tool
