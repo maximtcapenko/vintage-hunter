@@ -29,4 +29,7 @@ urlpatterns = [
     path('finders/<uuid:id>/edit/', views.finder_update, name='finder_update'),
     path('finders/<uuid:id>/delete/', views.finder_delete, name='finder_delete'),
     path('finders/<uuid:id>/results/', views.finder_results, name='finder_results'),
+    path('hunt-requests/', views.hunt_request_list, name='hunt_request_list'),
+    path('hunt-requests/create/', views.hunt_request_create, name='hunt_request_create'),
+    path('hunt-requests/<uuid:id>/cancel/', views.hunt_request_cancel, name='hunt_request_cancel'),
 ]

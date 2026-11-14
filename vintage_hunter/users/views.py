@@ -13,8 +13,8 @@ from catalog.models import Instrument
 from commons.functional import is_not_staff
 from payments.models import Order
 
-from .forms import CollectionForm, InstrumentFinderForm, UserProfileForm
-from .models import Collection, InstrumentFinder
+from .forms import CollectionForm, InstrumentFinderForm, InstrumentHuntRequestForm, UserProfileForm
+from .models import Collection, InstrumentFinder, InstrumentHuntRequest
 
 
 @login_required
@@ -266,3 +266,38 @@ def finder_delete(request, id):
     finder.delete()
     messages.success(request, _('Finder "%(name)s" deleted.') % {'name': name})
     return redirect('users:finder_list')
+
+@login_required
+@user_passes_test(is_not_staff)
+def hunt_request_list(request):
+    hunt_requests = request.user.hunt_requests.all()
+    return render(request, 'hunt_request_list.html', {'hunt_requests': hunt_requests})
+
+@login_required
+@user_passes_test(is_not_staff)
+def hunt_request_create(request):
+    if request.method == 'POST':
+        form = InstrumentHuntRequestForm(request.POST, user=request.user)
+        if form.is_valid():
+            hunt_request = form.save(commit=False)
+            hunt_request.status = 'sent'
+            hunt_request.save()
+            messages.success(
+                request,
+                _('Your custom hunt request "%(name)s" has been sent!') % {'name': hunt_request.name}
+            )
+            return redirect('users:hunt_request_list')
+    else:
+        form = InstrumentHuntRequestForm(user=request.user)
+
+    return render(request, 'hunt_request_form.html', {'form': form, 'title': _('Custom Hunt Request')})
+
+@login_required
+@user_passes_test(is_not_staff)
+@require_POST
+def hunt_request_cancel(request, id):
+    hunt_request = get_object_or_404(InstrumentHuntRequest, id=id, user=request.user)
+    hunt_request.status = 'canceled'
+    hunt_request.save(update_fields=['status', 'updated_at'])
+    messages.success(request, _('Hunt request "%(name)s" cancelled.') % {'name': hunt_request.name})
+    return redirect('users:hunt_request_list')

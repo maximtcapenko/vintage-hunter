@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from PIL import Image, ImageOps
 from pgvector.django import HnswIndex, VectorField
 
+from commons.choices import CONDITION_CHOICES, CONDITION_LABELS
 from commons.models import Base
 
 from .managers import InstrumentManager
@@ -33,20 +34,8 @@ class Brand(Base):
         return self.name
 
 class Instrument(Base):
-    CONDITION_CHOICES = [
-        ('mint', 'Mint (Like New)'),
-        ('excellent', 'Excellent'),
-        ('very_good', 'Very Good'),
-        ('good', 'Good (Player Grade)'),
-        ('fair', 'Fair (Project)'),
-    ]
-    CONDITION_LABELS = {
-        'mint': _('Mint (Like New)'),
-        'excellent': _('Excellent'),
-        'very_good': _('Very Good'),
-        'good': _('Good (Player Grade)'),
-        'fair': _('Fair (Project)'),
-    }
+    CONDITION_CHOICES = CONDITION_CHOICES
+    CONDITION_LABELS = CONDITION_LABELS
 
     objects = InstrumentManager()
 

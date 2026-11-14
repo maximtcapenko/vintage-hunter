@@ -8,10 +8,21 @@ from .widgets import SpecificationsWidget
 
 
 class SearchCatalogForm(forms.Form, SearchFormMixin):
+    STATUS_CHOICES = [
+        ('', _('All')),
+        ('available', _('Available')),
+        ('auction', _('In Auction')),
+    ]
+
     category = forms.ModelChoiceField(
         Category.objects.all(),
         required=False,
         label=_('Category')
+    )
+    status = forms.ChoiceField(
+        choices=STATUS_CHOICES,
+        required=False,
+        label=_('Availability'),
     )
 
     def __init__(self, *args, **kwargs):
@@ -19,8 +30,19 @@ class SearchCatalogForm(forms.Form, SearchFormMixin):
         SearchFormMixin.__init__(self)
 
         self.__resolvers__ = {
-            'category': lambda field: models.Q(category=field),
+            'category': self._resolve_category,
+            'status': self._resolve_status,
         }
+
+    def _resolve_category(self, value):
+        return models.Q(category=value)
+    
+    def _resolve_status(self, value):
+        if value == 'available':
+            return models.Q(is_sold=False, is_auction=False, is_draft=False)
+        if value == 'auction':
+            return models.Q(is_auction=True, is_sold=False)
+        return None
 
 class InstrumentForm(forms.ModelForm):
     class Meta:

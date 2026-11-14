@@ -1,0 +1,150 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{{ title }} - {% trans "Vintage Tone" %}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+      <div class="card-body p-5">
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-3">
+          <h2 class="fw-bold mb-0 text-dark">{{ title }}</h2>
+          <a href="{% url 'users:hunt_request_list' %}" class="btn-close"></a>
+        </div>
+
+        <form method="post" novalidate>
+          {% csrf_token %}
+
+          {% if form.non_field_errors %}
+            <div class="alert alert-danger border-0 rounded-3 mb-4">
+              {% for error in form.non_field_errors %}
+                {{ error }}
+              {% endfor %}
+            </div>
+          {% endif %}
+
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.name.label }}</label>
+              {{ form.name }}
+              {% if form.name.errors %}
+                <div class="invalid-feedback d-block small mt-1">{{ form.name.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.year.label }}</label>
+              {{ form.year }}
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.brand.label }}</label>
+              {{ form.brand }}
+              <div class="form-text small">{% trans "Optional" %}</div>
+            </div>
+
+            <div class="col-md-4">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.category.label }}</label>
+              {{ form.category }}
+              <div class="form-text small">{% trans "Optional" %}</div>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.condition.label }}</label>
+              {{ form.condition }}
+              <div class="form-text small">{% trans "Optional: leave blank for any condition" %}</div>
+            </div>
+
+            <div class="col-md-6 d-flex align-items-end">
+              <div class="form-check form-switch mb-2">
+                {{ form.is_original }}
+                <label class="form-check-label small fw-bold" for="{{ form.is_original.id_for_label }}">{{ form.is_original.label }}</label>
+              </div>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.description.label }}</label>
+              {{ form.description }}
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.specifications.label }}</label>
+              {{ form.specifications }}
+            </div>
+
+            <div class="col-12 mt-4">
+              <h5 class="fw-bold mb-3 opacity-50 text-uppercase small" style="letter-spacing: 1px;">
+                <i class="bi bi-currency-dollar me-2"></i>{% trans "Budget & Terms" %}
+              </h5>
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.max_price.label }}</label>
+              {{ form.max_price }}
+              {% if form.max_price.errors %}
+                <div class="invalid-feedback d-block small mt-1">{{ form.max_price.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.platform_commission.label }}</label>
+              {{ form.platform_commission }}
+              <div class="form-text small">{% trans "Flat fee, not a percentage" %}</div>
+              {% if form.platform_commission.errors %}
+                <div class="invalid-feedback d-block small mt-1">{{ form.platform_commission.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.max_wait_days.label }}</label>
+              {{ form.max_wait_days }}
+              {% if form.max_wait_days.errors %}
+                <div class="invalid-feedback d-block small mt-1">{{ form.max_wait_days.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-md-6">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.non_payment_resale_days.label }}</label>
+              {{ form.non_payment_resale_days }}
+              {% if form.non_payment_resale_days.errors %}
+                <div class="invalid-feedback d-block small mt-1">{{ form.non_payment_resale_days.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-12">
+              <label class="form-label small fw-bold text-uppercase text-muted">{{ form.delivery_address.label }}</label>
+              {{ form.delivery_address }}
+              {% if form.delivery_address.errors %}
+                <div class="invalid-feedback d-block small mt-1">{{ form.delivery_address.errors|join:", " }}</div>
+              {% endif %}
+            </div>
+
+            <div class="col-12 mt-3">
+              <div class="bg-light p-3 rounded-3">
+                <div class="form-check form-switch mb-2">
+                  {{ form.search_in_auctions }}
+                  <label class="form-check-label small fw-bold" for="{{ form.search_in_auctions.id_for_label }}">{{ form.search_in_auctions.label }}</label>
+                </div>
+                <div class="form-check form-switch mb-2">
+                  {{ form.auto_charge }}
+                  <label class="form-check-label small fw-bold" for="{{ form.auto_charge.id_for_label }}">{{ form.auto_charge.label }}</label>
+                </div>
+                <div class="form-check form-switch mb-0">
+                  {{ form.non_payment_resale_agreed }}
+                  <label class="form-check-label small fw-bold" for="{{ form.non_payment_resale_agreed.id_for_label }}">{{ form.non_payment_resale_agreed.label }}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-end gap-2 mt-5 border-top pt-4">
+            <a href="{% url 'users:hunt_request_list' %}" class="btn btn-light px-5 text-muted">{% trans "Cancel" %}</a>
+            <button type="submit" class="btn btn-dark px-5">{% trans "Send Request" %}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

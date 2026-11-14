@@ -73,6 +73,7 @@ def get_list(request):
         'page': page,
         'total_count': paginator.count,
         'current_category': form.cleaned_data.get('category') if form.is_valid() else None,
+        'current_status': form.cleaned_data.get('status') if form.is_valid() else '',
         'categories': Category.objects.all(),
         'user_collection_instrument_ids': user_collection_instrument_ids
     })

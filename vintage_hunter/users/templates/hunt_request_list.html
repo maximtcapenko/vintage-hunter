@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans "My Hunt Requests - Vintage Tone" %}{% endblock %}
+
+{% block content %}
+<style>
+  .hunt-request-card {
+    background: white;
+    border: 1px solid #f0f0f0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative;
+  }
+
+  .hunt-request-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+  }
+
+  .status-badge {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+    z-index: 2;
+  }
+
+  .status-draft { background: #f1f3f5; color: #495057; border: 1px solid #e9ecef; }
+  .status-sent { background: #e7f5ff; color: #1971c2; border: 1px solid #d0ebff; }
+  .status-on_review { background: #fff9db; color: #e67700; border: 1px solid #ffec99; }
+  .status-in_work { background: #e6fcf5; color: #0ca678; border: 1px solid #c3fae8; }
+  .status-canceled { background: #f1f3f5; color: #868e96; border: 1px solid #e9ecef; }
+  .status-rejected { background: #fff5f5; color: #fa5252; border: 1px solid #ffe3e3; }
+</style>
+
+<div class="d-flex justify-content-between align-items-end mb-5">
+  <div>
+    <h2 class="fw-bold mb-1">{% trans "My Hunt Requests" %}</h2>
+    <p class="text-muted mb-0">{% trans "Custom requests for the team to track down a specific instrument." %}</p>
+  </div>
+  <a href="{% url 'users:hunt_request_create' %}" class="btn btn-dark px-4 shadow-sm">
+    <i class="bi bi-plus-lg me-2"></i>{% trans "New Hunt Request" %}
+  </a>
+</div>
+
+<div class="row">
+  {% for hunt_request in hunt_requests %}
+  <div class="col-12 col-lg-6">
+    <div class="hunt-request-card p-4">
+      <span class="status-badge status-{{ hunt_request.status }}">{{ hunt_request.get_status_display }}</span>
+
+      <h3 class="h5 fw-bold mb-1">{{ hunt_request.name }}</h3>
+
+      <div class="text-secondary small mb-3">
+        {% if hunt_request.year %}<span class="badge bg-light text-dark border me-1">{{ hunt_request.year }}</span>{% endif %}
+        {% if hunt_request.brand %}<span class="badge bg-light text-dark border me-1">{{ hunt_request.brand.name }}</span>{% endif %}
+        {% if hunt_request.category %}<span class="badge bg-light text-dark border me-1">{{ hunt_request.category.name }}</span>{% endif %}
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between mt-auto">
+        <div class="small text-muted">
+          <div class="mb-1">
+            <i class="bi bi-cash-coin me-1"></i>
+            {% blocktrans with price=hunt_request.max_price %}Up to ${{ price }}{% endblocktrans %}
+            <span class="ms-2">• <i class="bi bi-clock me-1"></i>{% blocktrans with days=hunt_request.max_wait_days %}{{ days }} days{% endblocktrans %}</span>
+          </div>
+        </div>
+
+        {% if hunt_request.status == 'draft' or hunt_request.status == 'sent' or hunt_request.status == 'on_review' %}
+        <form action="{% url 'users:hunt_request_cancel' hunt_request.id %}" method="POST"
+              onsubmit="return confirm('{% trans "Are you sure you want to cancel this hunt request?" %}');">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-link text-danger p-0 m-0 border-0 small">
+            {% trans "Cancel" %}
+          </button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12 text-center py-5">
+    <div class="p-5 bg-white rounded shadow-sm border border-dashed" style="border-style: dashed !important;">
+      <div class="display-4 mb-3 opacity-25">🎯</div>
+      <h4 class="text-muted fw-bold">{% trans "No hunt requests yet" %}</h4>
+      <p class="small text-muted">{% trans "Can't find what you're looking for? Ask us to hunt it down." %}</p>
+      <a href="{% url 'users:hunt_request_create' %}" class="btn btn-dark mt-2">
+        {% trans "Create My First Hunt Request" %}
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

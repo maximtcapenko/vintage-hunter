@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from catalog.models import Brand, Category, Instrument
+from commons.choices import CONDITION_CHOICES, CONDITION_LABELS
 from commons.functional import add_to_class
 from commons.models import Base
 
@@ -56,6 +57,74 @@ class InstrumentFinderResult(Base):
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
     is_viewed = models.BooleanField(default=False)
 
+class InstrumentHuntRequest(Base):
+    CONDITION_CHOICES = CONDITION_CHOICES
+    CONDITION_LABELS = CONDITION_LABELS
+
+    STATUS_CHOICES = [
+        ('draft', 'Draft'),
+        ('sent', 'Sent'),
+        ('on_review', 'On Review'),
+        ('in_work', 'In Work'),
+        ('canceled', 'Canceled'),
+        ('rejected', 'Rejected'),
+    ]
+    STATUS_LABELS = {
+        'draft': _('Draft'),
+        'sent': _('Sent'),
+        'on_review': _('On Review'),
+        'in_work': _('In Work'),
+        'canceled': _('Canceled'),
+        'rejected': _('Rejected'),
+    }
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hunt_requests')
+    name = models.CharField(max_length=255)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='draft')
+    year = models.PositiveIntegerField(null=True, blank=True)
+    brand = models.ForeignKey(
+        Brand, on_delete=models.SET_NULL, null=True, blank=True, related_name='hunt_requests')
+    category = models.ForeignKey(
+        Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='hunt_requests')
+    description = models.TextField(blank=True)
+    specifications = models.JSONField(default=dict, blank=True)
+    is_original = models.BooleanField(default=True, help_text='Should all parts be original?')
+    condition = models.CharField(max_length=50, choices=CONDITION_CHOICES, blank=True)
+
+    max_price = models.DecimalField(max_digits=12, decimal_places=2, help_text='Maximum price the user is ready to pay')
+
+    search_in_auctions = models.BooleanField(
+        default=False,
+        help_text='Also search auctions and agree to take part if a matching lot is found'
+    )
+    max_wait_days = models.PositiveIntegerField(help_text='Maximum number of days the user is ready to wait')
+
+    platform_commission = models.DecimalField(
+        max_digits=12, decimal_places=2,
+        help_text='Flat platform commission fee (not a percentage)'
+    )
+    auto_charge = models.BooleanField(
+        default=False,
+        help_text='Automatically charge the user once a matching instrument is found and bought'
+    )
+
+    delivery_address = models.TextField()
+
+    non_payment_resale_agreed = models.BooleanField(
+        default=False,
+        help_text='User agrees the store may resell the instrument if they fail to pay within the grace period'
+    )
+    non_payment_resale_days = models.PositiveIntegerField(
+        help_text='Grace period in days before the store may resell an unpaid instrument'
+    )
+
+    is_active = models.BooleanField(default=True)
+
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+    def __str__(self):
+        return f'{self.name} ({self.user})'
+
 def get_user_user_collections_count(self):
     if not self.is_authenticated:
         return 0
@@ -87,3 +156,11 @@ def get_user_finders_count(self):
     return self.finders.count()
 
 add_to_class(User, get_user_finders_count, 'finders_count')
+
+def get_user_hunt_request_count(self):
+    if not self.is_authenticated:
+        return 0
+
+    return self.hunt_requests.count()
+
+add_to_class(User, get_user_hunt_request_count, 'request_count')

@@ -4,8 +4,9 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
+from catalog.widgets import SpecificationsWidget
 from commons.widgets import ImagePreviewWidget
-from .models import Collection, InstrumentFinder
+from .models import Collection, InstrumentFinder, InstrumentHuntRequest
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -113,5 +114,59 @@ class InstrumentFinderForm(forms.ModelForm):
             count = InstrumentFinder.objects.filter(user=self.user).count()
             if count >= settings.USER_PREFERENCE_SEARCH_EXAMPLES_COUNT:
                 raise ValidationError(_(f'You can only have up to {settings.USER_PREFERENCE_SEARCH_EXAMPLES_COUNT} finder configurations.'))
-        
+
         return cleaned_data
+
+class InstrumentHuntRequestForm(forms.ModelForm):
+    class Meta:
+        model = InstrumentHuntRequest
+        fields = [
+            'name', 'year', 'brand', 'category', 'description', 'specifications',
+            'is_original', 'condition', 'max_price', 'search_in_auctions',
+            'max_wait_days', 'platform_commission', 'auto_charge', 'delivery_address',
+            'non_payment_resale_agreed', 'non_payment_resale_days',
+        ]
+        labels = {
+            'name': _('Instrument name'),
+            'year': _('Year'),
+            'brand': _('Brand'),
+            'category': _('Category'),
+            'description': _('Description'),
+            'specifications': _('Technical specifications'),
+            'is_original': _('All original'),
+            'condition': _('Condition'),
+            'max_price': _('Maximum price you are ready to pay'),
+            'search_in_auctions': _('Also search in auctions and agree to take part'),
+            'max_wait_days': _('Maximum time ready to wait (days)'),
+            'platform_commission': _('Platform commission'),
+            'auto_charge': _('Auto-charge when found and bought'),
+            'delivery_address': _('Delivery address'),
+            'non_payment_resale_agreed': _(
+                'I agree that if I do not pay, the store may resell the instrument '
+                'after the grace period'
+            ),
+            'non_payment_resale_days': _('Resale grace period (days)'),
+        }
+        widgets = {
+            'description': forms.Textarea(attrs={'rows': 4}),
+            'specifications': SpecificationsWidget(),
+            'delivery_address': forms.Textarea(attrs={'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+
+        self.fields['condition'].choices = [
+            (value, InstrumentHuntRequest.CONDITION_LABELS[value])
+            for value, _label in InstrumentHuntRequest.CONDITION_CHOICES
+        ]
+        for field in self.fields.values():
+            if not isinstance(field.widget, forms.CheckboxInput):
+                field.widget.attrs.update({'class': 'form-control'})
+            else:
+                field.widget.attrs.update({'class': 'form-check-input'})
+
+    def save(self, commit=True):
+        self.instance.user = self.user
+        return super().save(commit=commit)

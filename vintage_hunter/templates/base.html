@@ -138,6 +138,15 @@
       transition: all 0.2s;
     }
 
+    .dropdown-item .badge {
+      min-width: 20px;
+      height: 20px;
+      padding: 0 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .dropdown-item:hover {
       background-color: var(--vt-gray);
       color: var(--vt-dark);
@@ -306,6 +315,15 @@
                 <span><i class="bi bi-search me-2 opacity-75"></i> {% trans "My Finders" %}</span>
                 {% if user.finders_count > 0 %}
                 <span class="badge rounded-pill bg-warning text-dark">{{ user.finders_count }}</span>
+                {% endif %}
+              </a>
+            </li>
+            <li>
+              <a class="dropdown-item d-flex justify-content-between align-items-center py-2"
+                href="{% url 'users:hunt_request_list' %}">
+                <span><i class="bi bi-binoculars me-2 opacity-75"></i> {% trans "My Hunt Requests" %}</span>
+                {% if user.request_count > 0 %}
+                <span class="badge rounded-pill bg-warning text-dark">{{ user.request_count }}</span>
                 {% endif %}
               </a>
             </li>
