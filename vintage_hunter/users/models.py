@@ -125,6 +125,22 @@ class InstrumentHuntRequest(Base):
     def __str__(self):
         return f'{self.name} ({self.user})'
 
+class Profile(Base):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile')
+
+    phone_number = models.CharField(max_length=32, blank=True)
+
+    delivery_country = models.CharField(max_length=100, blank=True)
+    delivery_city = models.CharField(max_length=100, blank=True)
+    delivery_postal_code = models.CharField(max_length=20, blank=True)
+    delivery_address = models.TextField(blank=True)
+
+    class Meta(Base.Meta):
+        verbose_name = _('Profile')
+
+    def __str__(self):
+        return f'Profile of {self.user}'
+
 def get_user_user_collections_count(self):
     if not self.is_authenticated:
         return 0

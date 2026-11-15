@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from catalog.widgets import SpecificationsWidget
 from commons.widgets import ImagePreviewWidget
-from .models import Collection, InstrumentFinder, InstrumentHuntRequest
+from .models import Collection, InstrumentFinder, InstrumentHuntRequest, Profile
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
@@ -38,6 +38,28 @@ class UserProfileForm(forms.ModelForm):
         if User.objects.exclude(pk=user.pk).filter(username=username).exists():
             raise ValidationError(_('This username is already taken.'))
         return username
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = Profile
+        fields = [
+            'phone_number', 'delivery_country', 'delivery_city',
+            'delivery_postal_code', 'delivery_address',
+        ]
+        labels = {
+            'phone_number': _('Phone number'),
+            'delivery_country': _('Country'),
+            'delivery_city': _('City'),
+            'delivery_postal_code': _('Postal code'),
+            'delivery_address': _('Delivery address'),
+        }
+        widgets = {
+            'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Phone number')}),
+            'delivery_country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Country')}),
+            'delivery_city': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('City')}),
+            'delivery_postal_code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': _('Postal code')}),
+            'delivery_address': forms.Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': _('Street, building, apartment...')}),
+        }
 
 class CollectionForm(forms.ModelForm):
     class Meta:

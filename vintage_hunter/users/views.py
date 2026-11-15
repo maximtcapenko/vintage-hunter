@@ -13,23 +13,29 @@ from catalog.models import Instrument
 from commons.functional import is_not_staff
 from payments.models import Order
 
-from .forms import CollectionForm, InstrumentFinderForm, InstrumentHuntRequestForm, UserProfileForm
-from .models import Collection, InstrumentFinder, InstrumentHuntRequest
+from .forms import CollectionForm, InstrumentFinderForm, InstrumentHuntRequestForm, ProfileForm, UserProfileForm
+from .models import Collection, InstrumentFinder, InstrumentHuntRequest, Profile
 
 
 @login_required
 def profile_details(request):
+    profile, _created = Profile.objects.get_or_create(user=request.user)
+
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=request.user)
-        if form.is_valid():
+        profile_form = ProfileForm(request.POST, instance=profile)
+        if form.is_valid() and profile_form.is_valid():
             form.save()
+            profile_form.save()
             messages.success(request, _('Your profile has been updated successfully!'))
             return redirect('profile')
     else:
         form = UserProfileForm(instance=request.user)
-        
+        profile_form = ProfileForm(instance=profile)
+
     return render(request, 'profile.html', {
         'form': form,
+        'profile_form': profile_form,
         'user': request.user
     })
 

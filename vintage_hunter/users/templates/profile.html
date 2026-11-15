@@ -66,6 +66,55 @@
               {% endif %}
             </div>
 
+            <hr class="my-4">
+            <h3 class="h6 fw-bold text-uppercase text-muted mb-3">{% trans "Contact & Delivery" %}</h3>
+
+            <div class="mb-3">
+              <label for="{{ profile_form.phone_number.id_for_label }}"
+                class="form-label small text-uppercase fw-bold text-muted">{% trans "Phone Number" %}</label>
+              {{ profile_form.phone_number }}
+              {% if profile_form.phone_number.errors %}
+              <div class="text-danger small mt-1">{{ profile_form.phone_number.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6 mb-3 mb-md-0">
+                <label for="{{ profile_form.delivery_country.id_for_label }}"
+                  class="form-label small text-uppercase fw-bold text-muted">{% trans "Country" %}</label>
+                {{ profile_form.delivery_country }}
+                {% if profile_form.delivery_country.errors %}
+                <div class="text-danger small mt-1">{{ profile_form.delivery_country.errors.0 }}</div>
+                {% endif %}
+              </div>
+              <div class="col-md-6">
+                <label for="{{ profile_form.delivery_city.id_for_label }}"
+                  class="form-label small text-uppercase fw-bold text-muted">{% trans "City" %}</label>
+                {{ profile_form.delivery_city }}
+                {% if profile_form.delivery_city.errors %}
+                <div class="text-danger small mt-1">{{ profile_form.delivery_city.errors.0 }}</div>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label for="{{ profile_form.delivery_postal_code.id_for_label }}"
+                class="form-label small text-uppercase fw-bold text-muted">{% trans "Postal Code" %}</label>
+              {{ profile_form.delivery_postal_code }}
+              {% if profile_form.delivery_postal_code.errors %}
+              <div class="text-danger small mt-1">{{ profile_form.delivery_postal_code.errors.0 }}</div>
+              {% endif %}
+            </div>
+
+            <div class="mb-4">
+              <label for="{{ profile_form.delivery_address.id_for_label }}"
+                class="form-label small text-uppercase fw-bold text-muted">{% trans "Delivery Address" %}</label>
+              {{ profile_form.delivery_address }}
+              {% if profile_form.delivery_address.errors %}
+              <div class="text-danger small mt-1">{{ profile_form.delivery_address.errors.0 }}</div>
+              {% endif %}
+            </div>
+
             <div class="d-grid mt-4">
               <button type="submit" class="btn btn-dark btn-lg py-3 fw-bold"
                 style="border-radius: 10px; letter-spacing: 0.5px;">

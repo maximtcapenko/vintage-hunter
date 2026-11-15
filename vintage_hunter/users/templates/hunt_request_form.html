@@ -3,6 +3,10 @@
 
 {% block title %}{{ title }} - {% trans "Vintage Tone" %}{% endblock %}
 
+{% block extra_head %}
+{{ form.media }}
+{% endblock %}
+
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-8">

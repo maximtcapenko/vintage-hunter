@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: vintage_hunter\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-14 14:01+0000\n"
+"POT-Creation-Date: 2026-11-15 11:22+0000\n"
 "PO-Revision-Date: 2026-04-17 17:05+0000\n"
 "Last-Translator: OpenAI\n"
 "Language-Team: Ukrainian\n"
@@ -30,8 +30,8 @@ msgstr "Назва"
 #: auction/forms.py:38 catalog/forms.py:66 catalog/forms.py:107
 #: catalog/templates/catalog/category_form.html:23
 #: catalog/templates/catalog/category_list.html:20
-#: catalog/templates/instrument_form.html:205 users/forms.py:48
-#: users/forms.py:134 users/templates/collection_list.html:154
+#: catalog/templates/instrument_form.html:205 users/forms.py:70
+#: users/forms.py:156 users/templates/collection_list.html:154
 msgid "Description"
 msgstr "Опис"
 
@@ -108,7 +108,7 @@ msgstr "Чернетка"
 msgid "Scheduled"
 msgstr "Заплановано"
 
-#: auction/models.py:24 users/forms.py:78 users/templates/finder_list.html:97
+#: auction/models.py:24 users/forms.py:100 users/templates/finder_list.html:97
 msgid "Active"
 msgstr "Активний"
 
@@ -301,7 +301,7 @@ msgid "Check back soon for our next curated collection."
 msgstr "Завітайте пізніше, щоб переглянути нашу наступну кураторську колекцію."
 
 #: auction/templates/auction_manage.html:10
-#: auction/templates/lot_add_select.html:10 templates/base.html:246
+#: auction/templates/lot_add_select.html:10 templates/base.html:255
 msgid "Auctions"
 msgstr "Аукціони"
 
@@ -448,7 +448,7 @@ msgstr ""
 #: auction/templates/lot_add_select.html:56
 #: catalog/templates/catalog/brand_list.html:51
 #: catalog/templates/catalog/category_list.html:49
-#: users/templates/profile.html:95
+#: users/templates/profile.html:144
 msgid "Back to Catalog"
 msgstr "Назад до каталогу"
 
@@ -623,14 +623,14 @@ msgid "In Auction"
 msgstr "На аукціоні"
 
 #: catalog/forms.py:20 catalog/forms.py:57
-#: catalog/templates/instrument_form.html:116 users/forms.py:72
-#: users/forms.py:133 users/templates/finder_form.html:45
+#: catalog/templates/instrument_form.html:116 users/forms.py:94
+#: users/forms.py:155 users/templates/finder_form.html:45
 #: users/templates/purchase_details.html:44
 msgid "Category"
 msgstr "Категорія"
 
 #: catalog/forms.py:25 catalog/templates/instruments_list.html:137
-#: users/forms.py:73 users/templates/finder_form.html:51
+#: users/forms.py:95 users/templates/finder_form.html:51
 msgid "Availability"
 msgstr "Доступність"
 
@@ -639,13 +639,13 @@ msgid "Instrument title"
 msgstr "Назва інструмента"
 
 #: catalog/forms.py:58 catalog/templates/instrument_details.html:318
-#: catalog/templates/instrument_form.html:126 users/forms.py:71
-#: users/forms.py:132 users/templates/finder_form.html:39
+#: catalog/templates/instrument_form.html:126 users/forms.py:93
+#: users/forms.py:154 users/templates/finder_form.html:39
 msgid "Brand"
 msgstr "Бренд"
 
 #: catalog/forms.py:59 catalog/templates/instrument_form.html:136
-#: users/forms.py:131
+#: users/forms.py:153
 msgid "Year"
 msgstr "Рік"
 
@@ -654,11 +654,11 @@ msgid "Serial number"
 msgstr "Серійний номер"
 
 #: catalog/forms.py:61 catalog/templates/instrument_form.html:166
-#: users/forms.py:137
+#: users/forms.py:159
 msgid "Condition"
 msgstr "Стан"
 
-#: catalog/forms.py:62 users/forms.py:136
+#: catalog/forms.py:62 users/forms.py:158
 msgid "All original"
 msgstr "Усе оригінальне"
 
@@ -675,7 +675,7 @@ msgstr "Готовий до виступів"
 msgid "Price"
 msgstr "Ціна"
 
-#: catalog/forms.py:67 users/forms.py:135
+#: catalog/forms.py:67 users/forms.py:157
 msgid "Technical specifications"
 msgstr "Технічні характеристики"
 
@@ -721,7 +721,7 @@ msgstr "Коротка історія для контексту."
 msgid "Save Brand"
 msgstr "Зберегти бренд"
 
-#: catalog/templates/catalog/brand_list.html:8 templates/base.html:361
+#: catalog/templates/catalog/brand_list.html:8 templates/base.html:370
 msgid "Manage Brands"
 msgstr "Керування брендами"
 
@@ -730,7 +730,7 @@ msgid "Add Brand"
 msgstr "Додати бренд"
 
 #: catalog/templates/catalog/brand_list.html:19
-#: catalog/templates/catalog/category_list.html:19 users/forms.py:47
+#: catalog/templates/catalog/category_list.html:19 users/forms.py:69
 #: users/templates/collection_list.html:149
 msgid "Name"
 msgstr "Назва"
@@ -757,7 +757,7 @@ msgstr "Назва категорії"
 msgid "Save Category"
 msgstr "Зберегти категорію"
 
-#: catalog/templates/catalog/category_list.html:8 templates/base.html:356
+#: catalog/templates/catalog/category_list.html:8 templates/base.html:365
 msgid "Manage Categories"
 msgstr "Керування категоріями"
 
@@ -816,7 +816,7 @@ msgstr "Значення (наприклад, \"3,5 кг\")"
 msgid "Add Specification"
 msgstr "Додати характеристику"
 
-#: catalog/templates/instrument_details.html:184 templates/base.html:244
+#: catalog/templates/instrument_details.html:184 templates/base.html:253
 msgid "Catalog"
 msgstr "Каталог"
 
@@ -1114,7 +1114,7 @@ msgstr ""
 msgid "Clear All Filters"
 msgstr "Очистити всі фільтри"
 
-#: catalog/templates/instruments_list.html:218 users/views.py:293
+#: catalog/templates/instruments_list.html:218 users/views.py:299
 msgid "Custom Hunt Request"
 msgstr "Індивідуальний запит на пошук"
 
@@ -1401,70 +1401,70 @@ msgstr "Під час транзакції сталася помилка: "
 msgid "Vintage Tone | Premium Vintage Gear"
 msgstr "Vintage Tone | Преміальний вінтажний інструментарій"
 
-#: templates/base.html:221
+#: templates/base.html:230
 msgid "Vintage Tone Logo"
 msgstr "Логотип Vintage Tone"
 
-#: templates/base.html:266
+#: templates/base.html:275
 msgid "Account"
 msgstr "Обліковий запис"
 
-#: templates/base.html:269
+#: templates/base.html:278
 #, python-format
 msgid "Member since %(joined_year)s"
 msgstr "З нами з %(joined_year)s року"
 
-#: templates/base.html:279
+#: templates/base.html:288
 msgid "My Profile"
 msgstr "Мій профіль"
 
-#: templates/base.html:286
+#: templates/base.html:295
 msgid "My Collection"
 msgstr "Моя колекція"
 
-#: templates/base.html:297
+#: templates/base.html:306
 msgid "My Auctions"
 msgstr "Мої аукціони"
 
-#: templates/base.html:306
+#: templates/base.html:315
 msgid "My Finders"
 msgstr "Мої пошуки"
 
-#: templates/base.html:315 users/templates/hunt_request_list.html:46
+#: templates/base.html:324 users/templates/hunt_request_list.html:46
 msgid "My Hunt Requests"
 msgstr "Мої запити"
 
-#: templates/base.html:324 users/templates/orders_list.html:9
+#: templates/base.html:333 users/templates/orders_list.html:9
 msgid "My Orders"
 msgstr "Мої замовлення"
 
-#: templates/base.html:333 users/templates/purchase_details.html:9
+#: templates/base.html:342 users/templates/purchase_details.html:9
 #: users/templates/purchases_list.html:9
 msgid "My Purchases"
 msgstr "Мої покупки"
 
-#: templates/base.html:346
+#: templates/base.html:355
 msgid "Staff Tools"
 msgstr "Інструменти співробітника"
 
-#: templates/base.html:351
+#: templates/base.html:360
 msgid "Manage Auctions"
 msgstr "Керування аукціонами"
 
-#: templates/base.html:372
+#: templates/base.html:381
 msgid "Sign Out"
 msgstr "Вийти"
 
-#: templates/base.html:379 templates/signup.html:180
+#: templates/base.html:388 templates/signup.html:180
 msgid "Sign In"
 msgstr "Увійти"
 
-#: templates/base.html:403 users/templates/collection_list.html:145
+#: templates/base.html:412 users/templates/collection_list.html:145
 #: users/templates/profile.html:24
 msgid "Close"
 msgstr "Закрити"
 
-#: templates/base.html:411
+#: templates/base.html:420
 msgid "© 2026 Vintage Tone Marketplace. Expertly Curated Vintage Gear."
 msgstr ""
 "© 2026 Vintage Tone Marketplace. Експертно відібрані вінтажні інструменти."
@@ -1620,83 +1620,103 @@ msgstr "Цю адресу електронної пошти вже викори�
 msgid "This username is already taken."
 msgstr "Це ім’я користувача вже зайняте."
 
-#: users/forms.py:49
-msgid "Set as primary collection"
-msgstr "Встановити як основну колекцію"
+#: users/forms.py:50 users/forms.py:57
+msgid "Phone number"
+msgstr "Номер телефону"
 
-#: users/forms.py:52
-msgid "Collection name (for example, My Favorites)"
-msgstr "Назва колекції (наприклад, Мої улюблені)"
+#: users/forms.py:51 users/forms.py:58 users/templates/profile.html:84
+msgid "Country"
+msgstr "Країна"
 
-#: users/forms.py:53
-msgid "Optional description..."
-msgstr "Необов’язковий опис..."
+#: users/forms.py:52 users/forms.py:59 users/templates/profile.html:92
+msgid "City"
+msgstr "Місто"
 
-#: users/forms.py:70 users/templates/finder_form.html:29
-msgid "Configuration Name"
-msgstr "Назва конфігурації"
+#: users/forms.py:53 users/forms.py:60
+msgid "Postal code"
+msgstr "Поштовий індекс"
 
-#: users/forms.py:74 users/templates/finder_form.html:65
-msgid "Text Search Prompt"
-msgstr "Текстовий пошуковий запит"
-
-#: users/forms.py:75 users/templates/finder_form.html:71
-msgid "Image Search Prompt"
-msgstr "Пошукове зображення"
-
-#: users/forms.py:76 users/templates/finder_form.html:88
-msgid "Search Frequency (minutes)"
-msgstr "Частота пошуку (у хвилинах)"
-
-#: users/forms.py:77 users/templates/finder_form.html:99
-msgid "Maximum Results"
-msgstr "Максимум результатів"
-
-#: users/forms.py:81
-msgid "e.g. Vintage Gibsons"
-msgstr "наприклад, Vintage Gibsons"
-
-#: users/forms.py:85
-msgid "Describe what you are looking for..."
-msgstr "Опишіть, що ви шукаєте..."
-
-#: users/forms.py:130
-msgid "Instrument name"
-msgstr "Назва інструмента"
-
-#: users/forms.py:138
-msgid "Maximum price you are ready to pay"
-msgstr "Максимальна ціна, яку ви готові заплатити"
-
-#: users/forms.py:139
-msgid "Also search in auctions and agree to take part"
-msgstr "Також шукати на аукціонах і погодитися брати участь"
-
-#: users/forms.py:140
-msgid "Maximum time ready to wait (days)"
-msgstr "Максимальний час очікування (днів)"
-
-#: users/forms.py:141
-msgid "Platform commission"
-msgstr "Комісія платформи"
-
-#: users/forms.py:142
-msgid "Auto-charge when found and bought"
-msgstr "Автоматичне списання коштів після знаходження та купівлі"
-
-#: users/forms.py:143
+#: users/forms.py:54 users/forms.py:165
 msgid "Delivery address"
 msgstr "Адреса доставки"
 
-#: users/forms.py:145
+#: users/forms.py:61
+msgid "Street, building, apartment..."
+msgstr "Вулиця, будинок, квартира..."
+
+#: users/forms.py:71
+msgid "Set as primary collection"
+msgstr "Встановити як основну колекцію"
+
+#: users/forms.py:74
+msgid "Collection name (for example, My Favorites)"
+msgstr "Назва колекції (наприклад, Мої улюблені)"
+
+#: users/forms.py:75
+msgid "Optional description..."
+msgstr "Необов’язковий опис..."
+
+#: users/forms.py:92 users/templates/finder_form.html:29
+msgid "Configuration Name"
+msgstr "Назва конфігурації"
+
+#: users/forms.py:96 users/templates/finder_form.html:65
+msgid "Text Search Prompt"
+msgstr "Текстовий пошуковий запит"
+
+#: users/forms.py:97 users/templates/finder_form.html:71
+msgid "Image Search Prompt"
+msgstr "Пошукове зображення"
+
+#: users/forms.py:98 users/templates/finder_form.html:88
+msgid "Search Frequency (minutes)"
+msgstr "Частота пошуку (у хвилинах)"
+
+#: users/forms.py:99 users/templates/finder_form.html:99
+msgid "Maximum Results"
+msgstr "Максимум результатів"
+
+#: users/forms.py:103
+msgid "e.g. Vintage Gibsons"
+msgstr "наприклад, Vintage Gibsons"
+
+#: users/forms.py:107
+msgid "Describe what you are looking for..."
+msgstr "Опишіть, що ви шукаєте..."
+
+#: users/forms.py:152
+msgid "Instrument name"
+msgstr "Назва інструмента"
+
+#: users/forms.py:160
+msgid "Maximum price you are ready to pay"
+msgstr "Максимальна ціна, яку ви готові заплатити"
+
+#: users/forms.py:161
+msgid "Also search in auctions and agree to take part"
+msgstr "Також шукати на аукціонах і погодитися брати участь"
+
+#: users/forms.py:162
+msgid "Maximum time ready to wait (days)"
+msgstr "Максимальний час очікування (днів)"
+
+#: users/forms.py:163
+msgid "Platform commission"
+msgstr "Комісія платформи"
+
+#: users/forms.py:164
+msgid "Auto-charge when found and bought"
+msgstr "Автоматичне списання коштів після знаходження та купівлі"
+
+#: users/forms.py:167
 msgid ""
 "I agree that if I do not pay, the store may resell the instrument after the "
 "grace period"
 msgstr ""
-"Я погоджуюсь, що якщо я не оплачу, магазин може перепродати інструмент "
-"після закінчення пільгового періоду"
+"Я погоджуюсь, що якщо я не оплачу, магазин може перепродати інструмент після "
+"закінчення пільгового періоду"
 
-#: users/forms.py:148
+#: users/forms.py:170
 msgid "Resale grace period (days)"
 msgstr "Пільговий період перед перепродажем (днів)"
 
@@ -1727,6 +1747,10 @@ msgstr "Скасований"
 #: users/models.py:78
 msgid "Rejected"
 msgstr "Відхилено"
+
+#: users/models.py:139
+msgid "Profile"
+msgstr "Профіль"
 
 #: users/signals.py:13
 msgid "You have new, unviewed instruments search results."
@@ -2104,15 +2128,31 @@ msgstr "Мій профіль - Vintage Tone"
 msgid "Member since %(joined_since)s"
 msgstr "З нами з %(joined_since)s"
 
-#: users/templates/profile.html:72
+#: users/templates/profile.html:70
+msgid "Contact & Delivery"
+msgstr "Контакти та доставка"
+
+#: users/templates/profile.html:74
+msgid "Phone Number"
+msgstr "Номер телефону"
+
+#: users/templates/profile.html:102
+msgid "Postal Code"
+msgstr "Поштовий індекс"
+
+#: users/templates/profile.html:111
+msgid "Delivery Address"
+msgstr "Адреса доставки"
+
+#: users/templates/profile.html:121
 msgid "Update Profile"
 msgstr "Оновити профіль"
 
-#: users/templates/profile.html:82
+#: users/templates/profile.html:131
 msgid "Active Auctions"
 msgstr "Активні аукціони"
 
-#: users/templates/profile.html:87
+#: users/templates/profile.html:136
 msgid "Won Lots"
 msgstr "Виграні лоти"
 
@@ -2176,75 +2216,75 @@ msgstr ""
 "Ваша історія придбань з'явиться тут, як тільки ви купите інструменти з "
 "каталогу."
 
-#: users/views.py:26
+#: users/views.py:30
 msgid "Your profile has been updated successfully!"
 msgstr "Ваш профіль успішно оновлено!"
 
-#: users/views.py:48
+#: users/views.py:54
 #, python-format
 msgid "Collection \"%(collection)s\" created!"
 msgstr "Колекцію \"%(collection)s\" створено!"
 
-#: users/views.py:76
+#: users/views.py:82
 #, python-format
 msgid "Collection \"%(collection)s\" deleted."
 msgstr "Колекцію \"%(collection)s\" видалено."
 
-#: users/views.py:87
+#: users/views.py:93
 msgid "Invalid data."
 msgstr "Некоректні дані."
 
-#: users/views.py:90
+#: users/views.py:96
 msgid "Name is required."
 msgstr "Назва обов’язкова."
 
-#: users/views.py:94
+#: users/views.py:100
 msgid "A collection with this name already exists."
 msgstr "Колекція з такою назвою вже існує."
 
-#: users/views.py:147
+#: users/views.py:153
 msgid "My Favorites"
 msgstr "Мої улюблені"
 
-#: users/views.py:154
+#: users/views.py:160
 #, python-format
 msgid "Removed %(instrument)s from %(collection)s."
 msgstr "%(instrument)s видалено з колекції %(collection)s."
 
-#: users/views.py:161
+#: users/views.py:167
 #, python-format
 msgid "Added %(instrument)s to %(collection)s."
 msgstr "%(instrument)s додано до колекції %(collection)s."
 
-#: users/views.py:215
+#: users/views.py:221
 #, python-format
 msgid "Finder \"%(name)s\" created!"
 msgstr "Пошуковий профіль \"%(name)s\" створено!"
 
-#: users/views.py:220
+#: users/views.py:226
 msgid "Create Finder"
 msgstr "Створити профіль"
 
-#: users/views.py:230
+#: users/views.py:236
 #, python-format
 msgid "Finder \"%(name)s\" updated!"
 msgstr "Пошуковий профіль \"%(name)s\" оновлено!"
 
-#: users/views.py:235
+#: users/views.py:241
 msgid "Edit Finder"
 msgstr "Редагувати профіль"
 
-#: users/views.py:267
+#: users/views.py:273
 #, python-format
 msgid "Finder \"%(name)s\" deleted."
 msgstr "Пошуковий профіль \"%(name)s\" видалено."
 
-#: users/views.py:287
+#: users/views.py:293
 #, python-format
 msgid "Your custom hunt request \"%(name)s\" has been sent!"
 msgstr "Ваш індивідуальний пошуковий запит \"%(name)s\" надіслано!"
 
-#: users/views.py:302
+#: users/views.py:308
 #, python-format
 msgid "Hunt request \"%(name)s\" cancelled."
 msgstr "Пошуковий запит \"%(name)s\" скасовано."
