@@ -10,9 +10,9 @@ app_azure_client_secret: "{{ lookup('env', 'AZURE_CLIENT_SECRET') | default('', 
 app_azure_storage_name: "{{ lookup('env', 'AZURE_STORAGE_NAME') | default('', true) }}"
 
 # App infrastructure defaults
-app_db_url: "postgres://myuser:mypassword@db:5432/vintagedb"
-app_redis_url: "redis://redis:6379/0"
-app_celery_broker_url: "redis://redis:6379/0"
+app_db_url: "{{ lookup('env', 'DB_URL') }}"
+app_redis_url: "{{ lookup('env', 'REDIS_URL') }}"
+app_celery_broker_url: "{{ lookup('env', 'CELERY_BROKER_URL') }}"
 # AI Model paths (relative to project root inside the container)
 app_embedding_model_path: "./ai-models/all-mpnet-base-v2"
 app_embedding_image_model_path: "./ai-models/clip-vit-base-patch32"
